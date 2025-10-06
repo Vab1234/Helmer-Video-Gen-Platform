@@ -16,7 +16,7 @@ Model comparison   — ViT-B-32: fast & lightweight, good for object-level match
 
 Notebooks / Scripts
 
-ViT-L-14.ipynb      — Loads and runs the ViT-L-14 OpenCLIP model to embed prompts and assets, print ranked results, and visualize top matches for single-model experiments.
-OpenClip.ipynb      — Demonstrates OpenCLIP workflows (e.g., ViT-B-32), tokenization/encode_text debugging, embedding examples, and quick diagnostics.
-ALIGN.ipynb         — Experiments with HuggingFace kakaobrain/align-base: preprocessing, text/image embedding, similarity computation, and resource notes.
-Ensemble.ipynb      — Implements model fusion (min-max norm, weighted averaging), compares rankings
+1. ViT-L-14.ipynb      — Loads and runs the ViT-L-14 OpenCLIP model to embed prompts and assets, print ranked results, and visualize top matches for single-model experiments.
+2. OpenClip.ipynb      — Demonstrates OpenCLIP workflows (e.g., ViT-B-32), tokenization/encode_text debugging, embedding examples, and quick diagnostics.
+3. ALIGN.ipynb         — Experiments with HuggingFace kakaobrain/align-base: preprocessing, text/image embedding, similarity computation, and resource notes.
+4. Ensemble.ipynb      — Implements model fusion (min-max norm, weighted averaging), compares rankings
