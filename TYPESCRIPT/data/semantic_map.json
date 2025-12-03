@@ -1,0 +1,43 @@
+{
+  "user_prompt": "a video of people dancing in space",
+  "intent_extraction": {
+    "modality": "video",
+    "domain": "surreal",
+    "primary_subject": "people dancing",
+    "context_scene": "in space",
+    "style_adjectives": []
+  },
+  "realism_scoring": {
+    "realism_score": 0.1,
+    "abstractness_score": 0.9,
+    "rationale": "The concept of people dancing in space is highly imaginative and surreal, as it defies the physical limitations of gravity and atmosphere. The absence of style adjectives enhances the abstractness, allowing for a more open interpretation of the scene. Overall, while the subject is recognizable, the context makes it largely implausible, leading to a low realism score and a high abstractness score."
+  },
+  "feasibility_judgement": {},
+  "decision_reasoning": {
+    "reasoning_trace": "The user prompt describes a highly imaginative and surreal scene of people dancing in space, which has a low realism score (0.1) and a high abstractness score (0.9). This indicates that finding existing media that matches this specific and fantastical scenario may be challenging. Generating a synthetic video could allow for greater creative freedom to depict this surreal concept accurately. Given the abstract nature of the request, generating a video seems more appropriate than fetching existing media, which may not exist or may not meet the user's expectations.",
+    "cost_latency_estimate": {
+      "fetch": {
+        "cost": "high",
+        "latency": "high"
+      },
+      "generate": {
+        "cost": "medium",
+        "latency": "medium"
+      }
+    },
+    "final_decision": "generate_with_model",
+    "confidence": 0.85
+  },
+  "fetched_assets": [
+    {
+      "type": "video",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\videos\\b3a424a677848a58.mp4",
+      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
+      "media_url": "https://v3b.fal.media/files/b/0a84da9e/NGeIyeEWb4ni5qDbHMFPf.mp4",
+      "query_used": "a video of people dancing in space | intent: surreal, people dancing, in space, cinematic, high quality video",
+      "width": 0,
+      "height": 0,
+      "sha256": "b3a424a677848a58885d25ce25c4daa419d3c8dd95642a9fa9496d420d4dcf37"
+    }
+  ]
+}
