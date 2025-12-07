@@ -1,9 +1,8 @@
-// src/scraping/download.ts
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import sharp from "sharp";
-import { MIN_BYTES, MIN_PIXELS } from "../config/constants";
+// import sharp from "sharp"; // REMOVED to prevent GLib/Windows conflicts
+import { MIN_BYTES } from "../config/constants";
 import { sha256Bytes } from "../utils/hashing";
 
 const fsp = fs.promises;
@@ -27,7 +26,6 @@ async function headOk(
     }
     return { ok: true, contentType: ct, contentLength: cl };
   } catch {
-    // If HEAD fails, let GET decide
     return { ok: true, contentType: "", contentLength: undefined };
   }
 }
@@ -97,22 +95,10 @@ export async function downloadToDir(
     await fsp.writeFile(filePath, content);
   }
 
-  // image dims (for images)
-  let width = 0;
-  let height = 0;
-  if (contentType.includes("image")) {
-    try {
-      const meta = await sharp(content).metadata();
-      width = meta.width ?? 0;
-      height = meta.height ?? 0;
-      if (width * height < MIN_PIXELS) {
-        await fsp.unlink(filePath);
-        throw new Error("Image too small (pixels)");
-      }
-    } catch (err) {
-      console.warn("[download] sharp metadata error:", err);
-    }
-  }
+  // NOTE: Removed 'sharp' metadata check here to improve stability.
+  // We return 0,0 for dimensions, which is fine for this step.
+  const width = 0;
+  const height = 0;
 
   return { filePath, content, contentType, width, height, hash };
 }

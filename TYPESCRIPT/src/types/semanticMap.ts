@@ -69,6 +69,7 @@ export interface SemanticMap {
   decision_reasoning?: DecisionReasoning;
 
   fetched_assets?: FetchedAsset[];
+  relevant_assets?: FetchedAsset[];
 
   // allow additional keys if needed
   [key: string]: any;

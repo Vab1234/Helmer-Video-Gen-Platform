@@ -24,6 +24,7 @@ import {
 } from "./imageProviders";
 import { scrapePixabayVideos, scrapePexelsVideos } from "./videoProviders";
 import { scrapeMixkitSounds } from "./audioProviders";
+import { scrapeFreesoundAudio } from "./freeSoundProvider";
 
 const fsp = fs.promises;
 
@@ -144,6 +145,10 @@ export async function runFetchAssets(): Promise<void> {
       for (const q of queries) {
         console.log(`[scrape] mixkit_sounds -> '${q}'`);
         collected.push(...(await scrapeMixkitSounds(browser, q, MAX_PER_PROVIDER)));
+
+        // NEW: Add Freesound
+        console.log(`[scrape] freesound -> '${q}'`);
+        collected.push(...(await scrapeFreesoundAudio(q, MAX_PER_PROVIDER)));
       }
     }
 

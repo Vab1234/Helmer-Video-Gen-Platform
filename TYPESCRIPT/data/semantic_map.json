@@ -1,43 +1,218 @@
 {
-  "user_prompt": "a video of people dancing in space",
+  "user_prompt": "a spacecraft floating around sun",
   "intent_extraction": {
-    "modality": "video",
-    "domain": "surreal",
-    "primary_subject": "people dancing",
-    "context_scene": "in space",
+    "modality": "image",
+    "domain": "conceptual",
+    "primary_subject": "spacecraft",
+    "context_scene": "floating around the sun",
     "style_adjectives": []
   },
   "realism_scoring": {
-    "realism_score": 0.1,
-    "abstractness_score": 0.9,
-    "rationale": "The concept of people dancing in space is highly imaginative and surreal, as it defies the physical limitations of gravity and atmosphere. The absence of style adjectives enhances the abstractness, allowing for a more open interpretation of the scene. Overall, while the subject is recognizable, the context makes it largely implausible, leading to a low realism score and a high abstractness score."
+    "realism_score": 0.8,
+    "abstractness_score": 0.2,
+    "rationale": "The concept of a spacecraft floating around the sun is plausible within the context of space exploration and current scientific understanding. While there are no specific modifiers to enhance abstraction, the idea itself remains grounded in reality. Thus, the realism score is high, while the lack of imaginative descriptors keeps the abstractness score low."
   },
-  "feasibility_judgement": {},
+  "feasibility_judgement": {
+    "feasibility_label": "feasible",
+    "realism_overall_score": 0.8,
+    "creative_potential_score": 0.2,
+    "summary": "The scenario of a spacecraft floating around the sun is physically plausible and aligns with current scientific understanding of space exploration. An image or video generator could find real reference material related to spacecraft and solar phenomena. The concept is grounded in reality, with a high realism score, but lacks imaginative elements, resulting in a lower creative potential score."
+  },
   "decision_reasoning": {
-    "reasoning_trace": "The user prompt describes a highly imaginative and surreal scene of people dancing in space, which has a low realism score (0.1) and a high abstractness score (0.9). This indicates that finding existing media that matches this specific and fantastical scenario may be challenging. Generating a synthetic video could allow for greater creative freedom to depict this surreal concept accurately. Given the abstract nature of the request, generating a video seems more appropriate than fetching existing media, which may not exist or may not meet the user's expectations.",
+    "reasoning_trace": "The scenario of a spacecraft floating around the sun is highly plausible and grounded in reality, which suggests that there are likely existing images or videos that can be fetched. The realism score of 0.8 indicates that real media would be appropriate, while the low abstractness score and creative potential suggest that generating synthetic media may not add significant value. Therefore, fetching existing media is the most logical choice.",
     "cost_latency_estimate": {
       "fetch": {
-        "cost": "high",
-        "latency": "high"
+        "cost": "low",
+        "latency": "medium"
       },
       "generate": {
         "cost": "medium",
-        "latency": "medium"
+        "latency": "high"
       }
     },
-    "final_decision": "generate_with_model",
-    "confidence": 0.85
+    "final_decision": "fetch_from_web",
+    "confidence": 0.9
   },
-  "fetched_assets": [
+  "relevant_assets": [
     {
-      "type": "video",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\videos\\b3a424a677848a58.mp4",
-      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
-      "media_url": "https://v3b.fal.media/files/b/0a84da9e/NGeIyeEWb4ni5qDbHMFPf.mp4",
-      "query_used": "a video of people dancing in space | intent: surreal, people dancing, in space, cinematic, high quality video",
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\b0820427cda755b9.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/profile-1729488670413-32100ca34b90image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+      "page_url": "",
+      "alt": "Go to Jeremy Bishop's profile",
+      "query_used": "spacecraft floating sun",
       "width": 0,
       "height": 0,
-      "sha256": "b3a424a677848a58885d25ce25c4daa419d3c8dd95642a9fa9496d420d4dcf37"
+      "sha256": "b0820427cda755b9fab4f58f127b090de190859dc97dc5a83c0c5a2134fd289a"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\4b35d1db496354d8.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1583606316766-5451fceb998c?w=2000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3BhY2VjcmFmdCUyMGZsb2F0aW5nJTIwc3VufGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/round-white-and-black-illustration-TPgYYa3ypIA",
+      "alt": "round white and black illustration",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "4b35d1db496354d8ac92d1614592628501ed1c69e13a007f94a1d8edf7f44658"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\9d37a0eca6a77c6b.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/profile-1567871055370-74f57bb395f5image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+      "page_url": "",
+      "alt": "Go to Jan Huber's profile",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "9d37a0eca6a77c6b19439e8c979bb2f3daefcae8eca95483ba3720c8cb165afa"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\0d8142c6bf934686.png",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/canva.png?w=95&dpr=2",
+      "page_url": "",
+      "alt": "",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "0d8142c6bf9346869763a47281230374c632f2f89f7488193c74f62753fb3d52"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\daef4a350c0cd053.png",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/all-features/use%20filters.png?w=110&dpr=2",
+      "page_url": "",
+      "alt": "",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "daef4a350c0cd053273f2fb82af479458c010ae431c69d3f29c3ffc642b52f1e"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\96f44ffb77811792.png",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/all-features/change%20focus.png?w=110&dpr=2",
+      "page_url": "",
+      "alt": "",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "96f44ffb77811792ae59152c25fa1fa35b7e09b3e2ba61fcb7f6c6da700af190"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\1d03fbc3e63ee6d2.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2024/04/27/13/58/ai-generated-8723799_1280.png",
+      "page_url": "https://pixabay.com/illustrations/ai-generated-ufo-alien-spacecraft-8723799/",
+      "alt": "Free Ai Generated Ufo illustration and picture",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "1d03fbc3e63ee6d2a6c9861fa7aecfebf58bed2a52f4961aee113e80450090b2"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\e1db3ec5f475192e.png",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/user/2024/09/22/21-41-35-834_96x96.png",
+      "page_url": "",
+      "alt": "",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "e1db3ec5f475192e5218bbbf4d79bec0cc1dd8a66aaf9d90b248b72bad46fb56"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\5401ec379ca0eac8.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2024/04/27/13/58/ai-generated-8723801_1280.png",
+      "page_url": "https://pixabay.com/illustrations/ai-generated-ufo-alien-spacecraft-8723801/",
+      "alt": "Free Ai Generated Ufo illustration and picture",
+      "query_used": "spacecraft floating sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "5401ec379ca0eac8cc6e859fd20cb975b1defbdb1b76df016dfd10c52d008779"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\df4588e132bff3b7.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/profile-1661537276190-b27bf63fd940image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+      "page_url": "",
+      "alt": "Go to Getty Images's profile",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "df4588e132bff3b7c11df6ba8cca2fea26a93d0e21085daeeeb81bec882d3145"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\84f20494b1fa0395.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1627990204911-cd2cfee4c6a5?w=2000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BhY2VzaGlwJTIwb3JiaXRpbmclMjB0aGUlMjBzdW58ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/silhouette-of-trees-during-sunset-ttk_qnPv76U",
+      "alt": "silhouette of trees during sunset",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "84f20494b1fa03958c8bb292421cc975ba97b590a2e48907a972006138622ce2"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\e44b5c934587011d.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/profile-1695334552202-4afbf9e8bf1dimage?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+      "page_url": "",
+      "alt": "Go to untldshots's profile",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "e44b5c934587011d5a7c6be8db04916f2007f78bdadb1e84e3675be969f231e7"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\9a50e1c4d3d3748a.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2025/05/14/10/42/ai-generated-9599334_1280.jpg",
+      "page_url": "https://pixabay.com/illustrations/ai-generated-planet-space-night-9599334/",
+      "alt": "Free Ai Generated Planet illustration and picture",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "9a50e1c4d3d3748a7d5ee6d3e98799707eac6e29a617bc0ba031175bee839d7d"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\a612b02588483ca1.png",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2023/12/31/11/19/solar-system-8479901_1280.png",
+      "page_url": "https://pixabay.com/vectors/solar-system-galaxy-orbiting-8479901/",
+      "alt": "Free Solar System Galaxy vector and picture",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "a612b02588483ca1fff81c21a59ecc7ae4181a0e1fb14bc83c04ae536ac0c19e"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\d33270eafec7ffbe.png",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/user/2023/08/30/02-29-16-408_96x96.png",
+      "page_url": "",
+      "alt": "",
+      "query_used": "spaceship orbiting the sun",
+      "width": 0,
+      "height": 0,
+      "sha256": "d33270eafec7ffbe44ca822e9606aaceaba08b5efcc6991c0e11e3b99a3a70bf"
     }
   ]
 }
