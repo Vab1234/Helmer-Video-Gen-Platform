@@ -12,7 +12,8 @@ const execPromise = util.promisify(exec);
 
 // Configuration
 const CLIP_MODEL_ID = "Xenova/clip-vit-base-patch32";
-const MIN_SCORE = 0.21; // Threshold for filtering
+const MIN_SCORE = 0.21; 
+const TOP_K_MINIMUM = 5;
 
 // Directories
 const RELEVANT_DIR = path.join(DEST_DIR, "relevant_assets");
@@ -28,30 +29,27 @@ function extractSubjects(text: string): string[] {
 async function extractVideoFrame(videoPath: string): Promise<string | null> {
   if (!ffmpegPath) return null;
   const tempFrame = path.join(path.dirname(videoPath), `temp_${Date.now()}.jpg`);
-  
-  // Extract frame at 1 second mark
   const cmd = `"${ffmpegPath}" -i "${videoPath}" -ss 00:00:01 -vframes 1 "${tempFrame}" -y`;
-
   try {
     await execPromise(cmd);
-    if (fs.existsSync(tempFrame)) {
-      return tempFrame;
-    }
-    return null;
-  } catch (err) {
-    return null;
-  }
+    return fs.existsSync(tempFrame) ? tempFrame : null;
+  } catch { return null; }
 }
 
 async function scoreImage(
-  filepath: string,
-  prompt: string,
+  filepath: string, 
+  prompt: string, 
   clipPipe: any
 ): Promise<number> {
   try {
-    const output = await clipPipe(filepath, [prompt]);
+    // Basic contrast: prompt vs. a single static negative label
+    const candidateLabels = [prompt, "unrelated random object or blurred background"];
+    const output = await clipPipe(filepath, candidateLabels);
+
     if (Array.isArray(output) && output.length > 0) {
-      return output[0].score;
+      // Find the score for the user prompt specifically
+      const match = output.find((item: any) => item.label === prompt);
+      return match ? match.score : 0;
     }
     return 0;
   } catch (err) {
@@ -60,17 +58,12 @@ async function scoreImage(
 }
 
 function scoreMetadata(asset: FetchedAsset, subjects: string[]): number {
-  const text = (
-    `${asset.query_used} ${asset.alt || ""} ${asset.source} ${path.basename(asset.filename)}`
-  ).toLowerCase();
-
+  const text = `${asset.query_used} ${asset.alt || ""} ${asset.source}`.toLowerCase();
   let matches = 0;
-  for (const sub of subjects) {
-    if (text.includes(sub.toLowerCase())) matches++;
+  for (const sub of subjects) { 
+    if (text.includes(sub.toLowerCase())) matches++; 
   }
-  
-  if (subjects.length === 0) return 0.5;
-  return matches / subjects.length;
+  return subjects.length === 0 ? 0.5 : matches / subjects.length;
 }
 
 export async function runRelevanceMatching(): Promise<void> {
@@ -79,46 +72,27 @@ export async function runRelevanceMatching(): Promise<void> {
   console.log("==================================================");
 
   const semanticMap = await readJson<SemanticMap>(SEMANTIC_MAP_PATH);
-  if (!semanticMap || !semanticMap.fetched_assets) {
-    console.log("[relevance] No assets to process.");
-    return;
-  }
+  if (!semanticMap || !semanticMap.fetched_assets) return;
 
   const userPrompt = semanticMap.user_prompt || "";
   const subjects = extractSubjects(userPrompt);
-  console.log(`[relevance] extracted subjects: ${subjects.join(", ")}`);
 
-  console.log("[relevance] Loading CLIP model (Note: First run downloads ~350MB, please wait)...");
-  
-  // DYNAMIC IMPORT FIX + PROGRESS CALLBACK
   const dynamicImport = new Function('specifier', 'return import(specifier)');
   const { pipeline, env } = await dynamicImport("@xenova/transformers");
-
   env.allowLocalModels = false;
   
-  // Add progress callback to see download status
-  const clipPipe = await pipeline("zero-shot-image-classification", CLIP_MODEL_ID, {
-    progress_callback: (data: any) => {
-        if (data.status === 'progress') {
-            const pct = data.progress ? (data.progress).toFixed(1) : 0;
-            process.stdout.write(`\r[relevance] Downloading model: ${pct}% ${data.file || ''}`);
-        }
-    }
-  });
-  console.log("\n[relevance] Model loaded.");
+  const clipPipe = await pipeline("zero-shot-image-classification", CLIP_MODEL_ID);
 
   await ensureDir(REL_IMG);
   await ensureDir(REL_VID);
   await ensureDir(REL_AUD);
 
-  const relevantAssets: FetchedAsset[] = [];
-  const assetsToDelete: string[] = [];
-
+  // 1. SCORING PHASE
+  const scoredAssets = [];
   for (const asset of semanticMap.fetched_assets) {
-    let score = 0;
-    
     if (!fs.existsSync(asset.filename)) continue;
-
+    
+    let score = 0;
     if (asset.type === "image") {
       score = await scoreImage(asset.filename, userPrompt, clipPipe);
     } 
@@ -127,46 +101,50 @@ export async function runRelevanceMatching(): Promise<void> {
       if (framePath) {
         score = await scoreImage(framePath, userPrompt, clipPipe);
         fs.unlink(framePath, () => {}); 
-      } else {
-        score = scoreMetadata(asset, subjects);
+      } else { 
+        score = scoreMetadata(asset, subjects); 
       }
     } 
-    else if (asset.type === "audio") {
-      score = scoreMetadata(asset, subjects);
-      if (asset.source === "freesound") score += 0.25;
+    else { 
+      score = scoreMetadata(asset, subjects); 
     }
+    scoredAssets.push({ ...asset, score });
+  }
 
+  // 2. RANKING PHASE
+  scoredAssets.sort((a, b) => b.score - a.score);
+
+  // 3. SELECTION & COPYING PHASE
+  const relevantAssets: FetchedAsset[] = [];
+
+  for (let i = 0; i < scoredAssets.length; i++) {
+    const asset = scoredAssets[i];
+    const isTopK = i < TOP_K_MINIMUM;
     const threshold = asset.type === "audio" ? 0.15 : MIN_SCORE;
-    const isKeeper = score >= threshold;
+    
+    // Dynamic threshold: Keep if meets score OR is in the top 5
+    const isKeeper = asset.score >= threshold || isTopK;
 
-    console.log(`[score] ${asset.type.padEnd(5)} | Score: ${score.toFixed(2)} | ${isKeeper ? "✅ KEEP" : "❌ DROP"} | ${path.basename(asset.filename)}`);
+    console.log(`[score] ${asset.type.padEnd(5)} | Score: ${asset.score.toFixed(4)} | ${isKeeper ? "✅ KEEP" : "❌ SKIP"} | ${path.basename(asset.filename)}`);
 
     if (isKeeper) {
       const destDir = asset.type === "image" ? REL_IMG : asset.type === "video" ? REL_VID : REL_AUD;
       const destPath = path.join(destDir, path.basename(asset.filename));
       
       try {
-        await fs.promises.rename(asset.filename, destPath);
-        asset.filename = destPath; 
-        relevantAssets.push(asset);
+        // Copy files so originals remain in the scrape folder
+        await fs.promises.copyFile(asset.filename, destPath);
+        relevantAssets.push({ ...asset, filename: destPath });
       } catch (err) {
-        console.error(`Error moving file: ${err}`);
+        console.error(`Error copying file: ${err}`);
       }
-    } else {
-      assetsToDelete.push(asset.filename);
     }
   }
 
-  // Cleanup dropped files
-  for (const f of assetsToDelete) {
-    try { if(fs.existsSync(f)) await fs.promises.unlink(f); } catch(e) {}
-  }
-
   semanticMap.relevant_assets = relevantAssets;
-  delete semanticMap.fetched_assets; 
+  semanticMap.fetched_assets = []; // Clear for next potential loop attempt
 
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
-  
-  console.log(`[relevance] Process complete.`);
-  console.log(`[relevance] Relevant assets stored in: ${RELEVANT_DIR}`);
+  console.log(`\n[done] All scraped assets preserved in original folders.`);
+  console.log(`[done] ${relevantAssets.length} relevant assets copied to: ${RELEVANT_DIR}`);
 }

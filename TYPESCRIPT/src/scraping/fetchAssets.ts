@@ -42,7 +42,7 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
   await ensureDir(AUD_DIR);
 
   for (const item of items) {
-    const { type, mediaUrl } = item;
+    const { type, mediaUrl, source } = item; // 1. Destructure source here
     if (!mediaUrl) continue;
 
     try {
@@ -52,12 +52,14 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
       const preferredExt =
         type === "image" ? ".jpg" : type === "video" ? ".mp4" : ".mp3";
 
+      // 2. Pass source as a new argument to downloadToDir
       const { filePath, contentType, width, height, hash } = await downloadToDir(
         mediaUrl,
         targetDir,
-        preferredExt
+        preferredExt,
+        item.source // <--- Add this argument
       );
-
+      
       if (seenHashes.has(hash)) {
         await fsp.unlink(filePath).catch(() => {});
         continue;

@@ -1,25 +1,27 @@
 {
-  "user_prompt": "a spacecraft floating around sun",
+  "user_prompt": "cute cat sitting on a table",
   "intent_extraction": {
     "modality": "image",
-    "domain": "conceptual",
-    "primary_subject": "spacecraft",
-    "context_scene": "floating around the sun",
-    "style_adjectives": []
+    "domain": "natural",
+    "primary_subject": "cat",
+    "context_scene": "table",
+    "style_adjectives": [
+      "cute"
+    ]
   },
   "realism_scoring": {
-    "realism_score": 0.8,
-    "abstractness_score": 0.2,
-    "rationale": "The concept of a spacecraft floating around the sun is plausible within the context of space exploration and current scientific understanding. While there are no specific modifiers to enhance abstraction, the idea itself remains grounded in reality. Thus, the realism score is high, while the lack of imaginative descriptors keeps the abstractness score low."
+    "realism_score": 0.9,
+    "abstractness_score": 0.1,
+    "rationale": "A cat sitting on a table is a highly plausible scenario, as cats are common household pets that often explore surfaces like tables. The adjective 'cute' enhances the appeal but does not add significant abstraction, keeping the concept grounded in reality. Overall, the combination of a familiar subject in a typical context results in a high realism score and a low abstractness score."
   },
   "feasibility_judgement": {
     "feasibility_label": "feasible",
-    "realism_overall_score": 0.8,
+    "realism_overall_score": 0.9,
     "creative_potential_score": 0.2,
-    "summary": "The scenario of a spacecraft floating around the sun is physically plausible and aligns with current scientific understanding of space exploration. An image or video generator could find real reference material related to spacecraft and solar phenomena. The concept is grounded in reality, with a high realism score, but lacks imaginative elements, resulting in a lower creative potential score."
+    "summary": "The scenario of a cute cat sitting on a table is highly plausible and grounded in reality, making it feasible. An image or video generator would easily find reference material for this common scene. While the concept is realistic, its creativity is limited due to its familiarity."
   },
   "decision_reasoning": {
-    "reasoning_trace": "The scenario of a spacecraft floating around the sun is highly plausible and grounded in reality, which suggests that there are likely existing images or videos that can be fetched. The realism score of 0.8 indicates that real media would be appropriate, while the low abstractness score and creative potential suggest that generating synthetic media may not add significant value. Therefore, fetching existing media is the most logical choice.",
+    "reasoning_trace": "The scenario of a cute cat sitting on a table is highly realistic and common, making it feasible to find existing media that fits this description. Given the high realism score and low abstractness score, it is more efficient to fetch real media rather than generate a synthetic image. The creative potential is low, indicating that generating a new image may not yield significantly different results than what is already available. Therefore, fetching from the web is the most logical choice.",
     "cost_latency_estimate": {
       "fetch": {
         "cost": "low",
@@ -33,186 +35,202 @@
     "final_decision": "fetch_from_web",
     "confidence": 0.9
   },
+  "fetched_assets": [],
   "relevant_assets": [
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\b0820427cda755b9.jpg",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_1a0c4bcccd8f.jpg",
       "source": "unsplash",
-      "media_url": "https://images.unsplash.com/profile-1729488670413-32100ca34b90image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
-      "page_url": "",
-      "alt": "Go to Jeremy Bishop's profile",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://images.unsplash.com/photo-1654079897188-00ca17b34b6a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-top-of-a-wooden-table-4zuEbedYNxA",
+      "alt": "a cat sitting on top of a wooden table",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "b0820427cda755b9fab4f58f127b090de190859dc97dc5a83c0c5a2134fd289a"
+      "sha256": "1a0c4bcccd8faf38de1ff362873b245d809be3a0b72ded9ee0e20d2805785ce6",
+      "score": 0.9988722205162048
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\4b35d1db496354d8.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1583606316766-5451fceb998c?w=2000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3BhY2VjcmFmdCUyMGZsb2F0aW5nJTIwc3VufGVufDB8fDB8fHww",
-      "page_url": "https://unsplash.com/photos/round-white-and-black-illustration-TPgYYa3ypIA",
-      "alt": "round white and black illustration",
-      "query_used": "spacecraft floating sun",
-      "width": 0,
-      "height": 0,
-      "sha256": "4b35d1db496354d8ac92d1614592628501ed1c69e13a007f94a1d8edf7f44658"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\9d37a0eca6a77c6b.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/profile-1567871055370-74f57bb395f5image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
-      "page_url": "",
-      "alt": "Go to Jan Huber's profile",
-      "query_used": "spacecraft floating sun",
-      "width": 0,
-      "height": 0,
-      "sha256": "9d37a0eca6a77c6b19439e8c979bb2f3daefcae8eca95483ba3720c8cb165afa"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\0d8142c6bf934686.png",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_eb91c7b6eff8.jpg",
       "source": "pexels",
-      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/canva.png?w=95&dpr=2",
-      "page_url": "",
-      "alt": "",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://images.pexels.com/photos/9324023/pexels-photo-9324023.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/white-and-black-cat-on-brown-wooden-table-9324023/",
+      "alt": "Free Cute black and white kitten sitting on a wooden table with vases of vibrant flowers indoors. Stock Photo",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "0d8142c6bf9346869763a47281230374c632f2f89f7488193c74f62753fb3d52"
+      "sha256": "eb91c7b6eff8a8d993259099400299310ae2bc9a4562d2400d3e43b03b333cff",
+      "score": 0.9953163862228394
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\daef4a350c0cd053.png",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_b1aa06ccc548.jpg",
       "source": "pexels",
-      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/all-features/use%20filters.png?w=110&dpr=2",
-      "page_url": "",
-      "alt": "",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://images.pexels.com/photos/8129731/pexels-photo-8129731.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/selective-focus-of-a-kitten-on-the-books-8129731/",
+      "alt": "Free A cute kitten sits on stacked books with a blurred floral background, indoors. Stock Photo",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "daef4a350c0cd053273f2fb82af479458c010ae431c69d3f29c3ffc642b52f1e"
+      "sha256": "b1aa06ccc548bb47589de639f7e3fdf5f455fcdeeaae55d519ca0eddeb59db63",
+      "score": 0.9895605444908142
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\96f44ffb77811792.png",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_e3709fbb81a1.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2025/09/22/15/49/cat-9848920_1280.jpg",
+      "page_url": "https://pixabay.com/illustrations/cat-grumpy-breakfast-table-coffee-9848920/",
+      "alt": "Free Cat Grumpy illustration and picture",
+      "query_used": "cute cat sitting table",
+      "width": 0,
+      "height": 0,
+      "sha256": "e3709fbb81a182bb33a7c6ea03d7270dcdcec6cf3510388ff3e4ec8937ce54ad",
+      "score": 0.9817396402359009
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_28c76ec4ff74.jpg",
       "source": "pexels",
-      "media_url": "https://images.pexels.com/lib/canva-growth-after-download/all-features/change%20focus.png?w=110&dpr=2",
-      "page_url": "",
-      "alt": "",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://images.pexels.com/photos/18088448/pexels-photo-18088448/free-photo-of-a-cat-standing-on-a-table-in-a-restaurant.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/a-cat-standing-on-a-table-in-a-restaurant-18088448/",
+      "alt": "Free A curious tabby cat standing on a table in an outdoor cafe setting, surrounded by red decor. Stock Photo",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "96f44ffb77811792ae59152c25fa1fa35b7e09b3e2ba61fcb7f6c6da700af190"
+      "sha256": "28c76ec4ff74a6c1b3bcd5221e1e54340d19f8ceb3b1e1693f8fc9e57ccc47a8",
+      "score": 0.9792992472648621
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\1d03fbc3e63ee6d2.jpg",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_080b759d2c3a.jpg",
       "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2024/04/27/13/58/ai-generated-8723799_1280.png",
-      "page_url": "https://pixabay.com/illustrations/ai-generated-ufo-alien-spacecraft-8723799/",
-      "alt": "Free Ai Generated Ufo illustration and picture",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://cdn.pixabay.com/photo/2021/09/06/20/12/cat-6602447_1280.jpg",
+      "page_url": "https://pixabay.com/photos/cat-kitten-pet-young-cat-animal-6602447/",
+      "alt": "Free Cat Kitten photo and picture",
+      "query_used": "cat on table closeup",
       "width": 0,
       "height": 0,
-      "sha256": "1d03fbc3e63ee6d2a6c9861fa7aecfebf58bed2a52f4961aee113e80450090b2"
+      "sha256": "080b759d2c3a8a3f28cc7ff468049e8f195ef84f2c772e293684f967cfcb0582",
+      "score": 0.9776774048805237
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\e1db3ec5f475192e.png",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_540c2d845eae.jpg",
       "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/user/2024/09/22/21-41-35-834_96x96.png",
-      "page_url": "",
-      "alt": "",
-      "query_used": "spacecraft floating sun",
+      "media_url": "https://cdn.pixabay.com/photo/2024/06/07/17/32/ai-generated-8815068_640.jpg",
+      "page_url": "https://pixabay.com/illustrations/ai-generated-cat-black-cat-8815068/",
+      "alt": "Free Ai Generated Cat illustration and picture",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "e1db3ec5f475192e5218bbbf4d79bec0cc1dd8a66aaf9d90b248b72bad46fb56"
+      "sha256": "540c2d845eae9903b005de05622d3a0da694fa284a8d5a757a1c4b14bfaa7d46",
+      "score": 0.9590552449226379
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\5401ec379ca0eac8.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2024/04/27/13/58/ai-generated-8723801_1280.png",
-      "page_url": "https://pixabay.com/illustrations/ai-generated-ufo-alien-spacecraft-8723801/",
-      "alt": "Free Ai Generated Ufo illustration and picture",
-      "query_used": "spacecraft floating sun",
-      "width": 0,
-      "height": 0,
-      "sha256": "5401ec379ca0eac8cc6e859fd20cb975b1defbdb1b76df016dfd10c52d008779"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\df4588e132bff3b7.jpg",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_42afe95ee7ed.jpg",
       "source": "unsplash",
-      "media_url": "https://images.unsplash.com/profile-1661537276190-b27bf63fd940image?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
-      "page_url": "",
-      "alt": "Go to Getty Images's profile",
-      "query_used": "spaceship orbiting the sun",
+      "media_url": "https://images.unsplash.com/photo-1665909063299-413e16efd7ef?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-sleeping-on-a-couch-dqF83Is8v5s",
+      "alt": "a cat sleeping on a couch",
+      "query_used": "cat on table closeup",
       "width": 0,
       "height": 0,
-      "sha256": "df4588e132bff3b7c11df6ba8cca2fea26a93d0e21085daeeeb81bec882d3145"
+      "sha256": "42afe95ee7ed21c7f2e66c419b83857da3db8dc8d58497d18e823b1db3ba98ff",
+      "score": 0.9482391476631165
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\84f20494b1fa0395.jpg",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_1e27ddb1eab6.jpg",
       "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1627990204911-cd2cfee4c6a5?w=2000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BhY2VzaGlwJTIwb3JiaXRpbmclMjB0aGUlMjBzdW58ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/silhouette-of-trees-during-sunset-ttk_qnPv76U",
-      "alt": "silhouette of trees during sunset",
-      "query_used": "spaceship orbiting the sun",
+      "media_url": "https://images.unsplash.com/photo-1758414485868-d60aa58f5f48?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/black-cat-peeking-out-from-under-a-chair-yyKpWZhzw7Y",
+      "alt": "Black cat peeking out from under a chair.",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "84f20494b1fa03958c8bb292421cc975ba97b590a2e48907a972006138622ce2"
+      "sha256": "1e27ddb1eab6fc37619d4a835b2e16303244603e0bcd988d6cfebdb3d3c751c0",
+      "score": 0.9200795292854309
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\e44b5c934587011d.jpg",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_83236443dbc5.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2021/03/14/18/03/cat-6095007_640.jpg",
+      "page_url": "https://pixabay.com/photos/cat-animal-sleeping-asleep-sleep-6095007/",
+      "alt": "Free Cat Animal photo and picture",
+      "query_used": "cat on table closeup",
+      "width": 0,
+      "height": 0,
+      "sha256": "83236443dbc5ba038eb457ce7051afd905386f79b3ab7bd0d5f0b74367fb8e8f",
+      "score": 0.9021738171577454
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_1a7044ef1c25.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2024/07/10/08/46/man-8885262_640.png",
+      "page_url": "https://pixabay.com/illustrations/man-cat-kitten-pet-cute-animal-8885262/",
+      "alt": "Free Man Cat illustration and picture",
+      "query_used": "cute cat sitting table",
+      "width": 0,
+      "height": 0,
+      "sha256": "1a7044ef1c25242238133bb8074bc03fd2ae0d89c9d898877786a683dcb5aa4a",
+      "score": 0.8727957010269165
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_f05da5c4229e.jpg",
       "source": "unsplash",
-      "media_url": "https://images.unsplash.com/profile-1695334552202-4afbf9e8bf1dimage?w=32&dpr=2&crop=faces&bg=%23fff&h=32&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
-      "page_url": "",
-      "alt": "Go to untldshots's profile",
-      "query_used": "spaceship orbiting the sun",
+      "media_url": "https://plus.unsplash.com/premium_photo-1673967792498-b8db6df56fb4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-close-up-of-a-cat-with-blue-eyes-2vhBZsWuxGo",
+      "alt": "a close up of a cat with blue eyes",
+      "query_used": "cat on table closeup",
       "width": 0,
       "height": 0,
-      "sha256": "e44b5c934587011d5a7c6be8db04916f2007f78bdadb1e84e3675be969f231e7"
+      "sha256": "f05da5c4229e9732ccb13fb11450bfd9ee94d41b8db69ed97789f9cfb3d4e4c8",
+      "score": 0.8611747026443481
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\9a50e1c4d3d3748a.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2025/05/14/10/42/ai-generated-9599334_1280.jpg",
-      "page_url": "https://pixabay.com/illustrations/ai-generated-planet-space-night-9599334/",
-      "alt": "Free Ai Generated Planet illustration and picture",
-      "query_used": "spaceship orbiting the sun",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_c0a8c6484be2.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1664477055074-811df3f29888?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/asian-guy-and-women-playing-with-cat-they-wore-face-mask-to-protect-them-self-from-coronavirus-covid-19-friendly-cute-cat-need-attention-from-the-owners-work-at-home-O6ccEWaVZ28",
+      "alt": "asian guy and women playing with cat, they wore face mask to protect them self from coronavirus covid-19, friendly cute cat need attention from the owners. work at home.",
+      "query_used": "cute cat sitting table",
       "width": 0,
       "height": 0,
-      "sha256": "9a50e1c4d3d3748a7d5ee6d3e98799707eac6e29a617bc0ba031175bee839d7d"
+      "sha256": "c0a8c6484be22ee79bc43912352c5e354b75af346f1048b09a2191f5a615bb97",
+      "score": 0.8573335409164429
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\a612b02588483ca1.png",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2023/12/31/11/19/solar-system-8479901_1280.png",
-      "page_url": "https://pixabay.com/vectors/solar-system-galaxy-orbiting-8479901/",
-      "alt": "Free Solar System Galaxy vector and picture",
-      "query_used": "spaceship orbiting the sun",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_23577f411c48.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1664392309182-017207df3537?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-top-of-a-white-surface-COzc6cva1gQ",
+      "alt": "a cat sitting on top of a white surface",
+      "query_used": "cat on table closeup",
       "width": 0,
       "height": 0,
-      "sha256": "a612b02588483ca1fff81c21a59ecc7ae4181a0e1fb14bc83c04ae536ac0c19e"
+      "sha256": "23577f411c48c907bc7e1038c411337382d8f0287d84cce4d98c90bfd679ca6b",
+      "score": 0.5236111283302307
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\d33270eafec7ffbe.png",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_fb6e9563f1f2.jpg",
       "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/user/2023/08/30/02-29-16-408_96x96.png",
-      "page_url": "",
-      "alt": "",
-      "query_used": "spaceship orbiting the sun",
+      "media_url": "https://cdn.pixabay.com/photo/2023/09/09/09/03/cheetah-8242729_640.png",
+      "page_url": "https://pixabay.com/photos/cheetah-animal-mammal-feline-8242729/",
+      "alt": "Free Cheetah Animal photo and picture",
+      "query_used": "cat on table closeup",
       "width": 0,
       "height": 0,
-      "sha256": "d33270eafec7ffbe44ca822e9606aaceaba08b5efcc6991c0e11e3b99a3a70bf"
+      "sha256": "fb6e9563f1f21216575e4e5cb5132e48e8aa717b12d5a46cddd46614c20247d4",
+      "score": 0.4495672583580017
     }
   ]
 }

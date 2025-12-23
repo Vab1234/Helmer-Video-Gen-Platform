@@ -11,13 +11,15 @@ export async function askDecisionEngine(
       {
         role: "system",
         content:
-          "You are an AI decision reasoning module for a media-fetching system.",
+          "You are an AI decision reasoning module for a media-fetching system. Always return your response in valid JSON format.",
       },
       {
         role: "user",
         content: prompt,
       },
     ],
+    // --- Enable JSON Mode ---
+    response_format: { type: "json_object" },
     temperature: 0.3,
     max_tokens: 800,
   });

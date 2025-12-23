@@ -1,7 +1,6 @@
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-// import sharp from "sharp"; // REMOVED to prevent GLib/Windows conflicts
 import { MIN_BYTES } from "../config/constants";
 import { sha256Bytes } from "../utils/hashing";
 
@@ -26,24 +25,26 @@ async function headOk(
     }
     return { ok: true, contentType: ct, contentLength: cl };
   } catch {
+    // If HEAD fails, we'll try to GET anyway but return defaults
     return { ok: true, contentType: "", contentLength: undefined };
   }
 }
 
 function inferExtension(contentType: string, fallback: string): string {
-  if (contentType.includes("image")) {
-    if (contentType.includes("png")) return ".png";
-    if (contentType.includes("webp")) return ".webp";
+  const ct = contentType.toLowerCase();
+  if (ct.includes("image")) {
+    if (ct.includes("png")) return ".png";
+    if (ct.includes("webp")) return ".webp";
     return ".jpg";
   }
-  if (contentType.includes("video")) {
-    if (contentType.includes("mp4")) return ".mp4";
-    if (contentType.includes("webm")) return ".webm";
+  if (ct.includes("video")) {
+    if (ct.includes("mp4")) return ".mp4";
+    if (ct.includes("webm")) return ".webm";
     return ".mp4";
   }
-  if (contentType.includes("audio")) {
-    if (contentType.includes("wav")) return ".wav";
-    if (contentType.includes("ogg")) return ".ogg";
+  if (ct.includes("audio")) {
+    if (ct.includes("wav")) return ".wav";
+    if (ct.includes("ogg")) return ".ogg";
     return ".mp3";
   }
   return fallback;
@@ -52,7 +53,8 @@ function inferExtension(contentType: string, fallback: string): string {
 export async function downloadToDir(
   url: string,
   toDir: string,
-  preferredExt: string
+  preferredExt: string,
+  source: string = "unknown" // Added source parameter
 ): Promise<{
   filePath: string;
   content: Buffer;
@@ -67,7 +69,8 @@ export async function downloadToDir(
 
   const head = await headOk(url);
   if (!head.ok) {
-    throw new Error("Too small or invalid (HEAD)");
+    // This is the error you were seeing. It triggers when a link is a tiny pixel.
+    throw new Error(`Asset from ${source} is too small or invalid (HEAD)`);
   }
 
   const res = await axios.get(url, {
@@ -81,22 +84,24 @@ export async function downloadToDir(
     head.contentType || (res.headers["content-type"] as string) || "";
 
   if (content.length < MIN_BYTES) {
-    throw new Error("Too small (bytes)");
+    throw new Error(`Asset from ${source} is below MIN_BYTES limit`);
   }
 
   const hash = sha256Bytes(content);
   const ext = inferExtension(contentType, preferredExt);
 
   await fsp.mkdir(toDir, { recursive: true });
-  const fileName = `${hash.slice(0, 16)}${ext}`;
+
+  // --- NEW NAMING LOGIC ---
+  // Clean source name (e.g., "Pexels Images" -> "pexels")
+  const cleanSource = source.toLowerCase().split(' ')[0]; 
+  const fileName = `${cleanSource}_${hash.slice(0, 12)}${ext}`;
   const filePath = path.join(toDir, fileName);
 
   if (!fs.existsSync(filePath)) {
     await fsp.writeFile(filePath, content);
   }
 
-  // NOTE: Removed 'sharp' metadata check here to improve stability.
-  // We return 0,0 for dimensions, which is fine for this step.
   const width = 0;
   const height = 0;
 
