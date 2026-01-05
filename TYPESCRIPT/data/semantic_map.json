@@ -1,236 +1,316 @@
 {
-  "user_prompt": "cute cat sitting on a table",
+  "user_prompt": "cat playing in garden with kids",
   "intent_extraction": {
     "modality": "image",
     "domain": "natural",
     "primary_subject": "cat",
-    "context_scene": "table",
-    "style_adjectives": [
-      "cute"
-    ]
+    "context_scene": "garden with kids",
+    "style_adjectives": []
   },
   "realism_scoring": {
     "realism_score": 0.9,
     "abstractness_score": 0.1,
-    "rationale": "A cat sitting on a table is a highly plausible scenario, as cats are common household pets that often explore surfaces like tables. The adjective 'cute' enhances the appeal but does not add significant abstraction, keeping the concept grounded in reality. Overall, the combination of a familiar subject in a typical context results in a high realism score and a low abstractness score."
+    "rationale": "The subject, a cat, is highly plausible in the context of a garden with kids, as cats are common pets and gardens are typical play areas for children. There are no modifiers that introduce abstraction, keeping the scene grounded in reality. Overall, the concept is very realistic with minimal imaginative elements."
   },
   "feasibility_judgement": {
     "feasibility_label": "feasible",
     "realism_overall_score": 0.9,
-    "creative_potential_score": 0.2,
-    "summary": "The scenario of a cute cat sitting on a table is highly plausible and grounded in reality, making it feasible. An image or video generator would easily find reference material for this common scene. While the concept is realistic, its creativity is limited due to its familiarity."
+    "creative_potential_score": 0.1,
+    "summary": "The scenario of a cat in a garden with kids is highly plausible and realistic, as both elements are common in everyday life. There is ample reference material available for image or video generation, making this concept feasible with minimal creative abstraction."
   },
   "decision_reasoning": {
-    "reasoning_trace": "The scenario of a cute cat sitting on a table is highly realistic and common, making it feasible to find existing media that fits this description. Given the high realism score and low abstractness score, it is more efficient to fetch real media rather than generate a synthetic image. The creative potential is low, indicating that generating a new image may not yield significantly different results than what is already available. Therefore, fetching from the web is the most logical choice.",
+    "reasoning_trace": "The scenario of a cat playing in a garden with kids is highly realistic and feasible, with a high realism score and low abstractness. Given the commonality of such scenes, it is likely that there is ample existing media available for retrieval. The feasibility label indicates that this is a straightforward scenario, suggesting that fetching real media would be efficient. Generating synthetic media, while possible, may introduce unnecessary complexity given the availability of real images. Therefore, fetching from the web is the most sensible option.",
     "cost_latency_estimate": {
       "fetch": {
         "cost": "low",
-        "latency": "medium"
+        "latency": "low"
       },
       "generate": {
         "cost": "medium",
-        "latency": "high"
+        "latency": "medium"
       }
     },
     "final_decision": "fetch_from_web",
-    "confidence": 0.9
+    "confidence": 0.95
   },
-  "fetched_assets": [],
+  "fetched_assets": [
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_4395fd4c5888.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1661664705305-285d721c0089?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/stylish-happy-woman-in-linen-dress-arranging-flowers-while-cat-playing-and-smelling-wildflowers-on-wooden-table-in-rustic-room-young-female-florist-and-her-pet-at-work-lovely-funny-moment-shPxIwozbgU",
+      "alt": "Stylish happy woman in linen dress arranging flowers while cat playing and smelling wildflowers on wooden table in rustic room. Young female florist and her pet at work, lovely funny moment",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "4395fd4c58883d7ec7ec2c8bddc260811cc967ce86d6e665fc8662e323f49fed"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_8541f0467dfb.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1652410817633-52701642dfba?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-a-ledge-roJMv_374Ug",
+      "alt": "a cat sitting on a ledge",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "8541f0467dfb7f4d69bdede0714e3ae40bdf383cc99c8430e56af0f54d58d834"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_a4de1ab27556.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1667238810317-a349c0fa2dd1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/circa-1880-a-brood-of-young-chicks-play-amongst-the-convolvus-leighton-brothers-photo-by-hulton-archivegetty-images-n04EhmFm4nQ",
+      "alt": "circa 1880:  A brood of young chicks play amongst the convolvus.  Leighton Brothers  (Photo by Hulton Archive/Getty Images)",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "a4de1ab275567dade5468805c5b638969a708642932726b3aa9c51e4b95a7848"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_800235e46cb0.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/19916049/pexels-photo-19916049/free-photo-of-cat-on-trailer-of-toy-tractor.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/cat-on-trailer-of-toy-tractor-19916049/",
+      "alt": "Free Young boy on a toy tractor with a cat in a park setting, enjoying playtime. Stock Photo",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "800235e46cb0b9c1fd7b6ef02cc30684053905994c30c93396957af4c64e2d09"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_098ea8dcfae7.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/7669206/pexels-photo-7669206.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/girl-in-cat-hat-covering-face-7669206/",
+      "alt": "Free Young girl with a playful cat hat holding fruit to her eyes in a sunny garden. Stock Photo",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "098ea8dcfae7838da1817750a0f4814206afae232dfd13981eb9c434c5e00df1"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_be2a92a6c071.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/20703792/pexels-photo-20703792/free-photo-of-little-girl-with-a-cat-on-a-farm.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/little-girl-with-a-cat-on-a-farm-20703792/",
+      "alt": "Free A young girl affectionately interacting with a cat in a rural outdoor setting. Stock Photo",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "be2a92a6c071aa1fb64d543834a44566ff58baa564a25da563c6917805906f24"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_93f9e143eb1e.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2016/11/27/21/49/girl-1863906_1280.jpg",
+      "page_url": "https://pixabay.com/photos/girl-childhood-garden-backyard-1863906/",
+      "alt": "Free Girl Childhood photo and picture",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "93f9e143eb1e4cde707a734d3edeee78aee0131183505c7638784664686fded3"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_b4ec9ead0a6a.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2021/01/19/03/56/girl-5929995_640.jpg",
+      "page_url": "https://pixabay.com/photos/girl-child-flowers-field-playing-5929995/",
+      "alt": "Free Girl Child photo and picture",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "b4ec9ead0a6a29e24b69cdd741c4148fbb0a1d40ad4c8723015030b1a0c3f7f0"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_e82d08289226.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2016/06/06/21/53/child-1440526_640.jpg",
+      "page_url": "https://pixabay.com/photos/child-boy-lake-water-playing-1440526/",
+      "alt": "Free Child Boy photo and picture",
+      "query_used": "cat playing garden kids",
+      "width": 0,
+      "height": 0,
+      "sha256": "e82d08289226cb6da59eeebabe2ae57a2815192957c71c5c2d98a682bb2f3a2e"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_6333e5614b46.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1663099586609-5e8d45da1cfb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/portrait-of-small-girl-with-cat-standing-on-farm-looking-at-camera-twp8BmBQnZo",
+      "alt": "Portrait of small girl with cat standing on farm, looking at camera.",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "6333e5614b46a4e43d0f4190a6a9b0d23b47dd1dc596e416d2368fcb264b9126"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_f72016676cdd.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1656910210278-37697901ccdb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/two-animals-in-the-grass-As7TxtW2KxY",
+      "alt": "two animals in the grass",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "f72016676cdd5351e36ced1fa4088a0a881a15ca4c35e11c8c239b133f05b29f"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_b6f0042b0a1b.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1649357067195-be0af95b9edc?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-laying-next-to-a-puppy-on-the-ground-Lo6gwhceoB8",
+      "alt": "a cat laying next to a puppy on the ground",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "b6f0042b0a1b8150326971992518ecf6e20ef5db01a78aa4cc7b382f9f42be5a"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_2d80a0443f05.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2021/01/19/21/16/cat-5932474_1280.jpg",
+      "page_url": "https://pixabay.com/photos/cat-kitten-feline-winter-snow-5932474/",
+      "alt": "Free Cat Kitten photo and picture",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "2d80a0443f05b6d47e086bfdc6e062106952ecce2038b272c138c8f9e9381b5d"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_19be9d609506.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2015/06/09/09/35/animal-children-803123_640.jpg",
+      "page_url": "https://pixabay.com/photos/animal-children-cats-persians-803123/",
+      "alt": "Free Animal Children Cats photo and picture",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "19be9d609506b265385a68720328984d7e6887e30ddc5685f4e8d9d52fb54358"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_78067578ba29.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2020/03/25/16/01/children-4967808_640.jpg",
+      "page_url": "https://pixabay.com/illustrations/kids-child-small-bear-4967808/",
+      "alt": "Free Kids Child illustration and picture",
+      "query_used": "kitten in garden with children",
+      "width": 0,
+      "height": 0,
+      "sha256": "78067578ba29cf69fc81033e6f668e3d57bff2d0b8f917ca8efd4b3810e39ff2"
+    }
+  ],
   "relevant_assets": [
     {
       "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_1a0c4bcccd8f.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1654079897188-00ca17b34b6a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-top-of-a-wooden-table-4zuEbedYNxA",
-      "alt": "a cat sitting on top of a wooden table",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "1a0c4bcccd8faf38de1ff362873b245d809be3a0b72ded9ee0e20d2805785ce6",
-      "score": 0.9988722205162048
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_eb91c7b6eff8.jpg",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_be2a92a6c071.jpg",
       "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/9324023/pexels-photo-9324023.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/white-and-black-cat-on-brown-wooden-table-9324023/",
-      "alt": "Free Cute black and white kitten sitting on a wooden table with vases of vibrant flowers indoors. Stock Photo",
-      "query_used": "cute cat sitting table",
+      "media_url": "https://images.pexels.com/photos/20703792/pexels-photo-20703792/free-photo-of-little-girl-with-a-cat-on-a-farm.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/little-girl-with-a-cat-on-a-farm-20703792/",
+      "alt": "Free A young girl affectionately interacting with a cat in a rural outdoor setting. Stock Photo",
+      "query_used": "cat playing garden kids",
       "width": 0,
       "height": 0,
-      "sha256": "eb91c7b6eff8a8d993259099400299310ae2bc9a4562d2400d3e43b03b333cff",
-      "score": 0.9953163862228394
+      "sha256": "be2a92a6c071aa1fb64d543834a44566ff58baa564a25da563c6917805906f24",
+      "score": 0.7,
+      "classification": {
+        "technical": {
+          "orientation": "square"
+        },
+        "semantic": {
+          "shot_type": "Close-up",
+          "lighting": "Natural",
+          "mood": "Happy",
+          "subject": "Child kissing a cat",
+          "aesthetic_score": 8,
+          "keywords": [
+            "child",
+            "cat",
+            "affection",
+            "outdoors",
+            "nature"
+          ]
+        }
+      }
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_b1aa06ccc548.jpg",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_800235e46cb0.jpg",
       "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/8129731/pexels-photo-8129731.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/selective-focus-of-a-kitten-on-the-books-8129731/",
-      "alt": "Free A cute kitten sits on stacked books with a blurred floral background, indoors. Stock Photo",
-      "query_used": "cute cat sitting table",
+      "media_url": "https://images.pexels.com/photos/19916049/pexels-photo-19916049/free-photo-of-cat-on-trailer-of-toy-tractor.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/cat-on-trailer-of-toy-tractor-19916049/",
+      "alt": "Free Young boy on a toy tractor with a cat in a park setting, enjoying playtime. Stock Photo",
+      "query_used": "cat playing garden kids",
       "width": 0,
       "height": 0,
-      "sha256": "b1aa06ccc548bb47589de639f7e3fdf5f455fcdeeaae55d519ca0eddeb59db63",
-      "score": 0.9895605444908142
+      "sha256": "800235e46cb0b9c1fd7b6ef02cc30684053905994c30c93396957af4c64e2d09",
+      "score": 0.5,
+      "classification": {
+        "technical": {
+          "orientation": "square"
+        },
+        "semantic": {
+          "shot_type": "Wide",
+          "lighting": "Natural",
+          "mood": "Happy",
+          "subject": "Child riding a toy tractor with a cat",
+          "aesthetic_score": 7,
+          "keywords": [
+            "child",
+            "toy tractor",
+            "cat",
+            "outdoors",
+            "playful"
+          ]
+        }
+      }
     },
     {
       "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_e3709fbb81a1.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2025/09/22/15/49/cat-9848920_1280.jpg",
-      "page_url": "https://pixabay.com/illustrations/cat-grumpy-breakfast-table-coffee-9848920/",
-      "alt": "Free Cat Grumpy illustration and picture",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "e3709fbb81a182bb33a7c6ea03d7270dcdcec6cf3510388ff3e4ec8937ce54ad",
-      "score": 0.9817396402359009
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_28c76ec4ff74.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/18088448/pexels-photo-18088448/free-photo-of-a-cat-standing-on-a-table-in-a-restaurant.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/a-cat-standing-on-a-table-in-a-restaurant-18088448/",
-      "alt": "Free A curious tabby cat standing on a table in an outdoor cafe setting, surrounded by red decor. Stock Photo",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "28c76ec4ff74a6c1b3bcd5221e1e54340d19f8ceb3b1e1693f8fc9e57ccc47a8",
-      "score": 0.9792992472648621
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_080b759d2c3a.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2021/09/06/20/12/cat-6602447_1280.jpg",
-      "page_url": "https://pixabay.com/photos/cat-kitten-pet-young-cat-animal-6602447/",
-      "alt": "Free Cat Kitten photo and picture",
-      "query_used": "cat on table closeup",
-      "width": 0,
-      "height": 0,
-      "sha256": "080b759d2c3a8a3f28cc7ff468049e8f195ef84f2c772e293684f967cfcb0582",
-      "score": 0.9776774048805237
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_540c2d845eae.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2024/06/07/17/32/ai-generated-8815068_640.jpg",
-      "page_url": "https://pixabay.com/illustrations/ai-generated-cat-black-cat-8815068/",
-      "alt": "Free Ai Generated Cat illustration and picture",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "540c2d845eae9903b005de05622d3a0da694fa284a8d5a757a1c4b14bfaa7d46",
-      "score": 0.9590552449226379
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_42afe95ee7ed.jpg",
+      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_8541f0467dfb.jpg",
       "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1665909063299-413e16efd7ef?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-sleeping-on-a-couch-dqF83Is8v5s",
-      "alt": "a cat sleeping on a couch",
-      "query_used": "cat on table closeup",
+      "media_url": "https://images.unsplash.com/photo-1652410817633-52701642dfba?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
+      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-a-ledge-roJMv_374Ug",
+      "alt": "a cat sitting on a ledge",
+      "query_used": "cat playing garden kids",
       "width": 0,
       "height": 0,
-      "sha256": "42afe95ee7ed21c7f2e66c419b83857da3db8dc8d58497d18e823b1db3ba98ff",
-      "score": 0.9482391476631165
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_1e27ddb1eab6.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1758414485868-d60aa58f5f48?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
-      "page_url": "https://unsplash.com/photos/black-cat-peeking-out-from-under-a-chair-yyKpWZhzw7Y",
-      "alt": "Black cat peeking out from under a chair.",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "1e27ddb1eab6fc37619d4a835b2e16303244603e0bcd988d6cfebdb3d3c751c0",
-      "score": 0.9200795292854309
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_83236443dbc5.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2021/03/14/18/03/cat-6095007_640.jpg",
-      "page_url": "https://pixabay.com/photos/cat-animal-sleeping-asleep-sleep-6095007/",
-      "alt": "Free Cat Animal photo and picture",
-      "query_used": "cat on table closeup",
-      "width": 0,
-      "height": 0,
-      "sha256": "83236443dbc5ba038eb457ce7051afd905386f79b3ab7bd0d5f0b74367fb8e8f",
-      "score": 0.9021738171577454
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_1a7044ef1c25.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2024/07/10/08/46/man-8885262_640.png",
-      "page_url": "https://pixabay.com/illustrations/man-cat-kitten-pet-cute-animal-8885262/",
-      "alt": "Free Man Cat illustration and picture",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "1a7044ef1c25242238133bb8074bc03fd2ae0d89c9d898877786a683dcb5aa4a",
-      "score": 0.8727957010269165
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_f05da5c4229e.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1673967792498-b8db6df56fb4?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-close-up-of-a-cat-with-blue-eyes-2vhBZsWuxGo",
-      "alt": "a close up of a cat with blue eyes",
-      "query_used": "cat on table closeup",
-      "width": 0,
-      "height": 0,
-      "sha256": "f05da5c4229e9732ccb13fb11450bfd9ee94d41b8db69ed97789f9cfb3d4e4c8",
-      "score": 0.8611747026443481
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_c0a8c6484be2.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1664477055074-811df3f29888?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdCUyMHNpdHRpbmclMjB0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
-      "page_url": "https://unsplash.com/photos/asian-guy-and-women-playing-with-cat-they-wore-face-mask-to-protect-them-self-from-coronavirus-covid-19-friendly-cute-cat-need-attention-from-the-owners-work-at-home-O6ccEWaVZ28",
-      "alt": "asian guy and women playing with cat, they wore face mask to protect them self from coronavirus covid-19, friendly cute cat need attention from the owners. work at home.",
-      "query_used": "cute cat sitting table",
-      "width": 0,
-      "height": 0,
-      "sha256": "c0a8c6484be22ee79bc43912352c5e354b75af346f1048b09a2191f5a615bb97",
-      "score": 0.8573335409164429
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_23577f411c48.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1664392309182-017207df3537?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0JTIwb24lMjB0YWJsZSUyMGNsb3NldXB8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-top-of-a-white-surface-COzc6cva1gQ",
-      "alt": "a cat sitting on top of a white surface",
-      "query_used": "cat on table closeup",
-      "width": 0,
-      "height": 0,
-      "sha256": "23577f411c48c907bc7e1038c411337382d8f0287d84cce4d98c90bfd679ca6b",
-      "score": 0.5236111283302307
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pixabay_fb6e9563f1f2.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2023/09/09/09/03/cheetah-8242729_640.png",
-      "page_url": "https://pixabay.com/photos/cheetah-animal-mammal-feline-8242729/",
-      "alt": "Free Cheetah Animal photo and picture",
-      "query_used": "cat on table closeup",
-      "width": 0,
-      "height": 0,
-      "sha256": "fb6e9563f1f21216575e4e5cb5132e48e8aa717b12d5a46cddd46614c20247d4",
-      "score": 0.4495672583580017
+      "sha256": "8541f0467dfb7f4d69bdede0714e3ae40bdf383cc99c8430e56af0f54d58d834",
+      "score": 0.3,
+      "classification": {
+        "technical": {
+          "orientation": "square"
+        },
+        "semantic": {
+          "shot_type": "Wide",
+          "lighting": "Natural",
+          "mood": "Calm",
+          "subject": "Orange cat sitting in a garden",
+          "aesthetic_score": 7,
+          "keywords": [
+            "cat",
+            "garden",
+            "natural light",
+            "outdoor",
+            "tranquil"
+          ]
+        }
+      }
     }
   ]
 }

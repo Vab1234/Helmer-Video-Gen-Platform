@@ -7,6 +7,7 @@ import { runRelevanceMatching } from "./pipeline/relevanceMatcher";
 import { readJson } from "./utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "./config/constants";
 import type { SemanticMap } from "./types/semanticMap";
+import { runAssetClassification } from "./pipeline/assetClassifier";
 
 const MAX_RETRIES = 2; // Total attempts = 3
 
@@ -59,7 +60,10 @@ async function runOrchestrator(initialPrompt: string) {
       // 4. Relevance Matching (The Evaluator)
       await runRelevanceMatching();
 
-      // 5. Feedback / Evaluation Step
+      // 5: Classification
+      await runAssetClassification();
+
+      // 6. Feedback / Evaluation Step
       const updatedMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
       const relevantAssets = updatedMap.relevant_assets || [];
       
