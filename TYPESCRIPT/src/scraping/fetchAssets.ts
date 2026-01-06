@@ -22,7 +22,7 @@ import {
   scrapePixabayImages,
   ScrapedItem,
 } from "./imageProviders";
-import { scrapePixabayVideos, scrapePexelsVideos } from "./videoProviders";
+import { scrapePixabayVideos,scrapePexelsVideos, scrapeCoverrVideos } from "./videoProviders";
 import { scrapeMixkitSounds } from "./audioProviders";
 import { scrapeFreesoundAudio } from "./freeSoundProvider";
 
@@ -142,6 +142,10 @@ export async function runFetchAssets(): Promise<void> {
 
         console.log(`[scrape] pexels_videos -> '${q}'`);
         collected.push(...(await scrapePexelsVideos(browser, q, MAX_PER_PROVIDER)));
+
+        console.log(`[scrape] coverr_videos -> '${q}'`);
+        collected.push(...(await scrapeCoverrVideos(browser, q, MAX_PER_PROVIDER)));
+
       }
     } else {
       for (const q of queries) {
