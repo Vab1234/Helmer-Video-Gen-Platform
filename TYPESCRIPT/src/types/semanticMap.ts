@@ -1,16 +1,17 @@
 // src/types/semanticMap.ts
 
 export interface IntentExtraction {
-  modality?: string;
+  modality?: string;          // "image" | "video" | "audio"
   domain?: string;
   primary_subject?: string;
   context_scene?: string;
   style_adjectives?: string[];
 }
 
+
 export interface RealismScoring {
-  realism_score?: number;
-  abstractness_score?: number;
+  realism_score?: number;         // 0.0–1.0
+  abstractness_score?: number;    // 0.0–1.0
   rationale?: string;
   subject_context_score?: number;
   modifier_abstractness_score?: number;
@@ -27,7 +28,7 @@ export interface FeasibilityJudgement {
 }
 
 export interface CostLatency {
-  cost?: string;
+  cost?: string;    // "low" | "medium" | "high"
   latency?: string;
 }
 
@@ -39,36 +40,63 @@ export interface CostLatencyEstimate {
 export interface DecisionReasoning {
   reasoning_trace?: string;
   cost_latency_estimate?: CostLatencyEstimate;
-  final_decision?: string;
+  final_decision?: string;  // "fetch_from_web" | "generate_with_model" | ...
   confidence?: number;
 }
 
 export type MediaType = "image" | "video" | "audio";
 
-// --- NEW CLASSIFICATION TYPES ---
-export interface TechnicalStats {
-  width?: number;
-  height?: number;
-  orientation: "landscape" | "portrait" | "square";
-  duration?: number; // seconds
-  file_size_mb?: string;
+// --- NEW: Technical Metadata Interface ---
+export interface AssetTechnicalData {
+  width: number;
+  height: number;
+  orientation: string;
+  aspect_ratio: string;
+  duration: number;
+  fps?: number;
+  codec?: string;
+  file_size_mb: number;
 }
 
-export interface SemanticTags {
-  shot_type: string;       // e.g. "Wide", "Close-up", "Drone"
-  lighting: string;        // e.g. "Golden Hour", "Studio", "Natural"
-  mood: string;            // e.g. "Happy", "Melancholic", "Cinematic"
-  subject: string;         // e.g. "Cat sleeping"
-  aesthetic_score: number; // 1-10
-  keywords: string[];      // ["cat", "fur", "sleep", "bed"]
+// --- UPDATED: AssetClassification ---
+export interface AssetSemanticClassification {
+  labels: string[];
+  confidence: number;
+  human_presence: boolean;
+  environment?: string;
+}
+// src/types/semanticMap.ts
+
+export interface AssetSemantics {
+  shot_type?: string;
+  camera_angle?: string;
+  lighting?: string;
+  mood?: string;
+  primary_scene_label?: string;
+  confidence?: number;
+  palette?: string[]; // For your ColorThief hex codes
 }
 
 export interface AssetClassification {
-  technical: TechnicalStats;
-  semantic: SemanticTags;
-}
-// --------------------------------
+  technical: {
+    type: "image" | "video"; // Add this so your table can use it
+    width: number;
+    height: number;
+    orientation: string;
+    aspect_ratio: string;
+    duration: number;
+    fps?: number;
+    codec?: string;
+    file_size_mb: number;
+  };
+  
+  // Change 'semantic' to 'semantics' to match your pipeline code
+  semantics?: AssetSemantics; 
 
+  origin: "generated" | "scraped";
+  aspect_ratio: string;
+
+}
 export interface FetchedAsset {
   type: MediaType;
   filename: string;
@@ -77,13 +105,10 @@ export interface FetchedAsset {
   page_url?: string;
   alt?: string | null;
   query_used?: string | null;
+  classification?: AssetClassification;
   width?: number;
   height?: number;
   sha256?: string;
-  
-  // New fields
-  score?: number; // Relevance score from previous step
-  classification?: AssetClassification; // <--- The new rich data
 }
 
 export interface SemanticMap {

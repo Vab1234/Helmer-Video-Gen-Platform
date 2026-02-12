@@ -23,7 +23,11 @@ import {
   ScrapedItem,
 } from "./imageProviders";
 import { scrapePixabayVideos,scrapePexelsVideos, scrapeCoverrVideos } from "./videoProviders";
-import { scrapeMixkitSounds } from "./audioProviders";
+import { 
+  scrapeMixkitAudio, 
+  scrapePixabayAudio, 
+  scrapeFreesoundPreviews 
+} from "./audioProviders";
 import { scrapeFreesoundAudio } from "./freeSoundProvider";
 
 const fsp = fs.promises;
@@ -150,11 +154,15 @@ export async function runFetchAssets(): Promise<void> {
     } else {
       for (const q of queries) {
         console.log(`[scrape] mixkit_sounds -> '${q}'`);
-        collected.push(...(await scrapeMixkitSounds(browser, q, MAX_PER_PROVIDER)));
+        collected.push(...(await scrapeMixkitAudio(browser, q, MAX_PER_PROVIDER)));
 
-        // NEW: Add Freesound
+        // 2. Pixabay Audio (New)
+        console.log(`[scrape] pixabay_audio -> '${q}'`);
+        collected.push(...(await scrapePixabayAudio(browser, q, MAX_PER_PROVIDER)));
+
+        // 3. Freesound Previews (Updated to use the browser-based version)
         console.log(`[scrape] freesound -> '${q}'`);
-        collected.push(...(await scrapeFreesoundAudio(q, MAX_PER_PROVIDER)));
+        collected.push(...(await scrapeFreesoundPreviews(browser, q, MAX_PER_PROVIDER)));
       }
     }
 

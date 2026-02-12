@@ -8,9 +8,8 @@ import { readJson } from "./utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "./config/constants";
 import type { SemanticMap } from "./types/semanticMap";
 import { runAssetClassification } from "./pipeline/assetClassifier";
-
+const mode = process.env.HELMER_MODE || "full";
 const MAX_RETRIES = 2; // Total attempts = 3
-
 function askFromStdin(question: string): Promise<string> {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -56,12 +55,12 @@ async function runOrchestrator(initialPrompt: string) {
       } else {
         await runFetchAssets();
       }
-
       // 4. Relevance Matching (The Evaluator)
       await runRelevanceMatching();
 
-      // 5: Classification
+      //5. Classification Step
       await runAssetClassification();
+
 
       // 6. Feedback / Evaluation Step
       const updatedMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
@@ -93,17 +92,60 @@ async function runOrchestrator(initialPrompt: string) {
 
 async function main() {
   const cliPrompt = process.argv.slice(2).join(" ").trim();
-  const userPrompt = cliPrompt || (await askFromStdin("Enter your media generation prompt: "));
-
-  if (!userPrompt) {
-    console.error("No prompt provided. Exiting.");
-    process.exit(1);
-  }
-
-  await runOrchestrator(userPrompt);
+  
+  if (!cliPrompt) {
+  const prompt = await askFromStdin("Enter prompt: ");
+  await runOrchestrator(prompt);
+  return;
 }
 
-main().catch((err) => {
-  console.error("Unexpected error in main:", err);
-  process.exit(1);
-});
+
+  try {
+    if (mode === "stage1") {
+      console.log("🚀 Running Stage 1 + 2 (analysis only)...");
+      await runPromptUnderstanding(cliPrompt);
+      await runDecisionReasoning();
+      return;
+    }
+
+    if (mode === "stage3_direct") {
+      console.log("🚀 Running Stage 1 → 3 DIRECT EXECUTION...");
+
+      await runPromptUnderstanding(cliPrompt);
+      await runDecisionReasoning();
+
+      const semanticMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
+      const decision = semanticMap.decision_reasoning?.final_decision;
+
+      console.log("🧭 Final decision:", decision);
+
+      if (decision === "generate_with_model") {
+        await runGenerateWithFal();
+      } else if (decision === "fetch_from_web") {
+        await runFetchAssets();
+      } else if (decision === "hybrid_fetch_and_enhance") {
+        await runFetchAssets();
+        await runGenerateWithFal();
+      } else {
+        console.warn("⚠️ Unknown decision, defaulting to fetch.");
+        await runFetchAssets();
+      }
+
+      console.log("✅ Stage 3 execution finished.");
+      return;
+    }
+
+    // Default: Run the full orchestrator if no specific stage mode matches
+    await runOrchestrator(cliPrompt);
+
+  } catch (err) {
+    console.error("❌ Error in main execution:", err);
+    process.exit(1);
+  } // <--- Added closing brace for try/catch
+} // <--- Added closing brace for function// This check ensures main() only runs if the file is executed directly
+if (require.main === module || !module.parent) {
+    main().catch(err => {
+        console.error("❌ Critical error during execution:", err);
+        process.exit(1);
+    });
+}

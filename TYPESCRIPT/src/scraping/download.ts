@@ -10,8 +10,8 @@ const fsp = fs.promises;
  * - Coverr / preview videos are small
  * - Pixabay / Pexels often larger
  */
-const MIN_BYTES_DEFAULT = 400_000; // ~400 KB
-const MIN_BYTES_COVERR = 200_000;  // ~200 KB
+const MIN_BYTES_DEFAULT = 5_000; // ~400 KB
+const MIN_BYTES_COVERR = 5_000;  // ~200 KB
 
 /**
  * Source-aware browser headers

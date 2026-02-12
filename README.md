@@ -194,6 +194,8 @@ Helmer-Video-Gen-Platform/
 │   │   │   ├── decisionReasoning.ts   # Stage 2: Fetch vs generate
 │   │   │   ├── modalityRouting.ts     # Determines media type
 │   │   │   └── relevanceMatcher.ts    # Stage 4: Asset scoring
+            └── assetClassifier.ts     # Stage 5: Classification
+
 │   │   │
 │   │   ├── scraping/                  # Web scraping & downloading
 │   │   │   ├── fetchAssets.ts         # Orchestration

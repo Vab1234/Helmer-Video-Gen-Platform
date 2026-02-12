@@ -1,205 +1,239 @@
 // src/pipeline/assetClassifier.ts
+
 import fs from "fs";
 import path from "path";
 import util from "util";
 import { exec } from "child_process";
-import ffmpegPath from "ffmpeg-static";
+import ffprobe from "ffprobe-static";
+import ffmpeg from "ffmpeg-static";
+import OpenAI from "openai";
+import sizeOf from "image-size";
+import * as mime from "mime-types";
+import sharp from "sharp";
 import { readJson, writeJson } from "../utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "../config/constants";
-import { openaiClient } from "../openai/client";
-import type { SemanticMap, AssetClassification } from "../types/semanticMap";
+import type { SemanticMap } from "../types/semanticMap";
 
 const execAsync = util.promisify(exec);
+const ColorThief = require('colorthief');
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-// --- HELPER: Video Frame Extraction for Analysis ---
-async function extractPreviewFrame(videoPath: string): Promise<string | null> {
-  if (!ffmpegPath) return null;
-  const tempFrame = path.join(path.dirname(videoPath), `classify_preview_${Date.now()}.jpg`);
-  try {
-    // Extract at 1.0s to get a representative image
-    await execAsync(`"${ffmpegPath}" -ss 00:00:01.000 -i "${videoPath}" -frames:v 1 "${tempFrame}" -y`);
-    if (fs.existsSync(tempFrame)) return tempFrame;
-    return null;
-  } catch { return null; }
-}
+/* ------------------------------------------------ */
+/* ------------------ HELPERS --------------------- */
+/* ------------------------------------------------ */
 
-// --- HELPER: Technical Analysis via FFmpeg ---
-async function getTechnicalStats(filepath: string, type: "image" | "video" | "audio"): Promise<AssetClassification['technical']> {
-  // Default fallback
-  const fallback: AssetClassification['technical'] = { orientation: "square" };
-  
-  if (!ffmpegPath) return fallback;
+async function safeUnlink(filePath: string, retries = 5) {
+  if (!filePath || !fs.existsSync(filePath)) return;
 
-  try {
-    // Run ffmpeg -i to get stream info. Robust way without extra libs.
-    const { stderr } = await execAsync(`"${ffmpegPath}" -i "${filepath}"`);
-    
-    // Regex to parse output
-    const resolutionMatch = stderr.match(/, (\d{2,5})x(\d{2,5})/); // Matches "1920x1080"
-    const durationMatch = stderr.match(/Duration: (\d{2}):(\d{2}):(\d{2}\.\d{2})/);
-
-    let width = 0;
-    let height = 0;
-    let duration = 0;
-
-    if (resolutionMatch) {
-      width = parseInt(resolutionMatch[1]);
-      height = parseInt(resolutionMatch[2]);
+  for (let i = 0; i < retries; i++) {
+    try {
+      await fs.promises.unlink(filePath);
+      return;
+    } catch (err: any) {
+      if (err.code === "EPERM" || err.code === "EBUSY") {
+        await new Promise((res) => setTimeout(res, 200));
+      } else {
+        throw err;
+      }
     }
-
-    if (durationMatch) {
-      const h = parseInt(durationMatch[1]) * 3600;
-      const m = parseInt(durationMatch[2]) * 60;
-      const s = parseFloat(durationMatch[3]);
-      duration = h + m + s;
-    }
-
-    let orientation: "landscape" | "portrait" | "square" = "landscape";
-    if (width > height) orientation = "landscape";
-    else if (height > width) orientation = "portrait";
-    else orientation = "square";
-
-    // File size
-    const stats = await fs.promises.stat(filepath);
-    const file_size_mb = (stats.size / (1024 * 1024)).toFixed(2);
-
-    return {
-      width: width || undefined,
-      height: height || undefined,
-      orientation,
-      duration: type === "video" || type === "audio" ? duration : 0,
-      file_size_mb
-    };
-
-  } catch (err) {
-    console.warn(`[classifier] Tech analysis failed for ${path.basename(filepath)}`);
-    return fallback;
   }
 }
 
-// --- HELPER: Semantic Analysis via GPT-4o ---
-async function getSemanticTags(imagePath: string, type: string): Promise<AssetClassification['semantic']> {
+function parseRatio(w: number, h: number): string {
+  const r = w / h;
+  if (Math.abs(r - 1) < 0.05) return "1:1";
+  if (Math.abs(r - 16 / 9) < 0.05) return "16:9";
+  if (Math.abs(r - 9 / 16) < 0.05) return "9:16";
+  if (Math.abs(r - 4 / 3) < 0.05) return "4:3";
+  return `${w}:${h}`;
+}
+
+function getOrientation(w: number, h: number) {
+  if (!w || !h) return "unknown";
+  if (w > h) return "landscape";
+  if (h > w) return "portrait";
+  return "square";
+}
+
+/* ------------------------------------------------ */
+/* ----------- TECHNICAL PROBE (Layer 1) --------- */
+/* ------------------------------------------------ */
+
+async function probe(file: string) {
+  if (!ffprobe?.path) return null;
+
   try {
-    const buf = await fs.promises.readFile(imagePath);
-    const base64 = buf.toString("base64");
+    const stats = await fs.promises.stat(file);
+    if (stats.size === 0) return null;
 
-    const prompt = `
-      Analyze this ${type}. Strictly return a JSON object with:
-      - shot_type: (e.g. Wide, Close-up, Macro, Drone, POV)
-      - lighting: (e.g. Golden Hour, Studio, Natural, Neon, Dark)
-      - mood: (e.g. Happy, Melancholic, Professional, Chaotic, Calm)
-      - subject: (Short description of main focus, e.g. "Brown dog running")
-      - aesthetic_score: (Number 1-10 based on composition)
-      - keywords: (Array of 5 descriptive content tags)
-    `;
+    try {
+      const cmd = `"${ffprobe.path}" -v error -print_format json -show_streams -show_format "${file}"`;
+      const { stdout } = await execAsync(cmd);
+      const meta = JSON.parse(stdout);
 
-    const response = await openaiClient.chat.completions.create({
-      model: "gpt-4o-mini",
+      const stream = meta.streams?.find((s: any) => s.width && s.height);
+      if (!stream) throw new Error("No valid stream");
+
+      const width = Number(stream.width);
+      const height = Number(stream.height);
+      const formatName = (meta.format?.format_name || "").toLowerCase();
+      const isImage =
+        formatName.includes("image") ||
+        formatName.includes("png") ||
+        formatName.includes("webp") ||
+        stream.codec_name === "mjpeg";
+
+      return {
+        width,
+        height,
+        type: isImage ? "image" : "video",
+        orientation: getOrientation(width, height),
+        aspect_ratio: parseRatio(width, height),
+        duration: isImage
+          ? 0
+          : meta.format?.duration
+          ? parseFloat(meta.format.duration)
+          : 0,
+        codec: stream.codec_name,
+        file_size_mb: +(stats.size / 1024 / 1024).toFixed(2),
+      };
+    } catch {
+      const ext = path.extname(file).toLowerCase();
+      const imageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp"];
+
+      if (imageExtensions.includes(ext)) {
+        const buffer = fs.readFileSync(file);
+        const dimensions = sizeOf(buffer);
+
+        return {
+          width: dimensions.width!,
+          height: dimensions.height!,
+          type: "image",
+          orientation: getOrientation(dimensions.width!, dimensions.height!),
+          aspect_ratio: parseRatio(dimensions.width!, dimensions.height!),
+          duration: 0,
+          codec: dimensions.type || ext.replace(".", ""),
+          file_size_mb: 0,
+        };
+      }
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
+/* ------------------------------------------------ */
+/* ----------- OPENAI VISION SEMANTICS ----------- */
+/* ------------------------------------------------ */
+
+async function getOpenAIVisualSemantics(filePath: string) {
+  try {
+    // 1. Read and "Normalize" the image using Sharp
+    // This fixes encoding issues and strips metadata that might cause errors
+    const processedImageBuffer = await sharp(filePath)
+      .jpeg({ quality: 80 }) // Force it to a standard JPEG
+      .toBuffer();
+
+    const base64Image = processedImageBuffer.toString("base64");
+    const mimeType = "image/jpeg"; 
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a professional digital asset manager. Return valid JSON only." },
-        { 
-          role: "user", 
+        {
+          role: "user",
           content: [
-            { type: "text", text: prompt },
-            { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64}` } }
-          ] 
-        }
+            { type: "text", text: "Analyze this image and return JSON..." },
+            {
+              type: "image_url",
+              image_url: { url: `data:${mimeType};base64,${base64Image}` },
+            },
+          ],
+        },
       ],
-      max_tokens: 200,
-      temperature: 0.2,
+      response_format: { type: "json_object" },
     });
 
-    const content = response.choices[0]?.message?.content?.trim() || "{}";
-    const cleanJson = content.replace(/```json|```/g, "").trim();
-    return JSON.parse(cleanJson);
-
-  } catch (err) {
-    // Fail-safe
-    return {
-      shot_type: "Unknown",
-      lighting: "Unknown",
-      mood: "Neutral",
-      subject: "Asset",
-      aesthetic_score: 5,
-      keywords: ["processed"]
-    };
+    return JSON.parse(response.choices[0].message.content || "{}");
+  } catch (err: any) {
+    console.error(`[Vision Error] Failed on ${path.basename(filePath)}: ${err.message}`);
+    return null;
   }
 }
+/* ------------------------------------------------ */
+/* ---------------- MAIN PIPELINE ----------------- */
+/* ------------------------------------------------ */
 
-// --- MAIN PIPELINE STEP ---
 export async function runAssetClassification(): Promise<void> {
   console.log("==================================================");
-  console.log("🏷️  ASSET CLASSIFICATION MODULE (Step 5)");
+  console.log("🏷️  OPENAI VISION ASSET CLASSIFICATION");
   console.log("==================================================");
 
   const semanticMap = await readJson<SemanticMap>(SEMANTIC_MAP_PATH);
-  
-  if (!semanticMap || !semanticMap.relevant_assets || semanticMap.relevant_assets.length === 0) {
-    console.log("[classifier] No relevant assets to classify.");
-    return;
-  }
+  if (!semanticMap?.relevant_assets?.length) return;
 
-  const assets = semanticMap.relevant_assets;
-  const total = assets.length;
-  let current = 0;
+  for (const asset of semanticMap.relevant_assets) {
+    const techData = await probe(asset.filename);
+    if (!techData) continue;
 
-  console.log(`[classifier] Analyzing ${total} assets...`);
+    let framePath = asset.filename;
 
-  for (const asset of assets) {
-    current++;
-    process.stdout.write(`\r[classifier] Processing ${current}/${total}...`);
+    // Extract frame if video
+    if (techData.type === "video") {
+      framePath = path.join(
+        process.cwd(),
+        `temp_frame_${Date.now()}.jpg`
+      );
 
-    // 1. Technical Analysis
-    const techStats = await getTechnicalStats(asset.filename, asset.type);
-
-    // 2. Semantic Analysis
-    let semanticStats: AssetClassification['semantic'];
-    
-    if (asset.type === "image") {
-      semanticStats = await getSemanticTags(asset.filename, "image");
-    } 
-    else if (asset.type === "video") {
-      const framePath = await extractPreviewFrame(asset.filename);
-      if (framePath) {
-        semanticStats = await getSemanticTags(framePath, "video frame");
-        fs.unlink(framePath, () => {}); // Cleanup temp frame
-      } else {
-        // Fallback if ffmpeg fails to extract frame
-        semanticStats = { shot_type: "Video", lighting: "Unknown", mood: "Unknown", subject: "Video", aesthetic_score: 5, keywords: ["video"] };
-      }
-    } 
-    else {
-      // Audio (Skip vision)
-      semanticStats = { 
-        shot_type: "N/A", 
-        lighting: "N/A", 
-        mood: "Audio", 
-        subject: "Sound", 
-        aesthetic_score: 5, 
-        keywords: ["audio", "sfx"] 
-      };
+      await execAsync(
+        `"${ffmpeg}" -y -i "${asset.filename}" -ss 00:00:01 -frames:v 1 "${framePath}"`
+      );
     }
 
-    // 3. Attach Data
+    const semantics = await getOpenAIVisualSemantics(framePath);
+
+    const paletteRgb = await ColorThief.getPalette(framePath, 5);
+    const palette = paletteRgb.map((rgb: number[]) => {
+      const hex = rgb.map((x) => x.toString(16).padStart(2, "0")).join("");
+      return `#${hex}`;
+    });
+
+    if (techData.type === "video") {
+      await safeUnlink(framePath);
+    }
+
     asset.classification = {
-      technical: techStats as any,
-      semantic: semanticStats
-    };
+      technical: techData,
+      origin: asset.source?.includes("fal") ? "generated" : "scraped",
+      aspect_ratio: techData.aspect_ratio,
+      semantics: {
+        ...semantics,
+        palette,
+      },
+    } as any;
+
+    console.log(`[classified] ${path.basename(asset.filename)}`);
   }
+  // --- Add this Summary Table ---
+  console.log("\n" + "=".repeat(50));
+  console.log("📊 FINAL CLASSIFICATION SUMMARY");
+  console.log("=".repeat(50));
 
-  console.log("\n[classifier] Classification complete.");
+  const summaryData = semanticMap.relevant_assets.map(asset => ({
+    File: path.basename(asset.filename).substring(0, 20),
+    Type: asset.classification?.technical?.type || "N/A",
+    Shot: asset.classification?.semantics?.shot_type || "N/A",
+    Mood: asset.classification?.semantics?.mood || "N/A",
+    Colors: asset.classification?.semantics?.palette?.join(", ") || "N/A"
+}));
 
-  // Save updated map
+console.table(summaryData);
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
-  
-  // Summary Log
-  console.log("\n--- Classification Report ---");
-  assets.forEach(a => {
-    const c = a.classification;
-    if (c) {
-      console.log(`\n📄 ${path.basename(a.filename)} (${a.type})`);
-      console.log(`   └─ Tech: ${c.technical.orientation} | ${c.technical.width || '?'}x${c.technical.height || '?'} | ${c.technical.duration?.toFixed(1)}s`);
-      console.log(`   └─ Sem:  ${c.semantic.mood} | ${c.semantic.lighting} | Score: ${c.semantic.aesthetic_score}/10`);
-    }
-  });
+
+  console.log("==================================================");
+  console.log("✅ Classification Complete");
+  console.log("==================================================");
 }
