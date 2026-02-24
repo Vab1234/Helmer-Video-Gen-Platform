@@ -22,11 +22,11 @@ import {
   scrapePixabayImages,
   ScrapedItem,
 } from "./imageProviders";
-import { scrapePixabayVideos,scrapePexelsVideos, scrapeCoverrVideos } from "./videoProviders";
-import { 
-  scrapeMixkitAudio, 
-  scrapePixabayAudio, 
-  scrapeFreesoundPreviews 
+import { scrapePixabayVideos, scrapePexelsVideos, scrapeCoverrVideos } from "./videoProviders";
+import {
+  scrapeMixkitAudio,
+  scrapePixabayAudio,
+  scrapeFreesoundPreviews
 } from "./audioProviders";
 import { scrapeFreesoundAudio } from "./freeSoundProvider";
 
@@ -63,9 +63,9 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
         preferredExt,
         item.source // <--- Add this argument
       );
-      
+
       if (seenHashes.has(hash)) {
-        await fsp.unlink(filePath).catch(() => {});
+        await fsp.unlink(filePath).catch(() => { });
         continue;
       }
       seenHashes.add(hash);
@@ -94,6 +94,7 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
 }
 
 export async function runFetchAssets(): Promise<void> {
+  const startTime = Date.now();
   console.log("==================================================");
   console.log("📡 FETCH ASSETS MODULE (Step 3)");
   console.log("==================================================");
@@ -187,6 +188,31 @@ export async function runFetchAssets(): Promise<void> {
         METADATA_PATH
       )} and updated semantic_map.json`
     );
+
+    // --- NEW: Metrics Calculation ---
+    const endTime = Date.now();
+    const latency = endTime - startTime;
+
+    const uniqueProviders = new Set(meta.map(m => m.source)).size;
+    const yieldRate = collected.length > 0 ? meta.length / collected.length : 0;
+
+    if (!semanticMap.evaluation_metrics) {
+      semanticMap.evaluation_metrics = {
+        timestamp: new Date().toISOString(),
+        total_latency_ms: 0,
+        system_health_score: 0
+      };
+    }
+
+    semanticMap.evaluation_metrics.stage3 = {
+      latency_ms: latency,
+      fetch_yield_rate: yieldRate,
+      provider_diversity_count: uniqueProviders,
+      search_success_rate: meta.length > 0 ? 1.0 : 0.0
+    };
+
+    await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+
   } finally {
     await browser.close();
   }

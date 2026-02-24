@@ -1,0 +1,4 @@
+timestamp,prompt,total_latency_ms,system_health_score,s1_latency,s1_completeness,s2_decision,s2_confidence,s3_yield_rate,s3_diversity,s4_precision_k,s4_visual_diversity,s4_best_match
+2026-02-14T06:35:17.639Z,"futuristic city with flying cars",140737,0.56,8146,1.00,fetch_from_web,0,1.00,3,0.60,0.0000,0.7431
+2026-02-15T12:06:19.670Z,"flying cars in a futuristic city",22347,0.76,6636,0.80,generate_with_model,0,0,0,1.00,0.0000,0.7252
+2026-02-24T21:51:50.322Z,"A video of a dog walking upright on its hind legs, showcasing its movement and balance.",162487,0.76,3282,0.80,hybrid_fetch_and_enhance,0,1.00,3,1.00,0.0000,0.9500

@@ -26,6 +26,7 @@ export async function runPromptUnderstanding(
   requestedCount?: number,
   requestedModality?: MediaType,
 ): Promise<SemanticMap> {
+  const startTime = Date.now();
 
   console.log("\n--- PROMPT UNDERSTANDING MODULE ---");
   console.log("Input Prompt:", userPrompt);
@@ -97,6 +98,35 @@ Schema:
     realism_scoring: parsed?.realism_scoring ?? {},
     market_availability_estimate:
       parsed?.market_availability_estimate ?? 0.5,
+
+  };
+
+  // --- NEW: Metrics Calculation ---
+  const endTime = Date.now();
+  const latency = endTime - startTime;
+
+  // Calculate Completeness: Count non-empty fields in Intent Extraction
+  let filledFields = 0;
+  const totalFields = 5; // modality, domain, subject, context, style
+  const intent = semanticMap.intent_extraction || {};
+  if (intent.modality) filledFields++;
+  if (intent.domain) filledFields++;
+  if (intent.primary_subject) filledFields++;
+  if (intent.context_scene) filledFields++;
+  if (intent.style_adjectives && intent.style_adjectives.length > 0) filledFields++;
+
+  const completeness = filledFields / totalFields;
+
+  // Initialize Evaluation Metrics
+  semanticMap.evaluation_metrics = {
+    timestamp: new Date().toISOString(),
+    total_latency_ms: 0, // Will be updated at end (index.ts)
+    system_health_score: 0,
+    stage1: {
+      latency_ms: latency,
+      completeness_score: completeness,
+      modality_confidence: 0.9, // Placeholder/Simulated
+    },
   };
 
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);

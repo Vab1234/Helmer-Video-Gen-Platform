@@ -12,13 +12,15 @@ import { refineUserPrompt } from "./pipeline/promptRefiner";
 import type { MediaType } from "./types/semanticMap";
 
 
+import { logBenchmark } from "./utils/benchmarkLogger";
+import { writeJson } from "./utils/fileUtils";
 const mode = process.env.HELMER_MODE || "full";
 const MAX_RETRIES = 2; // Total attempts = 3
 
 /**
  * Orchestrator: Controls the agentic execution loop
  */
-async function runOrchestrator(initialPrompt: string,requestedCount?: number,
+async function runOrchestrator(initialPrompt: string, requestedCount?: number,
   requestedModality?: "image" | "video" | "audio") {
   let currentPrompt = initialPrompt;
   let attempts = 0;
@@ -29,7 +31,7 @@ async function runOrchestrator(initialPrompt: string,requestedCount?: number,
 
     try {
       await runPromptUnderstanding(currentPrompt, requestedCount, requestedModality);
-      await runDecisionReasoning(attempts+1);
+      await runDecisionReasoning(attempts + 1);
 
       const semanticMap =
         (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ??
@@ -91,6 +93,41 @@ async function runOrchestrator(initialPrompt: string,requestedCount?: number,
       "Execution completed. Satisfaction criteria not met within retry limit."
     );
   } else {
+    // --- NEW: Finalize Metrics & Log ---
+    try {
+      const finalMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH));
+      if (finalMap && finalMap.evaluation_metrics) {
+        const metrics = finalMap.evaluation_metrics;
+        // 1. Total Latency (simplified, just summing stages for now or diff from start)
+        // Ideally we tracked start time of runOrchestrator, but summing stages is safer for async gaps
+        const totalLat = (metrics.stage1?.latency_ms || 0) +
+          (metrics.stage2?.latency_ms || 0) +
+          (metrics.stage3?.latency_ms || 0) +
+          (metrics.stage4?.latency_ms || 0);
+
+        metrics.total_latency_ms = totalLat;
+
+        // 2. System Health Score (Weighted)
+        // S1 (Completeness) * 0.2 + S2 (Confidence) * 0.2 + S4 (Precision) * 0.6
+        const s1Score = metrics.stage1?.completeness_score || 0;
+        const s2Score = metrics.stage2?.decision_confidence || 0;
+        const s4Score = metrics.stage4?.precision_at_k || 0;
+
+        metrics.system_health_score = (s1Score * 0.2) + (s2Score * 0.2) + (s4Score * 0.6);
+
+        await writeJson(SEMANTIC_MAP_PATH, finalMap);
+
+        // 3. Log to CSV
+        logBenchmark(finalMap);
+
+        console.log("\n📊 EXPERIMENT METRICS LOGGED");
+        console.log(`   Total Latency: ${totalLat}ms`);
+        console.log(`   Health Score:  ${metrics.system_health_score.toFixed(2)}`);
+      }
+    } catch (e) {
+      console.error("Failed to log metrics:", e);
+    }
+
     console.log("Pipeline completed successfully.");
   }
 }
@@ -113,6 +150,8 @@ function askFromStdin(question: string): Promise<string> {
     });
   });
 }
+
+
 
 async function main() {
   console.log("Helmer Pipeline Initializing...");

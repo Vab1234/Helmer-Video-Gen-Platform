@@ -106,9 +106,9 @@ export interface AssetClassification {
     codec?: string;
     file_size_mb: number;
   };
-  
+
   // Change 'semantic' to 'semantics' to match your pipeline code
-  semantics?: AssetSemantics; 
+  semantics?: AssetSemantics;
 
   origin: "generated" | "scraped";
   aspect_ratio: string;
@@ -128,6 +128,48 @@ export interface FetchedAsset {
   sha256?: string;
 }
 
+
+
+// --- NEW: Evaluation Metrics Interfaces ---
+
+export interface Stage1Metrics {
+  latency_ms: number;
+  completeness_score: number; // 0.0 - 1.0 (Percentage of fields filled)
+  modality_confidence: number; // Simulated or extractive confidence
+}
+
+export interface Stage2Metrics {
+  latency_ms: number;
+  decision_confidence: number; // From LLM
+  cost_efficiency_ratio: number; // Creative Potential / Estimated Cost (categorical mapped to num)
+}
+
+export interface Stage3Metrics {
+  latency_ms: number;
+  fetch_yield_rate: number; // (Downloaded / Found)
+  provider_diversity_count: number; // Unique domains
+  search_success_rate: number;
+}
+
+export interface Stage4Metrics {
+  latency_ms: number;
+  precision_at_k: number; // % of Top-K relevant
+  mrr: number; // Mean Reciprocal Rank
+  visual_diversity_score: number; // Pairwise cosine distance
+  filtering_ratio: number;
+  best_match_score: number;
+}
+
+export interface EvaluationMetrics {
+  stage1?: Stage1Metrics;
+  stage2?: Stage2Metrics;
+  stage3?: Stage3Metrics;
+  stage4?: Stage4Metrics;
+  total_latency_ms: number;
+  system_health_score: number; // Weighted average
+  timestamp: string;
+}
+
 export interface SemanticMap {
   user_prompt: string;
 
@@ -141,5 +183,6 @@ export interface SemanticMap {
   decision_reasoning?: DecisionReasoning;
   fetched_assets?: FetchedAsset[];
   relevant_assets?: FetchedAsset[];
+  evaluation_metrics?: EvaluationMetrics;
   [key: string]: any;
 }

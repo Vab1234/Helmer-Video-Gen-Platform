@@ -63,69 +63,35 @@ function detectCount(text: string): number | null {
 export async function refineUserPrompt(
   input: string
 ): Promise<RefinementResult> {
-
   const cleaned = normalizeInput(input);
 
-  // 🔥 FAST PATH
-  const modality = detectModality(cleaned);
-  const count = detectCount(cleaned);
-  
-
-  if (modality) {
-
-  const count = detectCount(cleaned);
-
-  if (count === null) {
-    return {
-      refinedPrompt: cleaned,
-      isComplete: false,
-      modality,
-      message: "How many assets do you need?"
-    };
-  }
-
-  const missing = detectMissingDetails(cleaned);
-
-  if (missing.length > 0) {
-    return {
-      refinedPrompt: cleaned,
-      isComplete: false,
-      modality,
-      count,
-      message: `To improve results, please clarify: ${missing.join(", ")}.`
-    };
-  }
-
-  return {
-    refinedPrompt: cleaned,
-    isComplete: true,
-    modality,
-    count
-  };
-}
-  // 🔥 LLM FALLBACK (Only if modality not found)
-
-  console.log("LLM fallback refinement used.");
+  console.log("LLM intelligent refinement in progress...");
 
   const checkPrompt = `
-Analyze this request:
+Analyze this user request for media generation:
 
 "${cleaned}"
 
-Return ONLY valid JSON.
+Your goal is to refine and optimize this prompt.
+If the prompt is physically impossible, paradoxical, or vague (e.g., "a dog walking on two legs" without clarifying "anthropomorphic" or "hind legs"), enhance it with clear, descriptive terms to make it logical and actionable for an AI generator. Preserve the core intent. If it's already clear, just standardize it.
 
-If modality (image, video, audio) can be inferred:
+Return ONLY valid JSON.
 
 {
   "isComplete": true,
-  "refinedPrompt": "",
+  "refinedPrompt": "The improved, detailed prompt. Must include the count and modality if known.",
   "modality": "image|video|audio",
-  "count": number
+  "count": 1,
+  "message": ""
 }
-If unclear:
+
+If the request is so vague that you cannot guess the user's intent, or if modality/count are missing and cannot be assumed:
 {
   "isComplete": false,
-  "message": "Please specify whether you need an image, video, or audio."
+  "refinedPrompt": "${cleaned}",
+  "modality": "image|video|audio",
+  "count": 1,
+  "message": "A helpful question asking the user for clarification about the vague/impossible parts, modality, or count."
 }
 `.trim();
 
@@ -134,9 +100,18 @@ If unclear:
   try {
     const parsed = JSON.parse(response);
 
+    // Ensure modality is one of the valid types if present
+    if (parsed.modality && !["image", "video", "audio"].includes(parsed.modality)) {
+      parsed.modality = detectModality(cleaned) || "image";
+    }
+
+    if (!parsed.count || isNaN(parsed.count)) {
+      parsed.count = detectCount(cleaned) || 1;
+    }
+
     console.log("LLM refinement result:", parsed);
 
-    return parsed;
+    return parsed as RefinementResult;
   } catch (e) {
     console.error("Failed to parse LLM JSON. Returning fallback.");
 
