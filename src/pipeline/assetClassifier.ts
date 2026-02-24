@@ -318,8 +318,6 @@ const finalResults = semanticMap.relevant_assets.map(asset => ({
 
 // Replace semantic map output with clean results
   semanticMap.results = finalResults;
-  delete semanticMap.fetched_assets;
-  delete semanticMap.relevant_assets;
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
 
 

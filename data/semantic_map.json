@@ -1,60 +1,1973 @@
 {
-  "user_prompt": "highly detailed cinematic professional stock video of a puppy playing in a garden 3",
+  "user_prompt": "3 images of new york city nothing specific null people walking",
   "requested_asset_count": 3,
-  "requested_modality": "video",
+  "requested_modality": "image",
   "intent_extraction": {
-    "modality": "video",
-    "domain": "stock footage",
-    "primary_subject": "puppy",
-    "context_scene": "garden",
-    "style_adjectives": [
-      "highly detailed",
-      "cinematic",
-      "professional"
-    ]
+    "modality": "image",
+    "domain": "cityscapes",
+    "primary_subject": "New York City",
+    "context_scene": "urban environment",
+    "style_adjectives": []
   },
   "realism_scoring": {
     "realism_score": 0.9,
     "abstractness_score": 0.1,
-    "rationale": "The prompt describes a realistic scenario involving a puppy playing in a natural setting, which is commonly captured in stock videos."
+    "rationale": "The request specifies images of a real city with no abstract elements, indicating a high level of realism."
   },
   "market_availability_estimate": 0.8,
   "decision_reasoning": {
-    "reasoning_trace": "Previous attempt returned zero results. Forcing generation.",
-    "final_decision": "generate_with_model",
-    "confidence": 0.95
+    "reasoning_trace": "High realism and high stock availability. Fetching from web.",
+    "final_decision": "fetch_from_web",
+    "confidence": 0.85
   },
   "fetched_assets": [
     {
-      "type": "video",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_732d3f59224c.mp4",
-      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
-      "media_url": "https://v3b.fal.media/files/b/0a8fc7b1/e0eTYQ7mPahI7mzRdO1sw_tCXFkZmW.mp4",
-      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_7129c53f886b.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1766012368371-b4fca1b94cff?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/person-in-park-looking-at-new-york-city-skyline-msW2m_3WlaI",
+      "alt": "Person in park looking at new york city skyline",
+      "query_used": "new york city skyline daytime",
       "width": 0,
       "height": 0,
-      "sha256": "732d3f59224c1134f9a4351e031a27da9b9bb8e723367bb95c79eee33fc43abf"
+      "sha256": "7129c53f886bdab86bf518195d22e55f11304846751bd638e7d5d36e95f6afbd"
     },
     {
-      "type": "video",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_a441a25dfa33.mp4",
-      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
-      "media_url": "https://v3b.fal.media/files/b/0a8fc7b1/EG73FL791AJkq5Urjo0Cf_v68jAVFf.mp4",
-      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_72553aa86646.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1651970048681-2a2521cc798a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/a-city-with-many-tall-buildings-2hipw1FmmRE",
+      "alt": "a city with many tall buildings",
+      "query_used": "new york city skyline daytime",
       "width": 0,
       "height": 0,
-      "sha256": "a441a25dfa33ca35efabf64ff9c0358ee7c8eefb58eb010884fc2d633de546a9"
+      "sha256": "72553aa866469b9eb83523c2e62222a2493a276ac1eb36b8df4648317cc77487"
     },
     {
-      "type": "video",
-      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_db033009eacd.mp4",
-      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
-      "media_url": "https://v3b.fal.media/files/b/0a8fc7b4/tH4CxhBkitgof1lO3g_Uk_QZiMiw43.mp4",
-      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_9470a2d5eb63.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1751729272772-1616f709bda3?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/the-new-york-city-skyline-stretches-before-a-blue-sky-IJp96UeLr2k",
+      "alt": "The new york city skyline stretches before a blue sky.",
+      "query_used": "new york city skyline daytime",
       "width": 0,
       "height": 0,
-      "sha256": "db033009eacdb8b0576a53ae3a96116debe5ddb2d3c779a5a23511e16ded8488"
+      "sha256": "9470a2d5eb631f344a409359284efcfe7919b98bbc0aba21167a9a8046d9ddbd"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_970ba5984c2e.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/5847583/pexels-photo-5847583.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/modern-embankment-with-view-on-contemporary-megapolis-5847583/",
+      "alt": "Free Sunny view of New York City skyline and waterfront promenade, capturing the modern cityscape. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "970ba5984c2ed4436239296f2529a407f4d536dd92979f3bffc84fb7aa06dd8b"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_447bc93e53a5.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/2760856/pexels-photo-2760856.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/concrete-bridge-2760856/",
+      "alt": "Free Captivating view of the Brooklyn Bridge and New York City skyline under a clear blue sky. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "447bc93e53a5f04c1a6d032d5461654caf228a482d2caf80b584154bd12cb946"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_ea276185da1c.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/771881/pexels-photo-771881.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/city-lights-under-night-sky-771881/",
+      "alt": "Free Stunning view of the illuminated New York City skyline reflecting on the Hudson River at night. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "ea276185da1c88739e0f4985d07a809b3d19c72d1b74d60b49b5c6928a75b7d0"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_8432dc1a92e7.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2015/03/11/12/31/buildings-668616_1280.jpg",
+      "page_url": "https://pixabay.com/photos/buildings-river-city-cityscape-668616/",
+      "alt": "Free Buildings River photo and picture",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "8432dc1a92e786f00a58857391caabc88b7f2eac8513f0981a48747b0cb6a69d"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_f021d78ad151.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2023/04/14/08/35/nyc-7924482_640.jpg",
+      "page_url": "https://pixabay.com/photos/nyc-new-york-new-york-city-boats-7924482/",
+      "alt": "Free Nyc New York photo and picture",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "f021d78ad151d5d2bc79045c4102eaae1c1d48dd131b80f2ebb615f2bbd8dc4b"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_316ffa207657.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2018/11/18/13/10/man-3823124_640.jpg",
+      "page_url": "https://pixabay.com/photos/man-business-suit-tie-professional-3823124/",
+      "alt": "Free Man 4K Wallpaper photo and picture",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "316ffa20765709426cf881755e3e6aec5c746b5970ca35cd6bf0af8225debbc2"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_c8d66ab76d2c.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1765918652932-8589c9d01759?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/people-crossing-a-street-in-a-city-with-tall-buildings-aE_u4X9Wujo",
+      "alt": "People crossing a street in a city with tall buildings.",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "c8d66ab76d2cf87d4655c05d65142a4fe592c9aef6c7b242bf851576f12f98fd"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_7a5dd7071e55.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1698307196782-00be49d61bdf?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/a-crowd-of-people-walking-down-a-street-next-to-trees-ugwGuGsW0hQ",
+      "alt": "a crowd of people walking down a street next to trees",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "7a5dd7071e55df147be4758d3b72658d15d0467a0cb66155a89b78861c6567c5"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\unsplash_e823fd7cb603.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1765918653977-c278242e99e7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/woman-smiles-near-a-new-york-city-food-cart-ve20oY6ShvA",
+      "alt": "Woman smiles near a new york city food cart.",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "e823fd7cb6037fc9b48965dd387d14bbcea1959afcb30053aeb570165677b735"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_d989c4cab2c2.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/3229622/pexels-photo-3229622.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/vehicles-on-road-3229622/",
+      "alt": "Free Aerial view of a busy intersection in Queens, NY, with cars, taxis, and pedestrians. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "d989c4cab2c2b278aea08161af13626f5e57741b232c84cf23e6d67eda5e4e5f"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_f106fffbd8e0.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/2449533/pexels-photo-2449533.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/woman-with-dog-at-the-middle-of-the-street-2449533/",
+      "alt": "Free A joyful woman walks her French Bulldog on a bustling urban street filled with pedestrians and vehicles. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "f106fffbd8e0802d1e81a2eb8f41f0bdbcd3963254b4d292e32f7860b29624e8"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pexels_1754551f4954.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/1705105/pexels-photo-1705105.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/man-walking-on-pedestrian-lane-at-night-1705105/",
+      "alt": "Free Vibrant street scene at night on East 42nd Street, capturing urban life in New York City. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "1754551f4954b5c482f96d6c30840771b9b6fd4dcfb56698ea890c3fe4ad54e5"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_368a54d4be7b.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2021/08/14/18/01/people-6545894_1280.jpg",
+      "page_url": "https://pixabay.com/photos/people-street-walking-city-6545894/",
+      "alt": "Free People Street photo and picture",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "368a54d4be7b0086c133774598da27b8f74a0c000e735f056320f7ffa3719489"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_5fda337c641a.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2022/08/01/12/24/people-7358064_640.jpg",
+      "page_url": "https://pixabay.com/photos/people-walking-promenade-children-7358064/",
+      "alt": "Free People Walking photo and picture",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "5fda337c641aaf82fe8546357bbb77f70d314e09d6cf2d033feb3110fd287865"
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\images\\pixabay_d7eb12217e10.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2020/12/15/01/43/cyclist-5832393_640.jpg",
+      "page_url": "https://pixabay.com/photos/cyclist-junction-city-streets-5832393/",
+      "alt": "Free Cyclist Junction photo and picture",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "d7eb12217e10b7dc4bbe821598cf3f9ea410be74d979d1a2cd5b523532c625d7"
     }
   ],
-  "relevant_assets": []
+  "relevant_assets": [
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_7129c53f886b.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1766012368371-b4fca1b94cff?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/person-in-park-looking-at-new-york-city-skyline-msW2m_3WlaI",
+      "alt": "Person in park looking at new york city skyline",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "7129c53f886bdab86bf518195d22e55f11304846751bd638e7d5d36e95f6afbd",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 265,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "400:265",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "400:265",
+        "semantics": {
+          "primary_scene": "Person sitting in a park with city skyline in the background",
+          "environment": "Urban park",
+          "time_of_day": "Afternoon",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Medium shot",
+          "camera_angle": "Eye level",
+          "composition": "Person in foreground, skyline in background",
+          "lighting": "Natural",
+          "mood": "Relaxed",
+          "atmosphere": "Calm",
+          "human_presence": true,
+          "people_count_estimate": 1,
+          "primary_activity": "Resting",
+          "dominant_objects": [
+            "skyscrapers",
+            "trees",
+            "hat"
+          ],
+          "tags": [
+            "park",
+            "cityscape",
+            "buildings",
+            "relaxation",
+            "nature",
+            "urban"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#d8d9d4",
+            "#36321b",
+            "#9da6a6",
+            "#80804a",
+            "#9e9a4f"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_72553aa86646.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1651970048681-2a2521cc798a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/a-city-with-many-tall-buildings-2hipw1FmmRE",
+      "alt": "a city with many tall buildings",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "72553aa866469b9eb83523c2e62222a2493a276ac1eb36b8df4648317cc77487",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 300,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "4:3",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "4:3",
+        "semantics": {
+          "primary_scene": "cityscape",
+          "environment": "urban",
+          "time_of_day": "day",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "high angle",
+          "composition": "balanced",
+          "lighting": "natural",
+          "mood": "calm",
+          "atmosphere": "peaceful",
+          "human_presence": false,
+          "people_count_estimate": 0,
+          "primary_activity": "",
+          "dominant_objects": [
+            "buildings",
+            "skyscrapers"
+          ],
+          "tags": [
+            "city",
+            "skyline",
+            "buildings",
+            "daytime",
+            "urban landscape"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#6a8fbf",
+            "#1d2433",
+            "#cbbfb0",
+            "#4a4e52",
+            "#9fcff8"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_9470a2d5eb63.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1751729272772-1616f709bda3?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bmV3JTIweW9yayUyMGNpdHklMjBza3lsaW5lJTIwZGF5dGltZXxlbnwwfHwwfHx8MA%3D%3D",
+      "page_url": "https://unsplash.com/photos/the-new-york-city-skyline-stretches-before-a-blue-sky-IJp96UeLr2k",
+      "alt": "The new york city skyline stretches before a blue sky.",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "9470a2d5eb631f344a409359284efcfe7919b98bbc0aba21167a9a8046d9ddbd",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 266,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "400:266",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "400:266",
+        "semantics": {
+          "primary_scene": "Skyline view with skyscrapers",
+          "environment": "Urban",
+          "time_of_day": "Day",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Wide shot",
+          "camera_angle": "Eye level",
+          "composition": "Cityscape with waterfront",
+          "lighting": "Natural daylight",
+          "mood": "Calm",
+          "atmosphere": "Energetic",
+          "human_presence": true,
+          "people_count_estimate": 50,
+          "primary_activity": "Leisure",
+          "dominant_objects": [
+            "Skyscrapers",
+            "Waterfront",
+            "Trees"
+          ],
+          "tags": [
+            "city",
+            "skyline",
+            "buildings",
+            "water",
+            "trees",
+            "daytime",
+            "urban"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#627d89",
+            "#4f412b",
+            "#c8ad92",
+            "#9cbaca",
+            "#44344c"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_970ba5984c2e.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/5847583/pexels-photo-5847583.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/modern-embankment-with-view-on-contemporary-megapolis-5847583/",
+      "alt": "Free Sunny view of New York City skyline and waterfront promenade, capturing the modern cityscape. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "970ba5984c2ed4436239296f2529a407f4d536dd92979f3bffc84fb7aa06dd8b",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 333,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "500:333",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.03
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:333",
+        "semantics": {
+          "primary_scene": "Cityscape with skyline view",
+          "environment": "Urban",
+          "time_of_day": "Day",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Wide shot",
+          "camera_angle": "Eye level",
+          "composition": "Rule of thirds",
+          "lighting": "Natural",
+          "mood": "Calm",
+          "atmosphere": "Relaxed",
+          "human_presence": false,
+          "people_count_estimate": 0,
+          "primary_activity": "None",
+          "dominant_objects": [
+            "Benches",
+            "Water",
+            "Buildings"
+          ],
+          "tags": [
+            "cityscape",
+            "skyline",
+            "urban",
+            "outdoors",
+            "architecture"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#929ba2",
+            "#252723",
+            "#4e433a",
+            "#dacbc1",
+            "#695849"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_447bc93e53a5.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/2760856/pexels-photo-2760856.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/concrete-bridge-2760856/",
+      "alt": "Free Captivating view of the Brooklyn Bridge and New York City skyline under a clear blue sky. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "447bc93e53a5f04c1a6d032d5461654caf228a482d2caf80b584154bd12cb946",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 644,
+          "type": "image",
+          "orientation": "portrait",
+          "aspect_ratio": "500:644",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.02
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:644",
+        "semantics": {
+          "primary_scene": "city skyline with bridge",
+          "environment": "urban",
+          "time_of_day": "day",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye-level",
+          "composition": "skyline with bridge in foreground",
+          "lighting": "natural",
+          "mood": "calm",
+          "atmosphere": "open",
+          "human_presence": false,
+          "people_count_estimate": 0,
+          "primary_activity": "",
+          "dominant_objects": [
+            "bridge",
+            "buildings",
+            "sky"
+          ],
+          "tags": [
+            "cityscape",
+            "bridge",
+            "skyline",
+            "urban",
+            "architecture"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#8fb1c0",
+            "#7e5a3f",
+            "#d8cdcb",
+            "#19110e",
+            "#545468"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_ea276185da1c.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/771881/pexels-photo-771881.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/city-lights-under-night-sky-771881/",
+      "alt": "Free Stunning view of the illuminated New York City skyline reflecting on the Hudson River at night. Stock Photo",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "ea276185da1c88739e0f4985d07a809b3d19c72d1b74d60b49b5c6928a75b7d0",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 333,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "500:333",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.03
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:333",
+        "semantics": {
+          "primary_scene": "city skyline",
+          "environment": "urban",
+          "time_of_day": "night",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye level",
+          "composition": "balanced",
+          "lighting": "artificial",
+          "mood": "vibrant",
+          "atmosphere": "lively",
+          "human_presence": true,
+          "people_count_estimate": 0,
+          "primary_activity": "none observable",
+          "dominant_objects": [
+            "buildings",
+            "water"
+          ],
+          "tags": [
+            "cityscape",
+            "night",
+            "skyline",
+            "buildings",
+            "waterfront"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#36313a",
+            "#bba294",
+            "#6f7081",
+            "#8186ad",
+            "#8ca5ac"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pixabay_8432dc1a92e7.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2015/03/11/12/31/buildings-668616_1280.jpg",
+      "page_url": "https://pixabay.com/photos/buildings-river-city-cityscape-668616/",
+      "alt": "Free Buildings River photo and picture",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "8432dc1a92e786f00a58857391caabc88b7f2eac8513f0981a48747b0cb6a69d",
+      "classification": {
+        "technical": {
+          "width": 1280,
+          "height": 853,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "1280:853",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.35
+        },
+        "origin": "scraped",
+        "aspect_ratio": "1280:853",
+        "semantics": {
+          "primary_scene": "cityscape with water foreground",
+          "environment": "urban",
+          "time_of_day": "day",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye level",
+          "composition": "balanced",
+          "lighting": "natural daylight",
+          "mood": "calm",
+          "atmosphere": "serene",
+          "human_presence": false,
+          "people_count_estimate": 0,
+          "primary_activity": "none",
+          "dominant_objects": [
+            "skyline",
+            "water",
+            "ice floes"
+          ],
+          "tags": [
+            "city",
+            "skyline",
+            "water",
+            "day",
+            "clear",
+            "ice",
+            "urban"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#547189",
+            "#cbc8cf",
+            "#101d27",
+            "#95a8c5",
+            "#a9bec7"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pixabay_f021d78ad151.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2023/04/14/08/35/nyc-7924482_640.jpg",
+      "page_url": "https://pixabay.com/photos/nyc-new-york-new-york-city-boats-7924482/",
+      "alt": "Free Nyc New York photo and picture",
+      "query_used": "new york city skyline daytime",
+      "width": 0,
+      "height": 0,
+      "sha256": "f021d78ad151d5d2bc79045c4102eaae1c1d48dd131b80f2ebb615f2bbd8dc4b",
+      "classification": {
+        "technical": {
+          "width": 640,
+          "height": 426,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "640:426",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.07
+        },
+        "origin": "scraped",
+        "aspect_ratio": "640:426",
+        "semantics": {
+          "primary_scene": "urban skyline with river",
+          "environment": "cityscape",
+          "time_of_day": "daytime",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye-level",
+          "composition": "balanced composition with buildings and water",
+          "lighting": "natural",
+          "mood": "bustling",
+          "atmosphere": "busy and lively",
+          "human_presence": false,
+          "people_count_estimate": 0,
+          "primary_activity": "na",
+          "dominant_objects": [
+            "skyscrapers",
+            "river",
+            "boats",
+            "helicopter"
+          ],
+          "tags": [
+            "city",
+            "buildings",
+            "skyline",
+            "river",
+            "boats",
+            "helicopter",
+            "architecture",
+            "daytime"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#9ba8b8",
+            "#252e3c",
+            "#534e53",
+            "#efdacb",
+            "#6c6058"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_c8d66ab76d2c.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1765918652932-8589c9d01759?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/people-crossing-a-street-in-a-city-with-tall-buildings-aE_u4X9Wujo",
+      "alt": "People crossing a street in a city with tall buildings.",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "c8d66ab76d2cf87d4655c05d65142a4fe592c9aef6c7b242bf851576f12f98fd",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 301,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "4:3",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "4:3",
+        "semantics": {
+          "primary_scene": "city street intersection",
+          "environment": "urban",
+          "time_of_day": "daytime",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye level",
+          "composition": "leading lines",
+          "lighting": "natural",
+          "mood": "busy",
+          "atmosphere": "vibrant",
+          "human_presence": true,
+          "people_count_estimate": 15,
+          "primary_activity": "walking",
+          "dominant_objects": [
+            "buildings",
+            "crosswalk",
+            "traffic lights"
+          ],
+          "tags": [
+            "city",
+            "street",
+            "pedestrians",
+            "architecture",
+            "traffic",
+            "urban life"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#262425",
+            "#6598bf",
+            "#ac9f92",
+            "#726357",
+            "#888178"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_7a5dd7071e55.jpg",
+      "source": "unsplash",
+      "media_url": "https://images.unsplash.com/photo-1698307196782-00be49d61bdf?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/a-crowd-of-people-walking-down-a-street-next-to-trees-ugwGuGsW0hQ",
+      "alt": "a crowd of people walking down a street next to trees",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "7a5dd7071e55df147be4758d3b72658d15d0467a0cb66155a89b78861c6567c5",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 267,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "400:267",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "400:267",
+        "semantics": {
+          "primary_scene": "Park walkway with people",
+          "environment": "Park",
+          "time_of_day": "Day",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Wide shot",
+          "camera_angle": "Eye level",
+          "composition": "Centered with symmetry",
+          "lighting": "Natural, diffused",
+          "mood": "Lively",
+          "atmosphere": "Relaxed",
+          "human_presence": true,
+          "people_count_estimate": 20,
+          "primary_activity": "Walking",
+          "dominant_objects": [
+            "Trees",
+            "Benches",
+            "Umbrellas"
+          ],
+          "tags": [
+            "park",
+            "walkway",
+            "people",
+            "trees",
+            "outdoors",
+            "daytime"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#4b4d42",
+            "#d2cec2",
+            "#9c9989",
+            "#b1b4a6",
+            "#aaabac"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\unsplash_e823fd7cb603.jpg",
+      "source": "unsplash",
+      "media_url": "https://plus.unsplash.com/premium_photo-1765918653977-c278242e99e7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGVvcGxlJTIwd2Fsa2luZyUyMGluJTIwbmV3JTIweW9yayUyMGNpdHklMjBzdHJlZXRzfGVufDB8fDB8fHww",
+      "page_url": "https://unsplash.com/photos/woman-smiles-near-a-new-york-city-food-cart-ve20oY6ShvA",
+      "alt": "Woman smiles near a new york city food cart.",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "e823fd7cb6037fc9b48965dd387d14bbcea1959afcb30053aeb570165677b735",
+      "classification": {
+        "technical": {
+          "width": 400,
+          "height": 600,
+          "type": "image",
+          "orientation": "portrait",
+          "aspect_ratio": "400:600",
+          "duration": 0,
+          "codec": "avif",
+          "file_size_mb": 0
+        },
+        "origin": "scraped",
+        "aspect_ratio": "400:600",
+        "semantics": {
+          "primary_scene": "street with food cart",
+          "environment": "urban",
+          "time_of_day": "day",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "medium shot",
+          "camera_angle": "eye level",
+          "composition": "central with background skyline",
+          "lighting": "natural, shadows present",
+          "mood": "bustling",
+          "atmosphere": "vibrant",
+          "human_presence": true,
+          "people_count_estimate": 3,
+          "primary_activity": "walking",
+          "dominant_objects": [
+            "food cart",
+            "buildings",
+            "vehicles"
+          ],
+          "tags": [
+            "street",
+            "food cart",
+            "cityscape",
+            "urban",
+            "daytime",
+            "people",
+            "buildings"
+          ],
+          "confidence": 0.9,
+          "palette": [
+            "#c4b09e",
+            "#1c1d1d",
+            "#4ba7c9",
+            "#726861",
+            "#5c859b"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_d989c4cab2c2.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/3229622/pexels-photo-3229622.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/vehicles-on-road-3229622/",
+      "alt": "Free Aerial view of a busy intersection in Queens, NY, with cars, taxis, and pedestrians. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "d989c4cab2c2b278aea08161af13626f5e57741b232c84cf23e6d67eda5e4e5f",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 626,
+          "type": "image",
+          "orientation": "portrait",
+          "aspect_ratio": "500:626",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.05
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:626",
+        "semantics": {
+          "primary_scene": "busy city intersection",
+          "environment": "urban",
+          "time_of_day": "afternoon",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "aerial view",
+          "camera_angle": "high angle",
+          "composition": "busy street with traffic and pedestrians",
+          "lighting": "natural, soft shadows",
+          "mood": "bustling",
+          "atmosphere": "dynamic",
+          "human_presence": true,
+          "people_count_estimate": 50,
+          "primary_activity": "pedestrians crossing, vehicular traffic",
+          "dominant_objects": [
+            "taxis",
+            "cars",
+            "pedestrians"
+          ],
+          "tags": [
+            "city",
+            "traffic",
+            "people",
+            "intersection",
+            "urban life"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#2e2424",
+            "#b89781",
+            "#756153",
+            "#8c898d",
+            "#929491"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_f106fffbd8e0.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/2449533/pexels-photo-2449533.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/woman-with-dog-at-the-middle-of-the-street-2449533/",
+      "alt": "Free A joyful woman walks her French Bulldog on a bustling urban street filled with pedestrians and vehicles. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "f106fffbd8e0802d1e81a2eb8f41f0bdbcd3963254b4d292e32f7860b29624e8",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 334,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "500:334",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.03
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:334",
+        "semantics": {
+          "primary_scene": "Urban street with pedestrians",
+          "environment": "City",
+          "time_of_day": "Daytime",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Wide shot",
+          "camera_angle": "Eye-level",
+          "composition": "Balanced with foreground and background elements",
+          "lighting": "Natural",
+          "mood": "Casual",
+          "atmosphere": "Lively",
+          "human_presence": true,
+          "people_count_estimate": 10,
+          "primary_activity": "Walking",
+          "dominant_objects": [
+            "people",
+            "dog",
+            "vehicles",
+            "buildings"
+          ],
+          "tags": [
+            "city",
+            "street",
+            "pedestrians",
+            "dog",
+            "daytime",
+            "urban"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#9d9993",
+            "#232514",
+            "#e6dac3",
+            "#85712b",
+            "#5a3b29"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pexels_1754551f4954.jpg",
+      "source": "pexels",
+      "media_url": "https://images.pexels.com/photos/1705105/pexels-photo-1705105.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "page_url": "https://www.pexels.com/photo/man-walking-on-pedestrian-lane-at-night-1705105/",
+      "alt": "Free Vibrant street scene at night on East 42nd Street, capturing urban life in New York City. Stock Photo",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "1754551f4954b5c482f96d6c30840771b9b6fd4dcfb56698ea890c3fe4ad54e5",
+      "classification": {
+        "technical": {
+          "width": 500,
+          "height": 750,
+          "type": "image",
+          "orientation": "portrait",
+          "aspect_ratio": "500:750",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.07
+        },
+        "origin": "scraped",
+        "aspect_ratio": "500:750",
+        "semantics": {
+          "primary_scene": "City street with pedestrians",
+          "environment": "Urban",
+          "time_of_day": "Night",
+          "weather": "Clear",
+          "indoor_outdoor": "Outdoor",
+          "shot_type": "Street photography",
+          "camera_angle": "Eye-level",
+          "composition": "Rule of thirds",
+          "lighting": "Artificial street lighting",
+          "mood": "Busy and lively",
+          "atmosphere": "Urban hustle",
+          "human_presence": true,
+          "people_count_estimate": 15,
+          "primary_activity": "Walking and socializing",
+          "dominant_objects": [
+            "Crosswalk",
+            "Street sign",
+            "Bicycles"
+          ],
+          "tags": [
+            "city",
+            "street",
+            "nightlife",
+            "pedestrians",
+            "urban",
+            "crosswalk",
+            "architecture",
+            "lights"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#231e1b",
+            "#c39d6a",
+            "#776045",
+            "#8b918f",
+            "#717f96"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pixabay_368a54d4be7b.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2021/08/14/18/01/people-6545894_1280.jpg",
+      "page_url": "https://pixabay.com/photos/people-street-walking-city-6545894/",
+      "alt": "Free People Street photo and picture",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "368a54d4be7b0086c133774598da27b8f74a0c000e735f056320f7ffa3719489",
+      "classification": {
+        "technical": {
+          "width": 1280,
+          "height": 853,
+          "type": "image",
+          "orientation": "landscape",
+          "aspect_ratio": "1280:853",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.46
+        },
+        "origin": "scraped",
+        "aspect_ratio": "1280:853",
+        "semantics": {
+          "primary_scene": "street with people walking",
+          "environment": "urban",
+          "time_of_day": "evening",
+          "weather": "clear",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "high angle",
+          "composition": "balanced with leading lines",
+          "lighting": "natural with long shadows",
+          "mood": "calm",
+          "atmosphere": "peaceful",
+          "human_presence": true,
+          "people_count_estimate": 10,
+          "primary_activity": "walking and cycling",
+          "dominant_objects": [
+            "people",
+            "bicycles"
+          ],
+          "tags": [
+            "street",
+            "shadows",
+            "walking",
+            "people",
+            "bicycles"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#3b3b3b",
+            "#cacaca",
+            "#878787",
+            "#a4a4a4",
+            "#9c9c9c"
+          ]
+        }
+      }
+    },
+    {
+      "type": "image",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\relevant_assets\\images\\pixabay_d7eb12217e10.jpg",
+      "source": "pixabay",
+      "media_url": "https://cdn.pixabay.com/photo/2020/12/15/01/43/cyclist-5832393_640.jpg",
+      "page_url": "https://pixabay.com/photos/cyclist-junction-city-streets-5832393/",
+      "alt": "Free Cyclist Junction photo and picture",
+      "query_used": "people walking in new york city streets",
+      "width": 0,
+      "height": 0,
+      "sha256": "d7eb12217e10b7dc4bbe821598cf3f9ea410be74d979d1a2cd5b523532c625d7",
+      "classification": {
+        "technical": {
+          "width": 427,
+          "height": 640,
+          "type": "image",
+          "orientation": "portrait",
+          "aspect_ratio": "427:640",
+          "duration": 0,
+          "codec": "mjpeg",
+          "file_size_mb": 0.09
+        },
+        "origin": "scraped",
+        "aspect_ratio": "427:640",
+        "semantics": {
+          "primary_scene": "urban street",
+          "environment": "city",
+          "time_of_day": "day",
+          "weather": "overcast",
+          "indoor_outdoor": "outdoor",
+          "shot_type": "wide shot",
+          "camera_angle": "eye level",
+          "composition": "leading lines",
+          "lighting": "natural diffused",
+          "mood": "bustling",
+          "atmosphere": "busy",
+          "human_presence": true,
+          "people_count_estimate": 10,
+          "primary_activity": "cycling",
+          "dominant_objects": [
+            "bicycle",
+            "buildings",
+            "traffic lights"
+          ],
+          "tags": [
+            "city",
+            "street",
+            "bicycle",
+            "urban",
+            "pedestrians",
+            "buildings"
+          ],
+          "confidence": 0.95,
+          "palette": [
+            "#2f4048",
+            "#d5d9d8",
+            "#878183",
+            "#9caaac",
+            "#899aa4"
+          ]
+        }
+      }
+    }
+  ],
+  "results": [
+    {
+      "file": "unsplash_7129c53f886b.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 265,
+      "aspect_ratio": "400:265",
+      "classification": {
+        "primary_scene": "Person sitting in a park with city skyline in the background",
+        "environment": "Urban park",
+        "time_of_day": "Afternoon",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Medium shot",
+        "camera_angle": "Eye level",
+        "composition": "Person in foreground, skyline in background",
+        "lighting": "Natural",
+        "mood": "Relaxed",
+        "atmosphere": "Calm",
+        "human_presence": true,
+        "people_count_estimate": 1,
+        "primary_activity": "Resting",
+        "dominant_objects": [
+          "skyscrapers",
+          "trees",
+          "hat"
+        ],
+        "tags": [
+          "park",
+          "cityscape",
+          "buildings",
+          "relaxation",
+          "nature",
+          "urban"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#d8d9d4",
+          "#36321b",
+          "#9da6a6",
+          "#80804a",
+          "#9e9a4f"
+        ]
+      }
+    },
+    {
+      "file": "unsplash_72553aa86646.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 300,
+      "aspect_ratio": "4:3",
+      "classification": {
+        "primary_scene": "cityscape",
+        "environment": "urban",
+        "time_of_day": "day",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "high angle",
+        "composition": "balanced",
+        "lighting": "natural",
+        "mood": "calm",
+        "atmosphere": "peaceful",
+        "human_presence": false,
+        "people_count_estimate": 0,
+        "primary_activity": "",
+        "dominant_objects": [
+          "buildings",
+          "skyscrapers"
+        ],
+        "tags": [
+          "city",
+          "skyline",
+          "buildings",
+          "daytime",
+          "urban landscape"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#6a8fbf",
+          "#1d2433",
+          "#cbbfb0",
+          "#4a4e52",
+          "#9fcff8"
+        ]
+      }
+    },
+    {
+      "file": "unsplash_9470a2d5eb63.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 266,
+      "aspect_ratio": "400:266",
+      "classification": {
+        "primary_scene": "Skyline view with skyscrapers",
+        "environment": "Urban",
+        "time_of_day": "Day",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Wide shot",
+        "camera_angle": "Eye level",
+        "composition": "Cityscape with waterfront",
+        "lighting": "Natural daylight",
+        "mood": "Calm",
+        "atmosphere": "Energetic",
+        "human_presence": true,
+        "people_count_estimate": 50,
+        "primary_activity": "Leisure",
+        "dominant_objects": [
+          "Skyscrapers",
+          "Waterfront",
+          "Trees"
+        ],
+        "tags": [
+          "city",
+          "skyline",
+          "buildings",
+          "water",
+          "trees",
+          "daytime",
+          "urban"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#627d89",
+          "#4f412b",
+          "#c8ad92",
+          "#9cbaca",
+          "#44344c"
+        ]
+      }
+    },
+    {
+      "file": "pexels_970ba5984c2e.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 333,
+      "aspect_ratio": "500:333",
+      "classification": {
+        "primary_scene": "Cityscape with skyline view",
+        "environment": "Urban",
+        "time_of_day": "Day",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Wide shot",
+        "camera_angle": "Eye level",
+        "composition": "Rule of thirds",
+        "lighting": "Natural",
+        "mood": "Calm",
+        "atmosphere": "Relaxed",
+        "human_presence": false,
+        "people_count_estimate": 0,
+        "primary_activity": "None",
+        "dominant_objects": [
+          "Benches",
+          "Water",
+          "Buildings"
+        ],
+        "tags": [
+          "cityscape",
+          "skyline",
+          "urban",
+          "outdoors",
+          "architecture"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#929ba2",
+          "#252723",
+          "#4e433a",
+          "#dacbc1",
+          "#695849"
+        ]
+      }
+    },
+    {
+      "file": "pexels_447bc93e53a5.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 644,
+      "aspect_ratio": "500:644",
+      "classification": {
+        "primary_scene": "city skyline with bridge",
+        "environment": "urban",
+        "time_of_day": "day",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye-level",
+        "composition": "skyline with bridge in foreground",
+        "lighting": "natural",
+        "mood": "calm",
+        "atmosphere": "open",
+        "human_presence": false,
+        "people_count_estimate": 0,
+        "primary_activity": "",
+        "dominant_objects": [
+          "bridge",
+          "buildings",
+          "sky"
+        ],
+        "tags": [
+          "cityscape",
+          "bridge",
+          "skyline",
+          "urban",
+          "architecture"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#8fb1c0",
+          "#7e5a3f",
+          "#d8cdcb",
+          "#19110e",
+          "#545468"
+        ]
+      }
+    },
+    {
+      "file": "pexels_ea276185da1c.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 333,
+      "aspect_ratio": "500:333",
+      "classification": {
+        "primary_scene": "city skyline",
+        "environment": "urban",
+        "time_of_day": "night",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye level",
+        "composition": "balanced",
+        "lighting": "artificial",
+        "mood": "vibrant",
+        "atmosphere": "lively",
+        "human_presence": true,
+        "people_count_estimate": 0,
+        "primary_activity": "none observable",
+        "dominant_objects": [
+          "buildings",
+          "water"
+        ],
+        "tags": [
+          "cityscape",
+          "night",
+          "skyline",
+          "buildings",
+          "waterfront"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#36313a",
+          "#bba294",
+          "#6f7081",
+          "#8186ad",
+          "#8ca5ac"
+        ]
+      }
+    },
+    {
+      "file": "pixabay_8432dc1a92e7.jpg",
+      "source": "pixabay",
+      "type": "image",
+      "width": 1280,
+      "height": 853,
+      "aspect_ratio": "1280:853",
+      "classification": {
+        "primary_scene": "cityscape with water foreground",
+        "environment": "urban",
+        "time_of_day": "day",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye level",
+        "composition": "balanced",
+        "lighting": "natural daylight",
+        "mood": "calm",
+        "atmosphere": "serene",
+        "human_presence": false,
+        "people_count_estimate": 0,
+        "primary_activity": "none",
+        "dominant_objects": [
+          "skyline",
+          "water",
+          "ice floes"
+        ],
+        "tags": [
+          "city",
+          "skyline",
+          "water",
+          "day",
+          "clear",
+          "ice",
+          "urban"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#547189",
+          "#cbc8cf",
+          "#101d27",
+          "#95a8c5",
+          "#a9bec7"
+        ]
+      }
+    },
+    {
+      "file": "pixabay_f021d78ad151.jpg",
+      "source": "pixabay",
+      "type": "image",
+      "width": 640,
+      "height": 426,
+      "aspect_ratio": "640:426",
+      "classification": {
+        "primary_scene": "urban skyline with river",
+        "environment": "cityscape",
+        "time_of_day": "daytime",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye-level",
+        "composition": "balanced composition with buildings and water",
+        "lighting": "natural",
+        "mood": "bustling",
+        "atmosphere": "busy and lively",
+        "human_presence": false,
+        "people_count_estimate": 0,
+        "primary_activity": "na",
+        "dominant_objects": [
+          "skyscrapers",
+          "river",
+          "boats",
+          "helicopter"
+        ],
+        "tags": [
+          "city",
+          "buildings",
+          "skyline",
+          "river",
+          "boats",
+          "helicopter",
+          "architecture",
+          "daytime"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#9ba8b8",
+          "#252e3c",
+          "#534e53",
+          "#efdacb",
+          "#6c6058"
+        ]
+      }
+    },
+    {
+      "file": "unsplash_c8d66ab76d2c.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 301,
+      "aspect_ratio": "4:3",
+      "classification": {
+        "primary_scene": "city street intersection",
+        "environment": "urban",
+        "time_of_day": "daytime",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye level",
+        "composition": "leading lines",
+        "lighting": "natural",
+        "mood": "busy",
+        "atmosphere": "vibrant",
+        "human_presence": true,
+        "people_count_estimate": 15,
+        "primary_activity": "walking",
+        "dominant_objects": [
+          "buildings",
+          "crosswalk",
+          "traffic lights"
+        ],
+        "tags": [
+          "city",
+          "street",
+          "pedestrians",
+          "architecture",
+          "traffic",
+          "urban life"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#262425",
+          "#6598bf",
+          "#ac9f92",
+          "#726357",
+          "#888178"
+        ]
+      }
+    },
+    {
+      "file": "unsplash_7a5dd7071e55.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 267,
+      "aspect_ratio": "400:267",
+      "classification": {
+        "primary_scene": "Park walkway with people",
+        "environment": "Park",
+        "time_of_day": "Day",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Wide shot",
+        "camera_angle": "Eye level",
+        "composition": "Centered with symmetry",
+        "lighting": "Natural, diffused",
+        "mood": "Lively",
+        "atmosphere": "Relaxed",
+        "human_presence": true,
+        "people_count_estimate": 20,
+        "primary_activity": "Walking",
+        "dominant_objects": [
+          "Trees",
+          "Benches",
+          "Umbrellas"
+        ],
+        "tags": [
+          "park",
+          "walkway",
+          "people",
+          "trees",
+          "outdoors",
+          "daytime"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#4b4d42",
+          "#d2cec2",
+          "#9c9989",
+          "#b1b4a6",
+          "#aaabac"
+        ]
+      }
+    },
+    {
+      "file": "unsplash_e823fd7cb603.jpg",
+      "source": "unsplash",
+      "type": "image",
+      "width": 400,
+      "height": 600,
+      "aspect_ratio": "400:600",
+      "classification": {
+        "primary_scene": "street with food cart",
+        "environment": "urban",
+        "time_of_day": "day",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "medium shot",
+        "camera_angle": "eye level",
+        "composition": "central with background skyline",
+        "lighting": "natural, shadows present",
+        "mood": "bustling",
+        "atmosphere": "vibrant",
+        "human_presence": true,
+        "people_count_estimate": 3,
+        "primary_activity": "walking",
+        "dominant_objects": [
+          "food cart",
+          "buildings",
+          "vehicles"
+        ],
+        "tags": [
+          "street",
+          "food cart",
+          "cityscape",
+          "urban",
+          "daytime",
+          "people",
+          "buildings"
+        ],
+        "confidence": 0.9,
+        "palette": [
+          "#c4b09e",
+          "#1c1d1d",
+          "#4ba7c9",
+          "#726861",
+          "#5c859b"
+        ]
+      }
+    },
+    {
+      "file": "pexels_d989c4cab2c2.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 626,
+      "aspect_ratio": "500:626",
+      "classification": {
+        "primary_scene": "busy city intersection",
+        "environment": "urban",
+        "time_of_day": "afternoon",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "aerial view",
+        "camera_angle": "high angle",
+        "composition": "busy street with traffic and pedestrians",
+        "lighting": "natural, soft shadows",
+        "mood": "bustling",
+        "atmosphere": "dynamic",
+        "human_presence": true,
+        "people_count_estimate": 50,
+        "primary_activity": "pedestrians crossing, vehicular traffic",
+        "dominant_objects": [
+          "taxis",
+          "cars",
+          "pedestrians"
+        ],
+        "tags": [
+          "city",
+          "traffic",
+          "people",
+          "intersection",
+          "urban life"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#2e2424",
+          "#b89781",
+          "#756153",
+          "#8c898d",
+          "#929491"
+        ]
+      }
+    },
+    {
+      "file": "pexels_f106fffbd8e0.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 334,
+      "aspect_ratio": "500:334",
+      "classification": {
+        "primary_scene": "Urban street with pedestrians",
+        "environment": "City",
+        "time_of_day": "Daytime",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Wide shot",
+        "camera_angle": "Eye-level",
+        "composition": "Balanced with foreground and background elements",
+        "lighting": "Natural",
+        "mood": "Casual",
+        "atmosphere": "Lively",
+        "human_presence": true,
+        "people_count_estimate": 10,
+        "primary_activity": "Walking",
+        "dominant_objects": [
+          "people",
+          "dog",
+          "vehicles",
+          "buildings"
+        ],
+        "tags": [
+          "city",
+          "street",
+          "pedestrians",
+          "dog",
+          "daytime",
+          "urban"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#9d9993",
+          "#232514",
+          "#e6dac3",
+          "#85712b",
+          "#5a3b29"
+        ]
+      }
+    },
+    {
+      "file": "pexels_1754551f4954.jpg",
+      "source": "pexels",
+      "type": "image",
+      "width": 500,
+      "height": 750,
+      "aspect_ratio": "500:750",
+      "classification": {
+        "primary_scene": "City street with pedestrians",
+        "environment": "Urban",
+        "time_of_day": "Night",
+        "weather": "Clear",
+        "indoor_outdoor": "Outdoor",
+        "shot_type": "Street photography",
+        "camera_angle": "Eye-level",
+        "composition": "Rule of thirds",
+        "lighting": "Artificial street lighting",
+        "mood": "Busy and lively",
+        "atmosphere": "Urban hustle",
+        "human_presence": true,
+        "people_count_estimate": 15,
+        "primary_activity": "Walking and socializing",
+        "dominant_objects": [
+          "Crosswalk",
+          "Street sign",
+          "Bicycles"
+        ],
+        "tags": [
+          "city",
+          "street",
+          "nightlife",
+          "pedestrians",
+          "urban",
+          "crosswalk",
+          "architecture",
+          "lights"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#231e1b",
+          "#c39d6a",
+          "#776045",
+          "#8b918f",
+          "#717f96"
+        ]
+      }
+    },
+    {
+      "file": "pixabay_368a54d4be7b.jpg",
+      "source": "pixabay",
+      "type": "image",
+      "width": 1280,
+      "height": 853,
+      "aspect_ratio": "1280:853",
+      "classification": {
+        "primary_scene": "street with people walking",
+        "environment": "urban",
+        "time_of_day": "evening",
+        "weather": "clear",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "high angle",
+        "composition": "balanced with leading lines",
+        "lighting": "natural with long shadows",
+        "mood": "calm",
+        "atmosphere": "peaceful",
+        "human_presence": true,
+        "people_count_estimate": 10,
+        "primary_activity": "walking and cycling",
+        "dominant_objects": [
+          "people",
+          "bicycles"
+        ],
+        "tags": [
+          "street",
+          "shadows",
+          "walking",
+          "people",
+          "bicycles"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#3b3b3b",
+          "#cacaca",
+          "#878787",
+          "#a4a4a4",
+          "#9c9c9c"
+        ]
+      }
+    },
+    {
+      "file": "pixabay_d7eb12217e10.jpg",
+      "source": "pixabay",
+      "type": "image",
+      "width": 427,
+      "height": 640,
+      "aspect_ratio": "427:640",
+      "classification": {
+        "primary_scene": "urban street",
+        "environment": "city",
+        "time_of_day": "day",
+        "weather": "overcast",
+        "indoor_outdoor": "outdoor",
+        "shot_type": "wide shot",
+        "camera_angle": "eye level",
+        "composition": "leading lines",
+        "lighting": "natural diffused",
+        "mood": "bustling",
+        "atmosphere": "busy",
+        "human_presence": true,
+        "people_count_estimate": 10,
+        "primary_activity": "cycling",
+        "dominant_objects": [
+          "bicycle",
+          "buildings",
+          "traffic lights"
+        ],
+        "tags": [
+          "city",
+          "street",
+          "bicycle",
+          "urban",
+          "pedestrians",
+          "buildings"
+        ],
+        "confidence": 0.95,
+        "palette": [
+          "#2f4048",
+          "#d5d9d8",
+          "#878183",
+          "#9caaac",
+          "#899aa4"
+        ]
+      }
+    }
+  ]
 }
