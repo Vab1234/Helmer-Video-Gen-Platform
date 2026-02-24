@@ -1,316 +1,60 @@
 {
-  "user_prompt": "cat playing in garden with kids",
+  "user_prompt": "highly detailed cinematic professional stock video of a puppy playing in a garden 3",
+  "requested_asset_count": 3,
+  "requested_modality": "video",
   "intent_extraction": {
-    "modality": "image",
-    "domain": "natural",
-    "primary_subject": "cat",
-    "context_scene": "garden with kids",
-    "style_adjectives": []
+    "modality": "video",
+    "domain": "stock footage",
+    "primary_subject": "puppy",
+    "context_scene": "garden",
+    "style_adjectives": [
+      "highly detailed",
+      "cinematic",
+      "professional"
+    ]
   },
   "realism_scoring": {
     "realism_score": 0.9,
     "abstractness_score": 0.1,
-    "rationale": "The subject, a cat, is highly plausible in the context of a garden with kids, as cats are common pets and gardens are typical play areas for children. There are no modifiers that introduce abstraction, keeping the scene grounded in reality. Overall, the concept is very realistic with minimal imaginative elements."
+    "rationale": "The prompt describes a realistic scenario involving a puppy playing in a natural setting, which is commonly captured in stock videos."
   },
-  "feasibility_judgement": {
-    "feasibility_label": "feasible",
-    "realism_overall_score": 0.9,
-    "creative_potential_score": 0.1,
-    "summary": "The scenario of a cat in a garden with kids is highly plausible and realistic, as both elements are common in everyday life. There is ample reference material available for image or video generation, making this concept feasible with minimal creative abstraction."
-  },
+  "market_availability_estimate": 0.8,
   "decision_reasoning": {
-    "reasoning_trace": "The scenario of a cat playing in a garden with kids is highly realistic and feasible, with a high realism score and low abstractness. Given the commonality of such scenes, it is likely that there is ample existing media available for retrieval. The feasibility label indicates that this is a straightforward scenario, suggesting that fetching real media would be efficient. Generating synthetic media, while possible, may introduce unnecessary complexity given the availability of real images. Therefore, fetching from the web is the most sensible option.",
-    "cost_latency_estimate": {
-      "fetch": {
-        "cost": "low",
-        "latency": "low"
-      },
-      "generate": {
-        "cost": "medium",
-        "latency": "medium"
-      }
-    },
-    "final_decision": "fetch_from_web",
+    "reasoning_trace": "Previous attempt returned zero results. Forcing generation.",
+    "final_decision": "generate_with_model",
     "confidence": 0.95
   },
   "fetched_assets": [
     {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_4395fd4c5888.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1661664705305-285d721c0089?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/stylish-happy-woman-in-linen-dress-arranging-flowers-while-cat-playing-and-smelling-wildflowers-on-wooden-table-in-rustic-room-young-female-florist-and-her-pet-at-work-lovely-funny-moment-shPxIwozbgU",
-      "alt": "Stylish happy woman in linen dress arranging flowers while cat playing and smelling wildflowers on wooden table in rustic room. Young female florist and her pet at work, lovely funny moment",
-      "query_used": "cat playing garden kids",
+      "type": "video",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_732d3f59224c.mp4",
+      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
+      "media_url": "https://v3b.fal.media/files/b/0a8fc7b1/e0eTYQ7mPahI7mzRdO1sw_tCXFkZmW.mp4",
+      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
       "width": 0,
       "height": 0,
-      "sha256": "4395fd4c58883d7ec7ec2c8bddc260811cc967ce86d6e665fc8662e323f49fed"
+      "sha256": "732d3f59224c1134f9a4351e031a27da9b9bb8e723367bb95c79eee33fc43abf"
     },
     {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_8541f0467dfb.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1652410817633-52701642dfba?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-a-ledge-roJMv_374Ug",
-      "alt": "a cat sitting on a ledge",
-      "query_used": "cat playing garden kids",
+      "type": "video",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_a441a25dfa33.mp4",
+      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
+      "media_url": "https://v3b.fal.media/files/b/0a8fc7b1/EG73FL791AJkq5Urjo0Cf_v68jAVFf.mp4",
+      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
       "width": 0,
       "height": 0,
-      "sha256": "8541f0467dfb7f4d69bdede0714e3ae40bdf383cc99c8430e56af0f54d58d834"
+      "sha256": "a441a25dfa33ca35efabf64ff9c0358ee7c8eefb58eb010884fc2d633de546a9"
     },
     {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_a4de1ab27556.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1667238810317-a349c0fa2dd1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/circa-1880-a-brood-of-young-chicks-play-amongst-the-convolvus-leighton-brothers-photo-by-hulton-archivegetty-images-n04EhmFm4nQ",
-      "alt": "circa 1880:  A brood of young chicks play amongst the convolvus.  Leighton Brothers  (Photo by Hulton Archive/Getty Images)",
-      "query_used": "cat playing garden kids",
+      "type": "video",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\videos\\unknown_db033009eacd.mp4",
+      "source": "fal-ai/wan/v2.2-a14b/text-to-video",
+      "media_url": "https://v3b.fal.media/files/b/0a8fc7b4/tH4CxhBkitgof1lO3g_Uk_QZiMiw43.mp4",
+      "query_used": "highly detailed cinematic professional stock video of a puppy playing in a garden 3 | intent: stock footage, puppy, garden, highly detailed, cinematic, professional, cinematic, high quality video",
       "width": 0,
       "height": 0,
-      "sha256": "a4de1ab275567dade5468805c5b638969a708642932726b3aa9c51e4b95a7848"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_800235e46cb0.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/19916049/pexels-photo-19916049/free-photo-of-cat-on-trailer-of-toy-tractor.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/cat-on-trailer-of-toy-tractor-19916049/",
-      "alt": "Free Young boy on a toy tractor with a cat in a park setting, enjoying playtime. Stock Photo",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "800235e46cb0b9c1fd7b6ef02cc30684053905994c30c93396957af4c64e2d09"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_098ea8dcfae7.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/7669206/pexels-photo-7669206.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/girl-in-cat-hat-covering-face-7669206/",
-      "alt": "Free Young girl with a playful cat hat holding fruit to her eyes in a sunny garden. Stock Photo",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "098ea8dcfae7838da1817750a0f4814206afae232dfd13981eb9c434c5e00df1"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pexels_be2a92a6c071.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/20703792/pexels-photo-20703792/free-photo-of-little-girl-with-a-cat-on-a-farm.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/little-girl-with-a-cat-on-a-farm-20703792/",
-      "alt": "Free A young girl affectionately interacting with a cat in a rural outdoor setting. Stock Photo",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "be2a92a6c071aa1fb64d543834a44566ff58baa564a25da563c6917805906f24"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_93f9e143eb1e.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2016/11/27/21/49/girl-1863906_1280.jpg",
-      "page_url": "https://pixabay.com/photos/girl-childhood-garden-backyard-1863906/",
-      "alt": "Free Girl Childhood photo and picture",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "93f9e143eb1e4cde707a734d3edeee78aee0131183505c7638784664686fded3"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_b4ec9ead0a6a.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2021/01/19/03/56/girl-5929995_640.jpg",
-      "page_url": "https://pixabay.com/photos/girl-child-flowers-field-playing-5929995/",
-      "alt": "Free Girl Child photo and picture",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "b4ec9ead0a6a29e24b69cdd741c4148fbb0a1d40ad4c8723015030b1a0c3f7f0"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_e82d08289226.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2016/06/06/21/53/child-1440526_640.jpg",
-      "page_url": "https://pixabay.com/photos/child-boy-lake-water-playing-1440526/",
-      "alt": "Free Child Boy photo and picture",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "e82d08289226cb6da59eeebabe2ae57a2815192957c71c5c2d98a682bb2f3a2e"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_6333e5614b46.jpg",
-      "source": "unsplash",
-      "media_url": "https://plus.unsplash.com/premium_photo-1663099586609-5e8d45da1cfb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/portrait-of-small-girl-with-cat-standing-on-farm-looking-at-camera-twp8BmBQnZo",
-      "alt": "Portrait of small girl with cat standing on farm, looking at camera.",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "6333e5614b46a4e43d0f4190a6a9b0d23b47dd1dc596e416d2368fcb264b9126"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_f72016676cdd.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1656910210278-37697901ccdb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/two-animals-in-the-grass-As7TxtW2KxY",
-      "alt": "two animals in the grass",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "f72016676cdd5351e36ced1fa4088a0a881a15ca4c35e11c8c239b133f05b29f"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\unsplash_b6f0042b0a1b.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1649357067195-be0af95b9edc?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2l0dGVuJTIwaW4lMjBnYXJkZW4lMjB3aXRoJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-laying-next-to-a-puppy-on-the-ground-Lo6gwhceoB8",
-      "alt": "a cat laying next to a puppy on the ground",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "b6f0042b0a1b8150326971992518ecf6e20ef5db01a78aa4cc7b382f9f42be5a"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_2d80a0443f05.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2021/01/19/21/16/cat-5932474_1280.jpg",
-      "page_url": "https://pixabay.com/photos/cat-kitten-feline-winter-snow-5932474/",
-      "alt": "Free Cat Kitten photo and picture",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "2d80a0443f05b6d47e086bfdc6e062106952ecce2038b272c138c8f9e9381b5d"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_19be9d609506.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2015/06/09/09/35/animal-children-803123_640.jpg",
-      "page_url": "https://pixabay.com/photos/animal-children-cats-persians-803123/",
-      "alt": "Free Animal Children Cats photo and picture",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "19be9d609506b265385a68720328984d7e6887e30ddc5685f4e8d9d52fb54358"
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\images\\pixabay_78067578ba29.jpg",
-      "source": "pixabay",
-      "media_url": "https://cdn.pixabay.com/photo/2020/03/25/16/01/children-4967808_640.jpg",
-      "page_url": "https://pixabay.com/illustrations/kids-child-small-bear-4967808/",
-      "alt": "Free Kids Child illustration and picture",
-      "query_used": "kitten in garden with children",
-      "width": 0,
-      "height": 0,
-      "sha256": "78067578ba29cf69fc81033e6f668e3d57bff2d0b8f917ca8efd4b3810e39ff2"
+      "sha256": "db033009eacdb8b0576a53ae3a96116debe5ddb2d3c779a5a23511e16ded8488"
     }
   ],
-  "relevant_assets": [
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_be2a92a6c071.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/20703792/pexels-photo-20703792/free-photo-of-little-girl-with-a-cat-on-a-farm.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/little-girl-with-a-cat-on-a-farm-20703792/",
-      "alt": "Free A young girl affectionately interacting with a cat in a rural outdoor setting. Stock Photo",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "be2a92a6c071aa1fb64d543834a44566ff58baa564a25da563c6917805906f24",
-      "score": 0.7,
-      "classification": {
-        "technical": {
-          "orientation": "square"
-        },
-        "semantic": {
-          "shot_type": "Close-up",
-          "lighting": "Natural",
-          "mood": "Happy",
-          "subject": "Child kissing a cat",
-          "aesthetic_score": 8,
-          "keywords": [
-            "child",
-            "cat",
-            "affection",
-            "outdoors",
-            "nature"
-          ]
-        }
-      }
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\pexels_800235e46cb0.jpg",
-      "source": "pexels",
-      "media_url": "https://images.pexels.com/photos/19916049/pexels-photo-19916049/free-photo-of-cat-on-trailer-of-toy-tractor.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "page_url": "https://www.pexels.com/photo/cat-on-trailer-of-toy-tractor-19916049/",
-      "alt": "Free Young boy on a toy tractor with a cat in a park setting, enjoying playtime. Stock Photo",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "800235e46cb0b9c1fd7b6ef02cc30684053905994c30c93396957af4c64e2d09",
-      "score": 0.5,
-      "classification": {
-        "technical": {
-          "orientation": "square"
-        },
-        "semantic": {
-          "shot_type": "Wide",
-          "lighting": "Natural",
-          "mood": "Happy",
-          "subject": "Child riding a toy tractor with a cat",
-          "aesthetic_score": 7,
-          "keywords": [
-            "child",
-            "toy tractor",
-            "cat",
-            "outdoors",
-            "playful"
-          ]
-        }
-      }
-    },
-    {
-      "type": "image",
-      "filename": "C:\\Users\\varun\\OneDrive\\Desktop\\BE proj ts\\Helmer-Video-Gen-Platform\\TYPESCRIPT\\scrape_assets\\relevant_assets\\images\\unsplash_8541f0467dfb.jpg",
-      "source": "unsplash",
-      "media_url": "https://images.unsplash.com/photo-1652410817633-52701642dfba?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0JTIwcGxheWluZyUyMGdhcmRlbiUyMGtpZHN8ZW58MHx8MHx8fDA%3D",
-      "page_url": "https://unsplash.com/photos/a-cat-sitting-on-a-ledge-roJMv_374Ug",
-      "alt": "a cat sitting on a ledge",
-      "query_used": "cat playing garden kids",
-      "width": 0,
-      "height": 0,
-      "sha256": "8541f0467dfb7f4d69bdede0714e3ae40bdf383cc99c8430e56af0f54d58d834",
-      "score": 0.3,
-      "classification": {
-        "technical": {
-          "orientation": "square"
-        },
-        "semantic": {
-          "shot_type": "Wide",
-          "lighting": "Natural",
-          "mood": "Calm",
-          "subject": "Orange cat sitting in a garden",
-          "aesthetic_score": 7,
-          "keywords": [
-            "cat",
-            "garden",
-            "natural light",
-            "outdoor",
-            "tranquil"
-          ]
-        }
-      }
-    }
-  ]
+  "relevant_assets": []
 }

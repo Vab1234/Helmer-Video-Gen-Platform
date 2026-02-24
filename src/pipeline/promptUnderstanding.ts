@@ -1,4 +1,5 @@
 // src/pipeline/promptUnderstanding.ts
+
 import path from "path";
 import { askPromptEngine } from "../openai/askPromptEngine";
 import { SEMANTIC_MAP_PATH } from "../config/constants";
@@ -7,56 +8,56 @@ import {
   SemanticMap,
   IntentExtraction,
   RealismScoring,
-  FeasibilityJudgement,
 } from "../types/semanticMap";
+import type { MediaType } from "../types/semanticMap";
 
 function safeJsonParse<T>(raw: string, label: string): T | undefined {
   try {
     return JSON.parse(raw) as T;
-  } catch (err) {
-    console.error(`⚠️ Error decoding JSON for ${label}:`, err);
-    console.error("Raw output:", raw);
+  } catch (error) {
+    console.error(`Failed to parse JSON output for ${label}.`);
+    console.error("Raw LLM response:", raw);
     return undefined;
   }
 }
 
 export async function runPromptUnderstanding(
-  userPrompt: string
+  userPrompt: string,
+  requestedCount?: number,
+  requestedModality?: MediaType,
 ): Promise<SemanticMap> {
-  console.log("🧠 PROMPT UNDERSTANDING MODULE");
-  console.log("User prompt:", userPrompt);
-  console.log("====================================");
+
+  console.log("\n--- PROMPT UNDERSTANDING MODULE ---");
+  console.log("Input Prompt:", userPrompt);
+  console.log("-----------------------------------");
 
   const unifiedPrompt = `
-You are performing **Prompt Understanding** in ONE pass.
+Perform structured Prompt Understanding.
 
 User Prompt:
 "${userPrompt}"
 
-Your tasks (do them internally, step by step):
+Internally reason step-by-step. Do NOT reveal reasoning.
+Return ONLY valid JSON.
 
-1. **Intent Extraction**
-   - modality
+Tasks:
+
+1) Intent Extraction
+   - modality (image | video | audio)
    - domain
    - primary_subject
    - context_scene
-   - style_adjectives
+   - style_adjectives (array)
 
-2. **Realism & Abstractness Scoring**
-   - realism_score (0.0–1.0)
-   - abstractness_score (0.0–1.0)
-   - rationale
+2) Realism Scoring
+   - realism_score (0–1)
+   - abstractness_score (0–1)
+   - short rationale
 
-3. **Feasibility Judgement**
-   - feasibility_label (feasible / partially_feasible / fantasy)
-   - realism_overall_score (0.0–1.0)
-   - creative_potential_score (0.0–1.0)
-   - summary
+3) Market Availability
+   - Estimate commonness in free stock libraries (0–1)
 
-⚠️ IMPORTANT:
-- Think carefully but DO NOT expose chain-of-thought.
-- Return ONLY valid JSON.
-- Match this EXACT schema:
+Schema:
 
 {
   "intent_extraction": {
@@ -71,46 +72,46 @@ Your tasks (do them internally, step by step):
     "abstractness_score": 0.0,
     "rationale": ""
   },
-  "feasibility_judgement": {
-    "feasibility_label": "",
-    "realism_overall_score": 0.0,
-    "creative_potential_score": 0.0,
-    "summary": ""
-  }
+  "market_availability_estimate": 0.0
 }
 `.trim();
 
-  // 🔒 SINGLE LLM CALL
   const raw = await askPromptEngine(unifiedPrompt);
-  console.log("\n🧠 Prompt Understanding Raw Output:\n", raw);
+
+  // 🔥 PRINT RAW JSON FROM LLM
+  console.log("\n--- RAW LLM RESPONSE ---");
+  console.log(raw);
+  console.log("------------------------\n");
 
   const parsed = safeJsonParse<{
-  intent_extraction: IntentExtraction;
-  realism_scoring: RealismScoring;
-  feasibility_judgement: FeasibilityJudgement;
+    intent_extraction: IntentExtraction;
+    realism_scoring: RealismScoring;
+    market_availability_estimate: number;
   }>(raw, "prompt_understanding");
 
-
   const semanticMap: SemanticMap = {
-  user_prompt: userPrompt,
-  intent_extraction: parsed?.intent_extraction ?? {},
-  realism_scoring: parsed?.realism_scoring ?? {},
-  feasibility_judgement: parsed?.feasibility_judgement ?? {},
-};
-
-
-  console.log("\n🗺️ Semantic Map:\n");
-  console.log(JSON.stringify(semanticMap, null, 2));
+    user_prompt: userPrompt,
+    requested_asset_count: requestedCount,
+    requested_modality: requestedModality,
+    intent_extraction: parsed?.intent_extraction ?? {},
+    realism_scoring: parsed?.realism_scoring ?? {},
+    market_availability_estimate:
+      parsed?.market_availability_estimate ?? 0.5,
+  };
 
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
 
   console.log(
-    `\n✅ Semantic map saved to: ${path.relative(
+    `Semantic map saved to: ${path.relative(
       process.cwd(),
       SEMANTIC_MAP_PATH
     )}`
   );
-  console.log("This file will be used in next pipeline steps.\n");
+
+  console.log("Parsed Semantic Map:");
+  console.log(JSON.stringify(semanticMap, null, 2));
+
+  console.log("Prompt understanding stage completed.\n");
 
   return semanticMap;
 }

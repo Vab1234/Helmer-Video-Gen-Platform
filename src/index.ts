@@ -8,12 +8,102 @@ import { readJson } from "./utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "./config/constants";
 import type { SemanticMap } from "./types/semanticMap";
 import { runAssetClassification } from "./pipeline/assetClassifier";
+import { refineUserPrompt } from "./pipeline/promptRefiner";
+import type { MediaType } from "./types/semanticMap";
+
+
 const mode = process.env.HELMER_MODE || "full";
 const MAX_RETRIES = 2; // Total attempts = 3
+
+/**
+ * Orchestrator: Controls the agentic execution loop
+ */
+async function runOrchestrator(initialPrompt: string,requestedCount?: number,
+  requestedModality?: "image" | "video" | "audio") {
+  let currentPrompt = initialPrompt;
+  let attempts = 0;
+  let satisfied = false;
+
+  while (attempts <= MAX_RETRIES && !satisfied) {
+    console.log(`\n--- AGENTIC LOOP | Attempt ${attempts + 1} ---`);
+
+    try {
+      await runPromptUnderstanding(currentPrompt, requestedCount, requestedModality);
+      await runDecisionReasoning(attempts+1);
+
+      const semanticMap =
+        (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ??
+        ({} as SemanticMap);
+
+      const decision =
+        semanticMap.decision_reasoning?.final_decision ?? "";
+
+      console.log("Decision:", decision);
+
+      // Execution phase
+      if (decision === "generate_with_model") {
+        await runGenerateWithFal();
+      } else if (
+        decision === "fetch_from_web" ||
+        decision === "hybrid_fetch_and_enhance"
+      ) {
+        await runFetchAssets();
+        if (decision === "hybrid_fetch_and_enhance") {
+          await runGenerateWithFal();
+        }
+      } else {
+        await runFetchAssets();
+      }
+
+      await runRelevanceMatching();
+      await runAssetClassification();
+
+      const updatedMap =
+        (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ??
+        ({} as SemanticMap);
+
+      const relevantAssets = updatedMap.relevant_assets || [];
+
+      // Satisfaction criteria
+      if (relevantAssets.length >= 3) {
+        console.log(
+          `Success: ${relevantAssets.length} relevant assets identified.`
+        );
+        satisfied = true;
+      } else {
+        console.warn(
+          `Only ${relevantAssets.length} relevant assets found. Refining prompt and retrying...`
+        );
+        currentPrompt = `highly detailed cinematic professional stock ${initialPrompt}`;
+        attempts++;
+      }
+    } catch (error) {
+      console.error(
+        `Execution error during attempt ${attempts + 1}:`,
+        error
+      );
+      attempts++;
+    }
+  }
+
+  if (!satisfied) {
+    console.error(
+      "Execution completed. Satisfaction criteria not met within retry limit."
+    );
+  } else {
+    console.log("Pipeline completed successfully.");
+  }
+}
+
+/**
+ * Validates that mandatory prompt fields exist
+ */
+
 function askFromStdin(question: string): Promise<string> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
+    terminal: true,
   });
 
   return new Promise((resolve) => {
@@ -24,128 +114,62 @@ function askFromStdin(question: string): Promise<string> {
   });
 }
 
-/**
- * Orchestrator: Manages the agentic feedback loop
- */
-async function runOrchestrator(initialPrompt: string) {
-  let currentPrompt = initialPrompt;
-  let attempts = 0;
-  let satisfied = false;
+async function main() {
+  console.log("Helmer Pipeline Initializing...");
 
-  while (attempts <= MAX_RETRIES && !satisfied) {
-    console.log(`\n🔄 --- AGENTIC LOOP: ATTEMPT ${attempts + 1} ---`);
-    
-    try {
-      // 1. Prompt Understanding
-      await runPromptUnderstanding(currentPrompt);
+  let cliPrompt = process.argv.slice(2).join(" ").trim();
 
-      // 2. Decision Reasoning
-      await runDecisionReasoning();
+  if (!cliPrompt) {
+    cliPrompt = await askFromStdin("Enter prompt: ");
+  }
 
-      const semanticMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
-      const decision = semanticMap.decision_reasoning?.final_decision ?? "";
-      console.log("🧭 Final decision from reasoning module:", decision);
+  if (!cliPrompt) {
+    console.error("No prompt provided. Terminating execution.");
+    return;
+  }
 
-      // 3. Execution (Fetch / Generate)
-      if (decision === "generate_with_model") {
-        await runGenerateWithFal();
-      } else if (decision === "fetch_from_web" || decision === "hybrid_fetch_and_enhance") {
-        await runFetchAssets();
-        if (decision === "hybrid_fetch_and_enhance") await runGenerateWithFal();
-      } else {
-        await runFetchAssets();
-      }
-      // 4. Relevance Matching (The Evaluator)
-      await runRelevanceMatching();
+  let isReady = false;
+  let currentPrompt = cliPrompt;
 
-      //5. Classification Step
-      await runAssetClassification();
+  let requestedCount: number | undefined;
+  let requestedModality: MediaType | undefined;
 
+  // Intelligent refinement loop
+  while (!isReady) {
+    const refinement = await refineUserPrompt(currentPrompt);
 
-      // 6. Feedback / Evaluation Step
-      const updatedMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
-      const relevantAssets = updatedMap.relevant_assets || [];
-      
-      // Satisfaction Criteria: At least 3 high-quality assets
-      if (relevantAssets.length >= 3) {
-        console.log(`✅ Satisfaction Met: Found ${relevantAssets.length} relevant assets.`);
-        satisfied = true;
-      } else {
-        console.warn(`⚠️ Only found ${relevantAssets.length} assets. Refining prompt for retry...`);
-        // Basic prompt refinement logic - in a real agent, use an LLM for "reflection"
-        currentPrompt = `highly detailed cinematic professional stock ${initialPrompt}`;
-        attempts++;
-      }
+    if (refinement.isComplete) {
+      isReady = true;
+      cliPrompt = refinement.refinedPrompt;
 
-    } catch (err) {
-      console.error(`\n❌ Error during attempt ${attempts + 1}:`, err);
-      attempts++; // Treat errors as a failed attempt to try again or exit
+      requestedCount = refinement.count ?? 1;
+      requestedModality = refinement.modality;
+
+      console.log("\n--- USER REQUEST SUMMARY ---");
+      console.log("Modality:", requestedModality);
+      console.log("Requested Count:", requestedCount);
+      console.log("-----------------------------\n");
+
+    } else {
+      console.log(`\nHELMER: ${refinement.message}`);
+      const supplementaryInfo = await askFromStdin("Your response: ");
+      currentPrompt = `${currentPrompt} ${supplementaryInfo}`.trim();
     }
   }
-
-  if (!satisfied) {
-    console.error("\n❌ Pipeline finished after max retries without meeting satisfaction.");
-  } else {
-    console.log("\n✨ Pipeline Finished Successfully.");
-  }
-}
-
-async function main() {
-  const cliPrompt = process.argv.slice(2).join(" ").trim();
-  
-  if (!cliPrompt) {
-  const prompt = await askFromStdin("Enter prompt: ");
-  await runOrchestrator(prompt);
-  return;
-}
-
 
   try {
     if (mode === "stage1") {
-      console.log("🚀 Running Stage 1 + 2 (analysis only)...");
-      await runPromptUnderstanding(cliPrompt);
+      await runPromptUnderstanding(cliPrompt, requestedCount, requestedModality);
       await runDecisionReasoning();
-      return;
+    } else {
+      await runOrchestrator(cliPrompt, requestedCount, requestedModality);
     }
-
-    if (mode === "stage3_direct") {
-      console.log("🚀 Running Stage 1 → 3 DIRECT EXECUTION...");
-
-      await runPromptUnderstanding(cliPrompt);
-      await runDecisionReasoning();
-
-      const semanticMap = (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
-      const decision = semanticMap.decision_reasoning?.final_decision;
-
-      console.log("🧭 Final decision:", decision);
-
-      if (decision === "generate_with_model") {
-        await runGenerateWithFal();
-      } else if (decision === "fetch_from_web") {
-        await runFetchAssets();
-      } else if (decision === "hybrid_fetch_and_enhance") {
-        await runFetchAssets();
-        await runGenerateWithFal();
-      } else {
-        console.warn("⚠️ Unknown decision, defaulting to fetch.");
-        await runFetchAssets();
-      }
-
-      console.log("✅ Stage 3 execution finished.");
-      return;
-    }
-
-    // Default: Run the full orchestrator if no specific stage mode matches
-    await runOrchestrator(cliPrompt);
-
-  } catch (err) {
-    console.error("❌ Error in main execution:", err);
+  } catch (error) {
+    console.error("Fatal execution error:", error);
     process.exit(1);
-  } // <--- Added closing brace for try/catch
-} // <--- Added closing brace for function// This check ensures main() only runs if the file is executed directly
-if (require.main === module || !module.parent) {
-    main().catch(err => {
-        console.error("❌ Critical error during execution:", err);
-        process.exit(1);
-    });
+  }
 }
+main().catch((error) => {
+  console.error("Critical failure:", error);
+  process.exit(1);
+});

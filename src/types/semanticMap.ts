@@ -68,13 +68,30 @@ export interface AssetSemanticClassification {
 // src/types/semanticMap.ts
 
 export interface AssetSemantics {
+  primary_scene?: string;
+  environment?: string;
+  time_of_day?: string;
+  weather?: string;
+  indoor_outdoor?: string;
+
   shot_type?: string;
   camera_angle?: string;
+  composition?: string;
   lighting?: string;
+
   mood?: string;
-  primary_scene_label?: string;
+  atmosphere?: string;
+
+  human_presence?: boolean;
+  people_count_estimate?: number;
+  primary_activity?: string;
+
+  dominant_objects?: string[];
+  tags?: string[];
+
   confidence?: number;
-  palette?: string[]; // For your ColorThief hex codes
+
+  palette?: string[];
 }
 
 export interface AssetClassification {
@@ -113,9 +130,14 @@ export interface FetchedAsset {
 
 export interface SemanticMap {
   user_prompt: string;
+
+  requested_asset_count?: number;  // ✅ ADD THIS
+  requested_modality?: MediaType;  // ✅ OPTIONAL BUT CLEAN
+
   intent_extraction?: IntentExtraction;
   realism_scoring?: RealismScoring;
   feasibility_judgement?: FeasibilityJudgement;
+  market_availability_estimate?: number;
   decision_reasoning?: DecisionReasoning;
   fetched_assets?: FetchedAsset[];
   relevant_assets?: FetchedAsset[];

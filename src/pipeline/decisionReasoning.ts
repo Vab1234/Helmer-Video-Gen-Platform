@@ -1,4 +1,5 @@
 // src/pipeline/decisionReasoning.ts
+
 import { readJson, writeJson } from "../utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "../config/constants";
 import type {
@@ -10,81 +11,148 @@ import { askDecisionEngine } from "../openai/askDecisionEngine";
 function safeJsonParse<T>(raw: string, label: string): T | undefined {
   try {
     return JSON.parse(raw) as T;
-  } catch (err) {
-    console.error(`⚠️ Error decoding JSON for ${label}:`, err);
-    console.error("Raw output:", raw);
+  } catch (error) {
+    console.error(`Failed to parse JSON output for ${label}.`);
+    console.error("Raw LLM response:", raw);
     return undefined;
   }
 }
 
-export async function runDecisionReasoning(): Promise<SemanticMap> {
-  console.log("==================================================");
-  console.log("🧩 DECISION REASONING MODULE (Step 2)");
-  console.log("==================================================");
+export async function runDecisionReasoning(
+  attemptNumber = 1
+): Promise<SemanticMap> {
+
+  console.log("\n--- DECISION REASONING MODULE ---");
 
   const semanticMap =
-    (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ?? ({} as SemanticMap);
+    (await readJson<SemanticMap>(SEMANTIC_MAP_PATH)) ??
+    ({} as SemanticMap);
 
   if (!semanticMap.user_prompt) {
     throw new Error(
-      `No semantic map found at ${SEMANTIC_MAP_PATH}. Run prompt understanding first.`
+      `Semantic map not found at ${SEMANTIC_MAP_PATH}. Please run prompt understanding first.`
     );
   }
 
+  const previousResults = semanticMap.relevant_assets?.length ?? 0;
+  const realism =
+    semanticMap.realism_scoring?.realism_score ?? 0.5;
+  const scarcity =
+    semanticMap.market_availability_estimate ?? 0.5;
+
+  // -----------------------------------
+  // 🚨 HARD OVERRIDES (NO LLM)
+  // -----------------------------------
+
+  // Retry override
+  if (attemptNumber > 1 && previousResults === 0) {
+    console.log("Retry with zero results → forcing generation.");
+
+    semanticMap.decision_reasoning = {
+      reasoning_trace:
+        "Previous attempt returned zero results. Forcing generation.",
+      final_decision: "generate_with_model",
+      confidence: 0.95,
+    };
+
+    await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+    return semanticMap;
+  }
+
+  // Scarcity override
+  if (scarcity < 0.3) {
+    console.log("Very rare content → generating.");
+
+    semanticMap.decision_reasoning = {
+      reasoning_trace:
+        "Market availability extremely low. Generating synthetic media.",
+      final_decision: "generate_with_model",
+      confidence: 0.9,
+    };
+
+    await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+    return semanticMap;
+  }
+
+  // -----------------------------------
+  // ⚡ HIGH-CONFIDENCE RULE ZONE
+  // -----------------------------------
+
+  // Obvious fetch case
+  if (realism > 0.8 && scarcity > 0.7) {
+    console.log("High realism + high availability → fetch.");
+
+    semanticMap.decision_reasoning = {
+      reasoning_trace:
+        "High realism and high stock availability. Fetching from web.",
+      final_decision: "fetch_from_web",
+      confidence: 0.85,
+    };
+
+    await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+    return semanticMap;
+  }
+
+  // Obvious generate case
+  if (realism < 0.3) {
+    console.log("Low realism (fantasy/abstract) → generate.");
+
+    semanticMap.decision_reasoning = {
+      reasoning_trace:
+        "Low realism indicates fantasy or abstract content. Generating.",
+      final_decision: "generate_with_model",
+      confidence: 0.85,
+    };
+
+    await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+    return semanticMap;
+  }
+
+  // -----------------------------------
+  // 🤖 AMBIGUOUS ZONE → CALL LLM
+  // -----------------------------------
+
+  console.log("Ambiguous zone detected → calling LLM decision engine.");
+
   const decisionPrompt = `
-You are performing *Decision Reasoning* based on the following semantic map:
+You are performing Decision Reasoning based on this semantic map:
 
 ${JSON.stringify(semanticMap, null, 2)}
 
-Your task:
+Consider:
+- realism_score
+- abstractness_score
+- market_availability_estimate
+- attempt number
+- previous results
 
-1. **Perform contextual reasoning**:
-   - Examine the realism_score and abstractness_score.
-   - Consider the feasibility_label and creative_potential_score.
-   - Think step-by-step about what kind of media retrieval makes sense.
+Choose ONE:
+- "fetch_from_web"
+- "generate_with_model"
+- "hybrid_fetch_and_enhance"
 
-2. **Estimate Cost and Latency**:
-   Estimate the computational cost and time latency for both options:
-   - Fetch (search or retrieve real media)
-   - Generate (create synthetic image/video)
-   Classify each as: "low", "medium", or "high" cost and latency.
-
-3. **Decide Fetch vs Generate**:
-   Based on your reasoning, choose ONE of:
-   - "fetch_from_web"
-   - "generate_with_model"
-   - "hybrid_fetch_and_enhance"
-
-4. Return the result as JSON in this format:
+Return valid JSON:
 {
-  "reasoning_trace": "Your short reasoning chain-of-thought (natural language, concise).",
-  "cost_latency_estimate": {
-      "fetch": {"cost": "", "latency": ""},
-      "generate": {"cost": "", "latency": ""}
-  },
+  "reasoning_trace": "",
   "final_decision": "",
   "confidence": 0.0
 }
 `.trim();
 
   const raw = await askDecisionEngine(decisionPrompt);
-  console.log("\n🧠 Decision Reasoning Raw Output:\n", raw);
 
   const decisionData =
-    safeJsonParse<DecisionReasoning>(raw, "decision_reasoning") ?? {};
+    safeJsonParse<DecisionReasoning>(raw, "decision_reasoning") ?? {
+      reasoning_trace: "Fallback to hybrid due to parse failure.",
+      final_decision: "hybrid_fetch_and_enhance",
+      confidence: 0.6,
+    };
 
-  const updated: SemanticMap = {
-    ...semanticMap,
-    decision_reasoning: decisionData,
-  };
+  semanticMap.decision_reasoning = decisionData;
 
-  console.log("\n🧠 Decision Reasoning Summary:");
-  console.log(JSON.stringify(decisionData, null, 2));
+  await writeJson(SEMANTIC_MAP_PATH, semanticMap);
 
-  await writeJson(SEMANTIC_MAP_PATH, updated);
-  console.log(
-    `\n✅ Updated semantic_map.json saved with decision reasoning results at ${SEMANTIC_MAP_PATH}`
-  );
+  console.log("LLM decision completed and saved.\n");
 
-  return updated;
+  return semanticMap;
 }

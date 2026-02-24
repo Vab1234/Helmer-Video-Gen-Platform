@@ -8,7 +8,6 @@ import ffprobe from "ffprobe-static";
 import ffmpeg from "ffmpeg-static";
 import OpenAI from "openai";
 import sizeOf from "image-size";
-import * as mime from "mime-types";
 import sharp from "sharp";
 import { readJson, writeJson } from "../utils/fileUtils";
 import { SEMANTIC_MAP_PATH } from "../config/constants";
@@ -146,7 +145,45 @@ async function getOpenAIVisualSemantics(filePath: string) {
         {
           role: "user",
           content: [
-            { type: "text", text: "Analyze this image and return JSON..." },
+            {
+  type: "text",
+  text: `
+Analyze this image and return structured JSON describing its visual semantics.
+
+Return ONLY valid JSON with the following fields:
+
+{
+  "primary_scene": "",
+  "environment": "",
+  "time_of_day": "",
+  "weather": "",
+  "indoor_outdoor": "",
+
+  "shot_type": "",
+  "camera_angle": "",
+  "composition": "",
+  "lighting": "",
+
+  "mood": "",
+  "atmosphere": "",
+
+  "human_presence": true,
+  "people_count_estimate": 0,
+  "primary_activity": "",
+
+  "dominant_objects": [],
+  "tags": [],
+
+  "confidence": 0.0
+}
+
+Guidelines:
+- Describe what is visually observable.
+- Do NOT invent unseen details.
+- Keep tags useful for media search.
+- Use simple professional terminology.
+`
+},
             {
               type: "image_url",
               image_url: { url: `data:${mimeType};base64,${base64Image}` },
@@ -195,12 +232,16 @@ export async function runAssetClassification(): Promise<void> {
 
     const semantics = await getOpenAIVisualSemantics(framePath);
 
-    const paletteRgb = await ColorThief.getPalette(framePath, 5);
-    const palette = paletteRgb.map((rgb: number[]) => {
-      const hex = rgb.map((x) => x.toString(16).padStart(2, "0")).join("");
-      return `#${hex}`;
-    });
+      let palette: string[] = [];
 
+      try {
+        const paletteRgb = await ColorThief.getPalette(framePath, 5);
+        palette = paletteRgb.map((rgb: number[]) =>
+          "#" + rgb.map((x) => x.toString(16).padStart(2, "0")).join("")
+        );
+      } catch {
+        palette = [];
+      }
     if (techData.type === "video") {
       await safeUnlink(framePath);
     }
@@ -210,28 +251,77 @@ export async function runAssetClassification(): Promise<void> {
       origin: asset.source?.includes("fal") ? "generated" : "scraped",
       aspect_ratio: techData.aspect_ratio,
       semantics: {
-        ...semantics,
+        ...(semantics || {}),
         palette,
       },
     } as any;
 
     console.log(`[classified] ${path.basename(asset.filename)}`);
   }
-  // --- Add this Summary Table ---
-  console.log("\n" + "=".repeat(50));
-  console.log("📊 FINAL CLASSIFICATION SUMMARY");
-  console.log("=".repeat(50));
+  console.log("\n" + "=".repeat(60));
+console.log("🎯 FINAL RELEVANT ASSETS");
+console.log("=".repeat(60));
 
-  const summaryData = semanticMap.relevant_assets.map(asset => ({
-    File: path.basename(asset.filename).substring(0, 20),
-    Type: asset.classification?.technical?.type || "N/A",
-    Shot: asset.classification?.semantics?.shot_type || "N/A",
-    Mood: asset.classification?.semantics?.mood || "N/A",
-    Colors: asset.classification?.semantics?.palette?.join(", ") || "N/A"
+semanticMap.relevant_assets.forEach((asset, i) => {
+  const tech = asset.classification?.technical as any;
+  const sem = asset.classification?.semantics || {};
+
+  console.log(`\n🖼️  Asset ${i + 1}`);
+  console.log("-".repeat(60));
+
+  console.log(`File        : ${path.basename(asset.filename)}`);
+  console.log(`Source      : ${asset.source}`);
+  console.log(`Type        : ${tech.type}`);
+  console.log(`Resolution  : ${tech.width}x${tech.height}`);
+  console.log(`Aspect Ratio: ${tech.aspect_ratio}`);
+
+  console.log("\n📍 Scene Understanding");
+  console.log(`Scene       : ${sem.primary_scene || "N/A"}`);
+  console.log(`Environment : ${sem.environment || "N/A"}`);
+  console.log(`Time of Day : ${sem.time_of_day || "N/A"}`);
+  console.log(`Weather     : ${sem.weather || "N/A"}`);
+
+  console.log("\n🎬 Cinematic Attributes");
+  console.log(`Lighting    : ${sem.lighting || "N/A"}`);
+  console.log(`Shot Type   : ${sem.shot_type || "N/A"}`);
+  console.log(`Camera Angle: ${sem.camera_angle || "N/A"}`);
+  console.log(`Mood        : ${sem.mood || "N/A"}`);
+
+  console.log("\n👤 Content");
+  console.log(`Human       : ${sem.human_presence ?? "N/A"}`);
+  console.log(`Activity    : ${sem.primary_activity || "N/A"}`);
+
+  console.log("\n🏷️ Tags");
+  console.log(`${(sem.tags || []).join(", ") || "N/A"}`);
+
+  console.log("\n🎨 Color Palette");
+  console.log(`${(sem.palette || []).join(", ") || "N/A"}`);
+});
+const summaryData = semanticMap.relevant_assets.map(asset => ({
+  File: path.basename(asset.filename),
+  Scene: asset.classification?.semantics?.primary_scene || "N/A",
+  Mood: asset.classification?.semantics?.mood || "N/A",
+  Lighting: asset.classification?.semantics?.lighting || "N/A"
 }));
 
 console.table(summaryData);
+const finalResults = semanticMap.relevant_assets.map(asset => ({
+  file: path.basename(asset.filename),
+  source: asset.source || "unknown",
+  type: asset.classification?.technical?.type,
+  width: asset.classification?.technical?.width,
+  height: asset.classification?.technical?.height,
+  aspect_ratio: asset.classification?.technical?.aspect_ratio,
+
+  classification: asset.classification?.semantics || {},
+}));
+
+// Replace semantic map output with clean results
+  semanticMap.results = finalResults;
+  delete semanticMap.fetched_assets;
+  delete semanticMap.relevant_assets;
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+
 
   console.log("==================================================");
   console.log("✅ Classification Complete");

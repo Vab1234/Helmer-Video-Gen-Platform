@@ -1,172 +1,211 @@
-// src/pipeline/relevanceMatching.ts
-
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 import OpenAI from "openai";
-
 import { readJson, writeJson, ensureDir } from "../utils/fileUtils";
 import { SEMANTIC_MAP_PATH, DEST_DIR } from "../config/constants";
 import type { SemanticMap, FetchedAsset } from "../types/semanticMap";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const MIN_SCORE = 0.55;
-const TOP_K_MINIMUM = 5;
+const REL_IMG = path.join(DEST_DIR, "relevant_assets", "images");
+const BATCH_SIZE = 8;
+const MIN_SCORE = 0.55; // relevance threshold
 
-const RELEVANT_DIR = path.join(DEST_DIR, "relevant_assets");
-const REL_IMG = path.join(RELEVANT_DIR, "images");
-const REL_VID = path.join(RELEVANT_DIR, "videos");
-const REL_AUD = path.join(RELEVANT_DIR, "audio");
+/* ------------------------------------------------ */
+/* Convert & validate image                         */
+/* ------------------------------------------------ */
 
-/* ----------------------- HELPERS ----------------------- */
-
-function cosineSimilarity(a: number[], b: number[]): number {
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-  const magA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
-  const magB = Math.sqrt(b.reduce((sum, val) => sum + val * val, 0));
-  return dot / (magA * magB);
-}
-
-async function validateImage(filePath: string): Promise<boolean> {
+async function processImageForAPI(filePath: string): Promise<string | null> {
   try {
-    if (!fs.existsSync(filePath)) return false;
-    await sharp(filePath).metadata();
-    return true;
-  } catch {
-    return false;
-  }
-}
+    const inputBuffer = fs.readFileSync(filePath);
 
-async function getImageCaption(filePath: string): Promise<string | null> {
-  try {
-    const buffer = fs.readFileSync(filePath);
+    const metadata = await sharp(inputBuffer).metadata();
 
-    // 🔥 Detect real format using sharp
-    const metadata = await sharp(buffer).metadata();
+    const supported = ["jpeg", "jpg", "png", "gif", "webp"];
+    let finalBuffer: Buffer;
 
-    if (!metadata.format) {
-      console.warn("Unknown format:", filePath);
-      return null;
+    if (!metadata.format || !supported.includes(metadata.format)) {
+      console.log(`🔄 Converting ${path.basename(filePath)} → jpeg`);
+      finalBuffer = Buffer.from(
+        await sharp(inputBuffer).jpeg().toBuffer()
+      );
+    } else {
+      finalBuffer = Buffer.from(inputBuffer);
     }
 
-    const mimeType = `image/${metadata.format}`;
-    const base64 = buffer.toString("base64");
+    const format =
+      metadata.format === "jpg" ? "jpeg" : metadata.format || "jpeg";
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      temperature: 0,
-      messages: [
-        {
-          role: "system",
-          content: "Describe this image briefly in one clear sentence.",
-        },
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "What is happening in this image?" },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:${mimeType};base64,${base64}`,
-              },
-            },
-          ],
-        },
-      ],
-    });
-
-    return response.choices[0].message.content || null;
+    return `data:image/${format};base64,${finalBuffer.toString("base64")}`;
   } catch (err) {
-    console.error("Caption error:", filePath, err);
+    console.error(`❌ Image processing failed: ${path.basename(filePath)}`);
     return null;
   }
 }
 
+/* ------------------------------------------------ */
+/* Extract intent priorities from prompt            */
+/* ------------------------------------------------ */
 
-async function getEmbedding(text: string): Promise<number[]> {
-  const response = await openai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: text,
-  });
+async function extractIntent(prompt: string) {
+  const resp = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    response_format: { type: "json_object" },
+    messages: [
+      {
+        role: "system",
+        content: `
+Extract structured intent from the user prompt.
 
-  return response.data[0].embedding;
+Return JSON:
+
+{
+  "primary_subject": "",
+  "primary_action": "",
+  "supporting_objects": [],
+  "relationships": [],
+  "conflicting_actions_to_reject": []
 }
 
-/* ----------------------- MAIN ----------------------- */
+Rules:
+- primary_action = main verb/action
+- supporting_objects = secondary items
+- relationships = spatial words (beside, on table, next to)
+- conflicting actions = actions that contradict the main action
+`
+      },
+      { role: "user", content: prompt }
+    ]
+  });
+
+  return JSON.parse(resp.choices[0].message.content || "{}");
+}
+
+/* ------------------------------------------------ */
+/* MAIN MATCHER                                     */
+/* ------------------------------------------------ */
 
 export async function runRelevanceMatching(): Promise<void> {
   console.log("==================================================");
-  console.log("🎯 OPENAI RELEVANCE MATCHING (NO CLIP)");
+  console.log("🎯 INTENT-AWARE RELEVANCE MATCHING");
   console.log("==================================================");
 
   const semanticMap = await readJson<SemanticMap>(SEMANTIC_MAP_PATH);
   if (!semanticMap?.fetched_assets?.length) return;
 
-  const userPrompt = semanticMap.user_prompt;
+  const prompt = semanticMap.user_prompt;
+  const intent = await extractIntent(prompt);
 
-  // Embed prompt once
-  const promptEmbedding = await getEmbedding(userPrompt);
+  console.log("🧠 Intent Extracted:", intent);
+
+  const images = semanticMap.fetched_assets.filter(a => a.type === "image");
+  const finalRelevantAssets: FetchedAsset[] = [];
 
   await ensureDir(REL_IMG);
-  await ensureDir(REL_VID);
-  await ensureDir(REL_AUD);
 
-  const scoredAssets: (FetchedAsset & { score: number })[] = [];
+  for (let i = 0; i < images.length; i += BATCH_SIZE) {
+    const batch = images.slice(i, i + BATCH_SIZE);
 
-  for (const asset of semanticMap.fetched_assets) {
-    if (asset.type !== "image") continue;
+    const contentParts = [];
+    const validAssets: FetchedAsset[] = [];
 
-    const isValid = await validateImage(asset.filename);
-    if (!isValid) {
-      await fs.promises.unlink(asset.filename).catch(() => {});
-      continue;
+    for (const asset of batch) {
+      const dataUrl = await processImageForAPI(asset.filename);
+      if (!dataUrl) continue;
+
+      contentParts.push({
+        type: "image_url" as const,
+        image_url: { url: dataUrl, detail: "low" as const }
+      });
+
+      validAssets.push(asset);
     }
 
-    const caption = await getImageCaption(asset.filename);
-    if (!caption) continue;
+    if (!contentParts.length) continue;
 
-    const captionEmbedding = await getEmbedding(caption);
+    console.log(`📡 Evaluating ${contentParts.length} images`);
 
-    const similarity = cosineSimilarity(promptEmbedding, captionEmbedding);
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `
+You are an expert visual relevance evaluator.
 
-    scoredAssets.push({ ...asset, score: similarity });
+Evaluate how well each image matches the user's intent.
 
-    console.log(
-      `[score] ${similarity.toFixed(4)} | ${path.basename(asset.filename)}`
-    );
-  }
+PRIMARY MATCH REQUIREMENTS:
+- Must match primary action.
+- Must match primary subject.
 
-  scoredAssets.sort((a, b) => b.score - a.score);
+SECONDARY MATCH:
+- Supporting objects improve score.
 
-  const relevantAssets: FetchedAsset[] = [];
+RELATIONSHIPS:
+- Respect spatial relationships if present.
 
-  for (let i = 0; i < scoredAssets.length; i++) {
-    const asset = scoredAssets[i];
-    const isTopK = i < TOP_K_MINIMUM;
-    const isKeeper = asset.score >= MIN_SCORE || isTopK;
+REJECT IF:
+- action contradicts primary action
+- subject is missing
+- supporting object becomes dominant focus
+- scene conflicts with prompt
 
-    console.log(
-      `[select] ${isKeeper ? "✅ KEEP" : "❌ SKIP"} | ${asset.score.toFixed(
-        4
-      )} | ${path.basename(asset.filename)}`
-    );
+Return JSON:
 
-    if (isKeeper) {
-      const destPath = path.join(REL_IMG, path.basename(asset.filename));
-      await fs.promises.copyFile(asset.filename, destPath);
-      relevantAssets.push({ ...asset, filename: destPath });
+{
+  "results": [
+    { "index": 0, "score": 0.92 },
+    { "index": 1, "score": 0.31 }
+  ]
+}
+`
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `
+USER PROMPT: "${prompt}"
+
+PRIMARY SUBJECT: ${intent.primary_subject}
+PRIMARY ACTION: ${intent.primary_action}
+SUPPORTING OBJECTS: ${intent.supporting_objects?.join(", ")}
+RELATIONSHIPS: ${intent.relationships?.join(", ")}
+
+Evaluate images and score relevance (0–1).
+`
+            },
+            ...contentParts
+          ]
+        }
+      ]
+    });
+
+    const parsed = JSON.parse(response.choices[0].message.content || "{}");
+
+    for (const r of parsed.results || []) {
+      if (r.score >= MIN_SCORE) {
+        const asset = validAssets[r.index];
+        if (!asset) continue;
+
+        const dest = path.join(REL_IMG, path.basename(asset.filename));
+        await fs.promises.copyFile(asset.filename, dest);
+
+        finalRelevantAssets.push({ ...asset, filename: dest });
+
+        console.log(`✅ Selected (${r.score.toFixed(2)}): ${path.basename(asset.filename)}`);
+      } else {
+        console.log(`❌ Rejected (${r.score.toFixed(2)}): ${validAssets[r.index]?.filename}`);
+      }
     }
   }
 
-  semanticMap.relevant_assets = relevantAssets;
-  semanticMap.fetched_assets = [];
-
+  semanticMap.relevant_assets = finalRelevantAssets;
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
 
-  console.log("==================================================");
-  console.log(`✅ ${relevantAssets.length} relevant assets selected`);
-  console.log("==================================================");
+  console.log(`\n✨ Finished. Selected: ${finalRelevantAssets.length}`);
 }
