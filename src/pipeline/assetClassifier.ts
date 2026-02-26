@@ -93,8 +93,8 @@ async function probe(file: string) {
         duration: isImage
           ? 0
           : meta.format?.duration
-          ? parseFloat(meta.format.duration)
-          : 0,
+            ? parseFloat(meta.format.duration)
+            : 0,
         codec: stream.codec_name,
         file_size_mb: +(stats.size / 1024 / 1024).toFixed(2),
       };
@@ -128,27 +128,15 @@ async function probe(file: string) {
 /* ----------- OPENAI VISION SEMANTICS ----------- */
 /* ------------------------------------------------ */
 
-async function getOpenAIVisualSemantics(filePath: string) {
+async function getOpenAIVisualSemantics(filePaths: string[]) {
   try {
-    // 1. Read and "Normalize" the image using Sharp
-    // This fixes encoding issues and strips metadata that might cause errors
-    const processedImageBuffer = await sharp(filePath)
-      .jpeg({ quality: 80 }) // Force it to a standard JPEG
-      .toBuffer();
+    const contentPayload: any[] = [
+      {
+        type: "text",
+        text: `
+Analyze this image (or sequence of video frames) and return structured JSON describing its visual semantics.
 
-    const base64Image = processedImageBuffer.toString("base64");
-    const mimeType = "image/jpeg"; 
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-  type: "text",
-  text: `
-Analyze this image and return structured JSON describing its visual semantics.
+If multiple images are provided, they are sequential frames from a single video (1 second apart). Describe the actions and motion observed.
 
 Return ONLY valid JSON with the following fields:
 
@@ -183,12 +171,31 @@ Guidelines:
 - Keep tags useful for media search.
 - Use simple professional terminology.
 `
-},
-            {
-              type: "image_url",
-              image_url: { url: `data:${mimeType};base64,${base64Image}` },
-            },
-          ],
+      }
+    ];
+
+    for (const filePath of filePaths) {
+      // 1. Read and "Normalize" the image using Sharp
+      // This fixes encoding issues and strips metadata that might cause errors
+      const processedImageBuffer = await sharp(filePath)
+        .jpeg({ quality: 80 }) // Force it to a standard JPEG
+        .toBuffer();
+
+      const base64Image = processedImageBuffer.toString("base64");
+      const mimeType = "image/jpeg";
+
+      contentPayload.push({
+        type: "image_url",
+        image_url: { url: `data:${mimeType};base64,${base64Image}` },
+      });
+    }
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: contentPayload,
         },
       ],
       response_format: { type: "json_object" },
@@ -196,7 +203,8 @@ Guidelines:
 
     return JSON.parse(response.choices[0].message.content || "{}");
   } catch (err: any) {
-    console.error(`[Vision Error] Failed on ${path.basename(filePath)}: ${err.message}`);
+    const errorPaths = filePaths.map(p => path.basename(p)).join(", ");
+    console.error(`[Vision Error] Failed on ${errorPaths}: ${err.message}`);
     return null;
   }
 }
@@ -216,34 +224,45 @@ export async function runAssetClassification(): Promise<void> {
     const techData = await probe(asset.filename);
     if (!techData) continue;
 
-    let framePath = asset.filename;
+    let framePaths: string[] = [asset.filename];
 
-    // Extract frame if video
+    // Extract frames if video
     if (techData.type === "video") {
-      framePath = path.join(
+      framePaths = [];
+      const tempPrefix = path.join(
         process.cwd(),
-        `temp_frame_${Date.now()}.jpg`
+        `temp_frame_${Date.now()}_${Math.random().toString(36).substring(7)}`
       );
-
-      await execAsync(
-        `"${ffmpeg}" -y -i "${asset.filename}" -ss 00:00:01 -frames:v 1 "${framePath}"`
-      );
-    }
-
-    const semantics = await getOpenAIVisualSemantics(framePath);
-
-      let palette: string[] = [];
 
       try {
-        const paletteRgb = await ColorThief.getPalette(framePath, 5);
-        palette = paletteRgb.map((rgb: number[]) =>
-          "#" + rgb.map((x) => x.toString(16).padStart(2, "0")).join("")
+        await execAsync(
+          `"${ffmpeg}" -y -i "${asset.filename}" -vf "fps=1" -vframes 3 "${tempPrefix}_%03d.jpg"`
         );
-      } catch {
-        palette = [];
+        for (let f = 1; f <= 3; f++) {
+          const fPath = `${tempPrefix}_${f.toString().padStart(3, '0')}.jpg`;
+          if (fs.existsSync(fPath)) framePaths.push(fPath);
+        }
+      } catch (e) {
+        console.error("Failed to extract frames for video", asset.filename);
       }
+    }
+
+    const semantics = await getOpenAIVisualSemantics(framePaths);
+
+    let palette: string[] = [];
+
+    try {
+      const paletteRgb = await ColorThief.getPalette(framePaths[0], 5);
+      palette = paletteRgb.map((rgb: number[]) =>
+        "#" + rgb.map((x) => x.toString(16).padStart(2, "0")).join("")
+      );
+    } catch {
+      palette = [];
+    }
     if (techData.type === "video") {
-      await safeUnlink(framePath);
+      for (const p of framePaths) {
+        await safeUnlink(p);
+      }
     }
 
     asset.classification = {
@@ -259,64 +278,64 @@ export async function runAssetClassification(): Promise<void> {
     console.log(`[classified] ${path.basename(asset.filename)}`);
   }
   console.log("\n" + "=".repeat(60));
-console.log("🎯 FINAL RELEVANT ASSETS");
-console.log("=".repeat(60));
+  console.log("🎯 FINAL RELEVANT ASSETS");
+  console.log("=".repeat(60));
 
-semanticMap.relevant_assets.forEach((asset, i) => {
-  const tech = asset.classification?.technical as any;
-  const sem = asset.classification?.semantics || {};
+  semanticMap.relevant_assets.forEach((asset, i) => {
+    const tech = asset.classification?.technical as any;
+    const sem = asset.classification?.semantics || {};
 
-  console.log(`\n🖼️  Asset ${i + 1}`);
-  console.log("-".repeat(60));
+    console.log(`\n🖼️  Asset ${i + 1}`);
+    console.log("-".repeat(60));
 
-  console.log(`File        : ${path.basename(asset.filename)}`);
-  console.log(`Source      : ${asset.source}`);
-  console.log(`Type        : ${tech.type}`);
-  console.log(`Resolution  : ${tech.width}x${tech.height}`);
-  console.log(`Aspect Ratio: ${tech.aspect_ratio}`);
+    console.log(`File        : ${path.basename(asset.filename)}`);
+    console.log(`Source      : ${asset.source}`);
+    console.log(`Type        : ${tech.type}`);
+    console.log(`Resolution  : ${tech.width}x${tech.height}`);
+    console.log(`Aspect Ratio: ${tech.aspect_ratio}`);
 
-  console.log("\n📍 Scene Understanding");
-  console.log(`Scene       : ${sem.primary_scene || "N/A"}`);
-  console.log(`Environment : ${sem.environment || "N/A"}`);
-  console.log(`Time of Day : ${sem.time_of_day || "N/A"}`);
-  console.log(`Weather     : ${sem.weather || "N/A"}`);
+    console.log("\n📍 Scene Understanding");
+    console.log(`Scene       : ${sem.primary_scene || "N/A"}`);
+    console.log(`Environment : ${sem.environment || "N/A"}`);
+    console.log(`Time of Day : ${sem.time_of_day || "N/A"}`);
+    console.log(`Weather     : ${sem.weather || "N/A"}`);
 
-  console.log("\n🎬 Cinematic Attributes");
-  console.log(`Lighting    : ${sem.lighting || "N/A"}`);
-  console.log(`Shot Type   : ${sem.shot_type || "N/A"}`);
-  console.log(`Camera Angle: ${sem.camera_angle || "N/A"}`);
-  console.log(`Mood        : ${sem.mood || "N/A"}`);
+    console.log("\n🎬 Cinematic Attributes");
+    console.log(`Lighting    : ${sem.lighting || "N/A"}`);
+    console.log(`Shot Type   : ${sem.shot_type || "N/A"}`);
+    console.log(`Camera Angle: ${sem.camera_angle || "N/A"}`);
+    console.log(`Mood        : ${sem.mood || "N/A"}`);
 
-  console.log("\n👤 Content");
-  console.log(`Human       : ${sem.human_presence ?? "N/A"}`);
-  console.log(`Activity    : ${sem.primary_activity || "N/A"}`);
+    console.log("\n👤 Content");
+    console.log(`Human       : ${sem.human_presence ?? "N/A"}`);
+    console.log(`Activity    : ${sem.primary_activity || "N/A"}`);
 
-  console.log("\n🏷️ Tags");
-  console.log(`${(sem.tags || []).join(", ") || "N/A"}`);
+    console.log("\n🏷️ Tags");
+    console.log(`${(sem.tags || []).join(", ") || "N/A"}`);
 
-  console.log("\n🎨 Color Palette");
-  console.log(`${(sem.palette || []).join(", ") || "N/A"}`);
-});
-const summaryData = semanticMap.relevant_assets.map(asset => ({
-  File: path.basename(asset.filename),
-  Scene: asset.classification?.semantics?.primary_scene || "N/A",
-  Mood: asset.classification?.semantics?.mood || "N/A",
-  Lighting: asset.classification?.semantics?.lighting || "N/A"
-}));
+    console.log("\n🎨 Color Palette");
+    console.log(`${(sem.palette || []).join(", ") || "N/A"}`);
+  });
+  const summaryData = semanticMap.relevant_assets.map(asset => ({
+    File: path.basename(asset.filename),
+    Scene: asset.classification?.semantics?.primary_scene || "N/A",
+    Mood: asset.classification?.semantics?.mood || "N/A",
+    Lighting: asset.classification?.semantics?.lighting || "N/A"
+  }));
 
-console.table(summaryData);
-const finalResults = semanticMap.relevant_assets.map(asset => ({
-  file: path.basename(asset.filename),
-  source: asset.source || "unknown",
-  type: asset.classification?.technical?.type,
-  width: asset.classification?.technical?.width,
-  height: asset.classification?.technical?.height,
-  aspect_ratio: asset.classification?.technical?.aspect_ratio,
+  console.table(summaryData);
+  const finalResults = semanticMap.relevant_assets.map(asset => ({
+    file: path.basename(asset.filename),
+    source: asset.source || "unknown",
+    type: asset.classification?.technical?.type,
+    width: asset.classification?.technical?.width,
+    height: asset.classification?.technical?.height,
+    aspect_ratio: asset.classification?.technical?.aspect_ratio,
 
-  classification: asset.classification?.semantics || {},
-}));
+    classification: asset.classification?.semantics || {},
+  }));
 
-// Replace semantic map output with clean results
+  // Replace semantic map output with clean results
   semanticMap.results = finalResults;
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
 

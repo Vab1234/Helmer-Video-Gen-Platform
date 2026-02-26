@@ -118,32 +118,45 @@ export async function runRelevanceMatching(): Promise<void> {
 
     for (const asset of batch) {
       let isVideo = asset.type === "video";
-      let scrapeFilePath = asset.filename;
-      let framePath = "";
+      let framePaths: string[] = [];
+      let validDataUrls: string[] = [];
 
       if (isVideo) {
-        framePath = path.join(process.cwd(), `temp_match_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`);
+        // Extract 3 frames instead of 1
+        const tempPrefix = path.join(process.cwd(), `temp_match_${Date.now()}_${Math.random().toString(36).substring(7)}`);
         try {
-          await execAsync(`"${ffmpeg}" -y -i "${asset.filename}" -ss 00:00:01 -frames:v 1 "${framePath}"`);
-          scrapeFilePath = framePath;
+          // -vf "fps=1" to get 1 frame per second, -vframes 3 limits to 3 frames
+          await execAsync(`"${ffmpeg}" -y -i "${asset.filename}" -vf "fps=1" -vframes 3 "${tempPrefix}_%03d.jpg"`);
+          for (let f = 1; f <= 3; f++) {
+            const fPath = `${tempPrefix}_${f.toString().padStart(3, '0')}.jpg`;
+            if (fs.existsSync(fPath)) framePaths.push(fPath);
+          }
         } catch (e) {
-          console.error("Failed to extract frame for video", asset.filename);
-          continue;
+          console.error("Failed to extract frames for video", asset.filename);
+        }
+      } else {
+        framePaths.push(asset.filename);
+      }
+
+      for (const p of framePaths) {
+        const dataUrl = await processImageForAPI(p);
+        if (dataUrl) validDataUrls.push(dataUrl);
+      }
+
+      if (isVideo) {
+        for (const p of framePaths) {
+          await fs.promises.unlink(p).catch(() => { });
         }
       }
 
-      const dataUrl = await processImageForAPI(scrapeFilePath);
+      if (!validDataUrls.length) continue;
 
-      if (isVideo && framePath) {
-        await fs.promises.unlink(framePath).catch(() => { });
+      for (const dataUrl of validDataUrls) {
+        contentParts.push({
+          type: "image_url" as const,
+          image_url: { url: dataUrl, detail: "low" as const }
+        });
       }
-
-      if (!dataUrl) continue;
-
-      contentParts.push({
-        type: "image_url" as const,
-        image_url: { url: dataUrl, detail: "low" as const }
-      });
 
       validAssets.push(asset);
     }
@@ -161,7 +174,7 @@ export async function runRelevanceMatching(): Promise<void> {
           content: `
 You are an expert visual relevance evaluator.
 
-Evaluate how well each image matches the user's intent.
+Evaluate how well each image (or sequence of video frames) matches the user's intent.
 
 PRIMARY MATCH REQUIREMENTS:
 - Must match primary action.
@@ -178,6 +191,9 @@ REJECT IF:
 - subject is missing
 - supporting object becomes dominant focus
 - scene conflicts with prompt
+
+NOTE ON MULTIPLE IMAGES:
+If multiple images are presented for a single item, they represent sequential frames from a single video (1 second apart). Evaluate verbs, motion, and actions across these frames.
 
 Return JSON:
 
