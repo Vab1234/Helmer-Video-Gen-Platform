@@ -16,8 +16,6 @@ import {
 } from "../config/constants";
 import type { SemanticMap, FetchedAsset, MediaType } from "../types/semanticMap";
 
-// minimum score for pre-filtering audio during fetch (low to catch obvious mismatches)
-const AUDIO_PRE_FILTER_SCORE = 0.1;
 import { downloadToDir } from "./download";
 import {
   scrapeUnsplashImages,
@@ -59,36 +57,17 @@ async function fetchAndSave(items: ScrapedItem[], intent: any): Promise<FetchedA
       const preferredExt =
         type === "image" ? ".jpg" : type === "video" ? ".mp4" : ".mp3";
 
-      // 2. Pass source as a new argument to downloadToDir
       const { filePath, contentType, width, height, hash } = await downloadToDir(
         mediaUrl,
         targetDir,
         preferredExt,
-        item.source // <--- Add this argument
+        item.source
       );
 
-      // audio-specific pre-filter: transcribe & score against intent before accepting
-      if (type === "audio" && intent) {
-        try {
-          // lazy-import to avoid circular dependency
-          const { transcribeAudioFile, scoreTextAgainstIntent } =
-            await import("../pipeline/relevanceMatcher");
-          const transcription = await transcribeAudioFile(filePath);
-          const { score } = await scoreTextAgainstIntent(transcription, intent);
-          if (score < AUDIO_PRE_FILTER_SCORE) {
-            console.log(
-              `[filtered] audio ${path.basename(filePath)} score ${score.toFixed(
-                2
-              )}`
-            );
-            await fsp.unlink(filePath).catch(() => {});
-            continue; // skip adding to metadata
-          }
-        } catch (err) {
-          // if something goes wrong, just keep the asset and log error
-          console.warn("audio pre-filter failed", err);
-        }
-      }
+      // Audio pre-filter removed — Whisper scores SFX/ambient files as 0.00
+      // because there is no speech to transcribe. This was deleting valid audio
+      // assets before they reached the relevance matcher. Stage 4 relevanceMatcher
+      // now handles audio scoring with proper metadata fallback for non-speech files.
 
       if (seenHashes.has(hash)) {
         await fsp.unlink(filePath).catch(() => { });
@@ -176,24 +155,14 @@ export async function runFetchAssets(): Promise<void> {
 
         console.log(`[scrape] coverr_videos -> '${q}'`);
         collected.push(...(await scrapeCoverrVideos(browser, q, MAX_PER_PROVIDER)));
-
       }
     } else {
+      // Only Freesound API is active — other providers (Mixkit, Pixabay, Freesound browser/previews)
+      // returned corrupt files, JSON error responses, or promotional speech clips.
+      // Freesound API returns properly licensed, validated audio with rich metadata.
       for (const q of queries) {
-        console.log(`[scrape] mixkit_sounds -> '${q}'`);
-        collected.push(...(await scrapeMixkitAudio(browser, q, MAX_PER_PROVIDER)));
-
-        console.log(`[scrape] pixabay_audio -> '${q}'`);
-        collected.push(...(await scrapePixabayAudio(browser, q, MAX_PER_PROVIDER)));
-
-        console.log(`[scrape] freesound_previews -> '${q}'`);
-        collected.push(...(await scrapeFreesoundPreviews(browser, q, MAX_PER_PROVIDER)));
-
         console.log(`[scrape] freesound_api -> '${q}'`);
         collected.push(...(await scrapeFreesoundAudio(q, MAX_PER_PROVIDER)));
-
-        console.log(`[scrape] freesound_browser -> '${q}'`);
-        collected.push(...(await scrapeFreesoundBrowserAudio(browser, q, MAX_PER_PROVIDER)));
       }
     }
 
@@ -201,7 +170,6 @@ export async function runFetchAssets(): Promise<void> {
 
     const meta = await fetchAndSave(collected, semanticMap.intent_extraction);
 
-    // update semantic_map + metadata.json
     const existingMetadata =
       (await readJson<FetchedAsset[]>(METADATA_PATH)) ?? [];
 
@@ -219,7 +187,6 @@ export async function runFetchAssets(): Promise<void> {
       )} and updated semantic_map.json`
     );
 
-    // --- NEW: Metrics Calculation ---
     const endTime = Date.now();
     const latency = endTime - startTime;
 

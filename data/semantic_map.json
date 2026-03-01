@@ -1,53 +1,70 @@
 {
-  "user_prompt": "give similar audio",
+  "user_prompt": "highly detailed cinematic professional stock A single audio track of soft background piano music, suitable for relaxation or studying.",
   "requested_asset_count": 1,
   "requested_modality": "audio",
   "intent_extraction": {
     "modality": "audio",
     "domain": "music",
-    "primary_subject": "instrumental tunes",
-    "context_scene": "background music or thematic sound piece",
+    "primary_subject": "piano music",
+    "context_scene": "relaxation or studying",
     "style_adjectives": [
-      "melodic",
-      "rhythmic",
-      "instrumental"
+      "highly detailed",
+      "cinematic",
+      "professional",
+      "soft"
     ]
   },
   "realism_scoring": {
-    "realism_score": 1,
-    "abstractness_score": 0,
-    "rationale": "The audio is a straightforward representation of instrumental music, which is a common and realistic genre."
+    "realism_score": 0.9,
+    "abstractness_score": 0.1,
+    "rationale": "The prompt describes a specific type of audio track that is concrete and practical, focusing on a clear subject matter (piano music) intended for real-world applications (relaxation/studying)."
   },
   "market_availability_estimate": 0.8,
-  "user_media": {
-    "provided": true,
-    "modality": "audio",
-    "description": "The audio is likely a segment consisting solely of melodic or rhythmic tunes without any lyrics or spoken words. It may serve as background music or a thematic sound piece.",
-    "tags": [
-      "instrumental",
-      "music",
-      "melody",
-      "tune",
-      "background"
-    ],
-    "role": "reference",
-    "file_path": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scripts\\sample2.mp3"
-  },
   "evaluation_metrics": {
-    "timestamp": "2026-03-01T19:07:57.012Z",
+    "timestamp": "2026-03-01T20:13:46.245Z",
     "total_latency_ms": 0,
     "system_health_score": 0,
     "stage1": {
-      "latency_ms": 3675,
+      "latency_ms": 4758,
       "completeness_score": 1,
       "modality_confidence": 0.9
     }
   },
   "decision_reasoning": {
-    "reasoning_trace": "High realism and high stock availability. Fetching from web.",
-    "final_decision": "fetch_from_web",
-    "confidence": 0.85,
-    "has_user_media": true,
-    "media_use_strategy": "context_only"
-  }
+    "reasoning_trace": "Previous attempt returned zero results. Forcing generation.",
+    "final_decision": "generate_with_model",
+    "confidence": 0.95
+  },
+  "fetched_assets": [
+    {
+      "type": "audio",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\audio\\fal-ai-stable-audio_cc1880699d8b.mp3",
+      "source": "fal-ai/stable-audio",
+      "media_url": "https://v3b.fal.media/files/b/0a907641/Y_Xs4uW2xCn886AODx3CU_tmp31jdftzo.wav",
+      "query_used": "highly detailed cinematic professional stock A single audio track of soft background piano music, suitable for relaxation or studying. | intent: music, piano music, relaxation or studying, highly detailed, cinematic, professional, soft",
+      "width": 0,
+      "height": 0,
+      "sha256": "cc1880699d8bbf663d226ea0d96c6e07e81b5cb275854e651be3e9cee10202e5"
+    },
+    {
+      "type": "audio",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\audio\\fal-ai-stable-audio_fb2e0b2b5826.mp3",
+      "source": "fal-ai/stable-audio",
+      "media_url": "https://v3b.fal.media/files/b/0a90763e/7RDMXaQuKt0YG0SEcIbKH_tmp0dm9m6zj.wav",
+      "query_used": "highly detailed cinematic professional stock A single audio track of soft background piano music, suitable for relaxation or studying. | intent: music, piano music, relaxation or studying, highly detailed, cinematic, professional, soft",
+      "width": 0,
+      "height": 0,
+      "sha256": "fb2e0b2b5826cb71c5f1756e9427972afec8d0e6471ef18b4be62864a132d273"
+    },
+    {
+      "type": "audio",
+      "filename": "C:\\Users\\JENNIFER\\Desktop\\Helmer-Video-Gen-Platform\\scrape_assets\\audio\\fal-ai-stable-audio_cd95e6f93069.mp3",
+      "source": "fal-ai/stable-audio",
+      "media_url": "https://v3b.fal.media/files/b/0a907644/aXT5stooAzlyt-U67EZY__tmpkwy0s9yb.wav",
+      "query_used": "highly detailed cinematic professional stock A single audio track of soft background piano music, suitable for relaxation or studying. | intent: music, piano music, relaxation or studying, highly detailed, cinematic, professional, soft",
+      "width": 0,
+      "height": 0,
+      "sha256": "cd95e6f930690de152b5a58ed05e2bd5289abd504d6ce3e2b6e616ab4dc13ac7"
+    }
+  ]
 }
