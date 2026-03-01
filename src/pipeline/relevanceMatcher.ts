@@ -241,7 +241,7 @@ Evaluate images and score relevance (0–1).
         const dest = path.join(targetDir, path.basename(asset.filename));
         await fs.promises.copyFile(asset.filename, dest);
 
-        finalRelevantAssets.push({ ...asset, filename: dest });
+        finalRelevantAssets.push({ ...asset, filename: dest, relevance_score: r.score });
 
         console.log(`✅ Selected (${r.score.toFixed(2)}): ${path.basename(asset.filename)}`);
       } else {

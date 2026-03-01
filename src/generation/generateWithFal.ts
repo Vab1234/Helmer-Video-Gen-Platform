@@ -42,7 +42,7 @@ async function generateImagesWithFal(prompt: string): Promise<string[]> {
   const result = await fal.subscribe("fal-ai/flux/dev", {
     input: {
       prompt,
-      num_images: 3, 
+      num_images: 3,
     },
   });
 
@@ -60,7 +60,7 @@ async function generateVideosWithFal(prompt: string): Promise<string[]> {
   console.log(`[generation] triggering ${COUNT} parallel video generations...`);
 
   // Create 3 concurrent promises
-  const tasks = Array.from({ length: COUNT }, () => 
+  const tasks = Array.from({ length: COUNT }, () =>
     fal.subscribe("fal-ai/wan/v2.2-a14b/text-to-video", {
       input: {
         prompt,
@@ -111,7 +111,7 @@ export async function runGenerateWithFal(): Promise<void> {
   const genPrompt = buildGenerationPrompt(semanticMap, modality);
   console.log("[generation] using prompt for Fal:\n", genPrompt);
 
-  let urls: string[] = []; 
+  let urls: string[] = [];
   let targetDir: string;
   let preferredExt: string;
   let sourceLabel: string;
@@ -120,13 +120,13 @@ export async function runGenerateWithFal(): Promise<void> {
     urls = await generateImagesWithFal(genPrompt);
     targetDir = IMG_DIR;
     preferredExt = ".jpg";
-    sourceLabel = "fal-ai/flux/dev";
+    sourceLabel = "fal_ai";
   } else {
     // modality === "video"
     urls = await generateVideosWithFal(genPrompt);
     targetDir = VID_DIR;
     preferredExt = ".mp4";
-    sourceLabel = "fal-ai/wan/v2.2-a14b/text-to-video";
+    sourceLabel = "fal_ai";
   }
 
   console.log(`[generation] Fal returned ${urls.length} ${modality} URLs`);
@@ -149,6 +149,7 @@ export async function runGenerateWithFal(): Promise<void> {
         type: modality,
         filename: filePath,
         source: sourceLabel,
+        model_id: modality === "image" ? "fal-ai/flux/dev" : "fal-ai/wan/v2.2-a14b/text-to-video",
         media_url: url,
         page_url: undefined,
         alt: modality === "image" ? semanticMap.user_prompt : undefined,

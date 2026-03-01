@@ -21,14 +21,14 @@ load_dotenv(TS_ROOT / ".env")
 # -----------------------------
 # MCP Server
 # -----------------------------
-server = Server("helmer-mcp")
+server = Server("AutoGenie-mcp")
 
 @server.list_tools()
 async def list_tools():
     return [
         Tool(
             name="pipeline_run",
-            description="Run Helmer pipeline and return semantic analysis JSON",
+            description="Run AutoGenie pipeline and return semantic analysis JSON",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -51,7 +51,7 @@ async def call_tool(name, arguments):
         "dist/index.js",
         prompt,
         cwd=str(TS_ROOT),
-        env={**os.environ, "HELMER_MODE": "stage3_direct"},
+        env={**os.environ, "AutoGenie_MODE": "stage3_direct"},
         stdin=asyncio.subprocess.DEVNULL,
         stdout=asyncio.subprocess.DEVNULL,
         stderr=asyncio.subprocess.DEVNULL

@@ -65,6 +65,18 @@ export async function refineUserPrompt(
 ): Promise<RefinementResult> {
   const cleaned = normalizeInput(input);
 
+  // 1. Strict Regex Trap: Force clarification if modality is not organically present
+  // This solves the issue where the LLM "assumes" image silently.
+  const explicitModality = detectModality(cleaned);
+  if (!explicitModality) {
+    console.log("No explicit modality detected natively. Triggering clarification bounce.");
+    return {
+      refinedPrompt: cleaned,
+      isComplete: false,
+      message: "Could you specify if you want me to generate an **Image**, **Video**, or **Audio** for that?"
+    };
+  }
+
   console.log("LLM intelligent refinement in progress...");
 
   const checkPrompt = `
@@ -98,7 +110,8 @@ If the request is so vague that you cannot guess the user's intent, or if modali
   const response = await askPromptEngine(checkPrompt);
 
   try {
-    const parsed = JSON.parse(response);
+    const sanitizedResponse = response.replace(/\`\`\`json\n?|\`\`\`/g, "").trim();
+    const parsed = JSON.parse(sanitizedResponse);
 
     // Ensure modality is one of the valid types if present
     if (parsed.modality && !["image", "video", "audio"].includes(parsed.modality)) {

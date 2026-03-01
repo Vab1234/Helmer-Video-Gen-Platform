@@ -118,6 +118,8 @@ export interface FetchedAsset {
   type: MediaType;
   filename: string;
   source?: string;
+  model_id?: string;        // Full model identifier e.g. "fal-ai/flux/dev"
+  relevance_score?: number; // GPT-4o relevance score from relevanceMatcher (0.0–1.0)
   media_url?: string;
   page_url?: string;
   alt?: string | null;

@@ -14,23 +14,28 @@ import type { MediaType } from "./types/semanticMap";
 
 import { logBenchmark } from "./utils/benchmarkLogger";
 import { writeJson } from "./utils/fileUtils";
-const mode = process.env.HELMER_MODE || "full";
+const mode = process.env.AutoGenie_MODE || "full";
 const MAX_RETRIES = 2; // Total attempts = 3
 
 /**
  * Orchestrator: Controls the agentic execution loop
  */
-async function runOrchestrator(initialPrompt: string, requestedCount?: number,
-  requestedModality?: "image" | "video" | "audio") {
+async function runOrchestrator(
+  initialPrompt: string,
+  requestedCount?: number,
+  requestedModality?: "image" | "video" | "audio",
+  mediaUrl?: string,
+  mediaType?: "image" | "video" | "audio"
+) {
   let currentPrompt = initialPrompt;
   let attempts = 0;
   let satisfied = false;
 
   while (attempts <= MAX_RETRIES && !satisfied) {
-    console.log(`\n--- AGENTIC LOOP | Attempt ${attempts + 1} ---`);
+    console.log(`\n⚙️ --- AGENTIC LOOP | Attempt ${attempts + 1} ---`);
 
     try {
-      await runPromptUnderstanding(currentPrompt, requestedCount, requestedModality);
+      await runPromptUnderstanding(currentPrompt, requestedCount, requestedModality, mediaUrl, mediaType);
       await runDecisionReasoning(attempts + 1);
 
       const semanticMap =
@@ -154,16 +159,21 @@ function askFromStdin(question: string): Promise<string> {
 
 
 async function main() {
-  console.log("Helmer Pipeline Initializing...");
+  console.log("🚀 AutoGenie Pipeline Initializing...");
 
   let cliPrompt = process.argv.slice(2).join(" ").trim();
 
   if (!cliPrompt) {
-    cliPrompt = await askFromStdin("Enter prompt: ");
+    cliPrompt = process.env.AutoGenie_PROMPT || "";
   }
 
-  if (!cliPrompt) {
-    console.error("No prompt provided. Terminating execution.");
+  if (!cliPrompt && !process.env.AutoGenie_MEDIA_URL) {
+    const fromStdin = await askFromStdin("Enter prompt: ");
+    cliPrompt = fromStdin || "";
+  }
+
+  if (!cliPrompt && !process.env.AutoGenie_MEDIA_URL) {
+    console.error("No prompt or media provided. Terminating execution.");
     return;
   }
 
@@ -173,27 +183,32 @@ async function main() {
   let requestedCount: number | undefined;
   let requestedModality: MediaType | undefined;
 
-  // Intelligent refinement loop
-  while (!isReady) {
-    const refinement = await refineUserPrompt(currentPrompt);
+  // Intelligent refinement loop if not run by Express Server API
+  // Express injects AutoGenie_PROMPT, circumventing the STDIN check
+  if (!process.env.AutoGenie_PROMPT && !process.env.AutoGenie_MEDIA_URL) {
+    while (!isReady) {
+      const refinement = await refineUserPrompt(currentPrompt);
 
-    if (refinement.isComplete) {
-      isReady = true;
-      cliPrompt = refinement.refinedPrompt;
+      if (refinement.isComplete) {
+        isReady = true;
+        cliPrompt = refinement.refinedPrompt;
 
-      requestedCount = refinement.count ?? 1;
-      requestedModality = refinement.modality;
+        requestedCount = refinement.count ?? 1;
+        requestedModality = refinement.modality;
 
-      console.log("\n--- USER REQUEST SUMMARY ---");
-      console.log("Modality:", requestedModality);
-      console.log("Requested Count:", requestedCount);
-      console.log("-----------------------------\n");
+        console.log("\n--- USER REQUEST SUMMARY ---");
+        console.log("Modality:", requestedModality);
+        console.log("Requested Count:", requestedCount);
+        console.log("-----------------------------\n");
 
-    } else {
-      console.log(`\nHELMER: ${refinement.message}`);
-      const supplementaryInfo = await askFromStdin("Your response: ");
-      currentPrompt = `${currentPrompt} ${supplementaryInfo}`.trim();
+      } else {
+        console.log(`\nAutoGenie: ${refinement.message}`);
+        const supplementaryInfo = await askFromStdin("Your response: ");
+        currentPrompt = `${currentPrompt} ${supplementaryInfo}`.trim();
+      }
     }
+  } else {
+    isReady = true;
   }
 
   try {
@@ -201,7 +216,13 @@ async function main() {
       await runPromptUnderstanding(cliPrompt, requestedCount, requestedModality);
       await runDecisionReasoning();
     } else {
-      await runOrchestrator(cliPrompt, requestedCount, requestedModality);
+      await runOrchestrator(
+        cliPrompt,
+        requestedCount || Number(process.env.AutoGenie_COUNT),
+        requestedModality || process.env.AutoGenie_MODALITY as any,
+        process.env.AutoGenie_MEDIA_URL,
+        process.env.AutoGenie_MEDIA_TYPE as any
+      );
     }
   } catch (error) {
     console.error("Fatal execution error:", error);

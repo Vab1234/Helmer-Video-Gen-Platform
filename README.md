@@ -175,7 +175,7 @@ Scores fetched assets against the user prompt for relevance.
 ## Project Structure
 
 ```
-Helmer-Video-Gen-Platform/
+AutoGenie-Video-Gen-Platform/
 ├── README.md                          # This file
 │
 ├── TYPESCRIPT/                        # Main TypeScript application

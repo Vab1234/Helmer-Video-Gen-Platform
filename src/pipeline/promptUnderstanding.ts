@@ -25,10 +25,12 @@ export async function runPromptUnderstanding(
   userPrompt: string,
   requestedCount?: number,
   requestedModality?: MediaType,
+  mediaUrl?: string,
+  mediaType?: "image" | "video" | "audio"
 ): Promise<SemanticMap> {
   const startTime = Date.now();
 
-  console.log("\n--- PROMPT UNDERSTANDING MODULE ---");
+  console.log("\n🧠 --- PROMPT UNDERSTANDING MODULE ---");
   console.log("Input Prompt:", userPrompt);
   console.log("-----------------------------------");
 
@@ -77,7 +79,7 @@ Schema:
 }
 `.trim();
 
-  const raw = await askPromptEngine(unifiedPrompt);
+  const raw = await askPromptEngine(unifiedPrompt, mediaUrl, mediaType);
 
   // 🔥 PRINT RAW JSON FROM LLM
   console.log("\n--- RAW LLM RESPONSE ---");

@@ -4,4 +4,5 @@ dist/
 scrape_assets/
 
 semantic_map.json
+data/
 *.jpg
