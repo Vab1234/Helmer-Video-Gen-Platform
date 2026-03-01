@@ -15,6 +15,7 @@ import {
   MAX_PER_PROVIDER,
 } from "../config/constants";
 import type { SemanticMap, FetchedAsset, MediaType } from "../types/semanticMap";
+
 import { downloadToDir } from "./download";
 import {
   scrapeUnsplashImages,
@@ -28,7 +29,7 @@ import {
   scrapePixabayAudio,
   scrapeFreesoundPreviews
 } from "./audioProviders";
-import { scrapeFreesoundAudio } from "./freeSoundProvider";
+import { scrapeFreesoundAudio, scrapeFreesoundBrowserAudio } from "./freeSoundProvider";
 
 const fsp = fs.promises;
 
@@ -36,7 +37,7 @@ type ProviderFn =
   | ((page: any, q: string, limit: number) => Promise<ScrapedItem[]>)
   | ((browser: any, q: string, limit: number) => Promise<ScrapedItem[]>);
 
-async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
+async function fetchAndSave(items: ScrapedItem[], intent: any): Promise<FetchedAsset[]> {
   const metadata: FetchedAsset[] = [];
   const seenHashes = new Set<string>();
 
@@ -46,8 +47,8 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
   await ensureDir(AUD_DIR);
 
   for (const item of items) {
-    const { type, mediaUrl, source } = item; // 1. Destructure source here
-    if (!mediaUrl) continue;
+      const { type, mediaUrl, source } = item;
+      if (!mediaUrl) continue;
 
     try {
       const targetDir =
@@ -56,13 +57,17 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
       const preferredExt =
         type === "image" ? ".jpg" : type === "video" ? ".mp4" : ".mp3";
 
-      // 2. Pass source as a new argument to downloadToDir
       const { filePath, contentType, width, height, hash } = await downloadToDir(
         mediaUrl,
         targetDir,
         preferredExt,
-        item.source // <--- Add this argument
+        item.source
       );
+
+      // Audio pre-filter removed — Whisper scores SFX/ambient files as 0.00
+      // because there is no speech to transcribe. This was deleting valid audio
+      // assets before they reached the relevance matcher. Stage 4 relevanceMatcher
+      // now handles audio scoring with proper metadata fallback for non-speech files.
 
       if (seenHashes.has(hash)) {
         await fsp.unlink(filePath).catch(() => { });
@@ -150,28 +155,21 @@ export async function runFetchAssets(): Promise<void> {
 
         console.log(`[scrape] coverr_videos -> '${q}'`);
         collected.push(...(await scrapeCoverrVideos(browser, q, MAX_PER_PROVIDER)));
-
       }
     } else {
+      // Only Freesound API is active — other providers (Mixkit, Pixabay, Freesound browser/previews)
+      // returned corrupt files, JSON error responses, or promotional speech clips.
+      // Freesound API returns properly licensed, validated audio with rich metadata.
       for (const q of queries) {
-        console.log(`[scrape] mixkit_sounds -> '${q}'`);
-        collected.push(...(await scrapeMixkitAudio(browser, q, MAX_PER_PROVIDER)));
-
-        // 2. Pixabay Audio (New)
-        console.log(`[scrape] pixabay_audio -> '${q}'`);
-        collected.push(...(await scrapePixabayAudio(browser, q, MAX_PER_PROVIDER)));
-
-        // 3. Freesound Previews (Updated to use the browser-based version)
-        console.log(`[scrape] freesound -> '${q}'`);
-        collected.push(...(await scrapeFreesoundPreviews(browser, q, MAX_PER_PROVIDER)));
+        console.log(`[scrape] freesound_api -> '${q}'`);
+        collected.push(...(await scrapeFreesoundAudio(q, MAX_PER_PROVIDER)));
       }
     }
 
     console.log(`[scrape] total collected items: ${collected.length}`);
 
-    const meta = await fetchAndSave(collected);
+    const meta = await fetchAndSave(collected, semanticMap.intent_extraction);
 
-    // update semantic_map + metadata.json
     const existingMetadata =
       (await readJson<FetchedAsset[]>(METADATA_PATH)) ?? [];
 
@@ -189,7 +187,6 @@ export async function runFetchAssets(): Promise<void> {
       )} and updated semantic_map.json`
     );
 
-    // --- NEW: Metrics Calculation ---
     const endTime = Date.now();
     const latency = endTime - startTime;
 

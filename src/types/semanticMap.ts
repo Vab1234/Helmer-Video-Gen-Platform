@@ -5,6 +5,7 @@ export interface IntentExtraction {
   domain?: string;
   primary_subject?: string;
   context_scene?: string;
+  requested_action?: string;
   style_adjectives?: string[];
 }
 
@@ -46,6 +47,99 @@ export interface DecisionReasoning {
 
 export type MediaType = "image" | "video" | "audio";
 
+// ─── NEW: User Media Input Types ──────────────────────────────────────────────
+
+/**
+ * The modality of a file the user has optionally attached to their prompt.
+ * Distinct from MediaType which describes pipeline output assets.
+ */
+export type MediaModality = "image" | "video" | "audio";
+
+/**
+ * How the user intends the pipeline to use their uploaded media file.
+ *
+ * - "transform"   → Apply a change directly ON the provided media
+ *                   (e.g. "make this photo look like it's raining")
+ * - "reference"   → Find or generate something similar to the media
+ *                   (e.g. "give me more audio like this dog bark clip")
+ * - "style_guide" → Extract the visual/sonic style and apply it to new content
+ *                   (e.g. "generate an image with this colour palette")
+ * - "replace"     → Media is background context only; the output replaces it entirely
+ *                   (e.g. "here's my old logo, make me a new modern one")
+ */
+export type UserMediaRole = "transform" | "reference" | "style_guide" | "replace";
+
+/**
+ * Rich description of a user-uploaded media file produced by Stage 0
+ * (mediaUnderstanding.ts). Populated before Stage 1 runs; forwarded
+ * through SemanticMap so Stage 2 and Stage 3b can act on it.
+ */
+export interface MediaContext {
+  /** Absolute local path to the uploaded file */
+  filePath: string;
+
+  /** Detected media type */
+  modality: MediaModality;
+
+  /**
+   * Natural-language description of the file's content produced by
+   * OpenAI Vision (images/video) or GPT-4o Audio / Whisper (audio).
+   */
+  description: string;
+
+  /** Semantic tags extracted from the description (5–8 keywords) */
+  tags: string[];
+
+  /** Audio only — Whisper speech transcription when speech is present */
+  transcription?: string;
+
+  /** Video / audio only — duration in seconds from FFprobe */
+  duration?: number;
+
+  /** Image / video only — pixel dimensions */
+  resolution?: {
+    w: number;
+    h: number;
+  };
+}
+
+/**
+ * Populated on SemanticMap after Stage 1 has interpreted the user prompt
+ * together with the MediaContext. Drives the media-aware decision rules
+ * in Stage 2 and the img2img / style-transfer branches in Stage 3b.
+ */
+export interface UserMedia {
+  /** Whether the user actually supplied a file this run */
+  provided: boolean;
+
+  modality: MediaModality;
+
+  /** Human-readable description carried over from MediaContext */
+  description: string;
+
+  /** Semantic tags carried over from MediaContext */
+  tags: string[];
+
+  /**
+   * How Stage 1 decided the file should be used based on the prompt.
+   * This is the primary routing signal for Stage 2's decision logic.
+   */
+  role: UserMediaRole;
+
+  /**
+   * Plain-English description of the change to apply when role === "transform".
+   * e.g. "change the weather from sunny to rainy"
+   * Undefined for all other roles.
+   */
+  transformation_intent?: string;
+
+  /** Absolute path forwarded to Stage 3b for img2img conditioning */
+  file_path: string;
+}
+
+// ─── End: User Media Input Types ──────────────────────────────────────────────
+
+
 // --- NEW: Technical Metadata Interface ---
 export interface AssetTechnicalData {
   width: number;
@@ -65,9 +159,9 @@ export interface AssetSemanticClassification {
   human_presence: boolean;
   environment?: string;
 }
-// src/types/semanticMap.ts
 
 export interface AssetSemantics {
+  // Visual/Image/Video properties
   primary_scene?: string;
   environment?: string;
   time_of_day?: string;
@@ -90,13 +184,27 @@ export interface AssetSemantics {
   tags?: string[];
 
   confidence?: number;
-
   palette?: string[];
+
+  // Audio-specific properties
+  audio_type?: string;
+  primary_sound?: string;
+  intensity_level?: string;
+  acoustic_characteristics?: {
+    frequency_range?: string;
+    clarity?: string;
+    background_noise?: string;
+  };
+  speech_present?: boolean;
+  music_present?: boolean;
+  sound_effects_present?: boolean;
+  emotion?: string;
+  use_cases?: string[];
 }
 
 export interface AssetClassification {
   technical: {
-    type: "image" | "video"; // Add this so your table can use it
+    type: "image" | "video";
     width: number;
     height: number;
     orientation: string;
@@ -107,13 +215,12 @@ export interface AssetClassification {
     file_size_mb: number;
   };
 
-  // Change 'semantic' to 'semantics' to match your pipeline code
   semantics?: AssetSemantics;
 
   origin: "generated" | "scraped";
   aspect_ratio: string;
-
 }
+
 export interface FetchedAsset {
   type: MediaType;
   filename: string;
@@ -131,33 +238,32 @@ export interface FetchedAsset {
 }
 
 
-
 // --- NEW: Evaluation Metrics Interfaces ---
 
 export interface Stage1Metrics {
   latency_ms: number;
-  completeness_score: number; // 0.0 - 1.0 (Percentage of fields filled)
-  modality_confidence: number; // Simulated or extractive confidence
+  completeness_score: number;
+  modality_confidence: number;
 }
 
 export interface Stage2Metrics {
   latency_ms: number;
-  decision_confidence: number; // From LLM
-  cost_efficiency_ratio: number; // Creative Potential / Estimated Cost (categorical mapped to num)
+  decision_confidence: number;
+  cost_efficiency_ratio: number;
 }
 
 export interface Stage3Metrics {
   latency_ms: number;
-  fetch_yield_rate: number; // (Downloaded / Found)
-  provider_diversity_count: number; // Unique domains
+  fetch_yield_rate: number;
+  provider_diversity_count: number;
   search_success_rate: number;
 }
 
 export interface Stage4Metrics {
   latency_ms: number;
-  precision_at_k: number; // % of Top-K relevant
-  mrr: number; // Mean Reciprocal Rank
-  visual_diversity_score: number; // Pairwise cosine distance
+  precision_at_k: number;
+  mrr: number;
+  visual_diversity_score: number;
   filtering_ratio: number;
   best_match_score: number;
 }
@@ -168,15 +274,15 @@ export interface EvaluationMetrics {
   stage3?: Stage3Metrics;
   stage4?: Stage4Metrics;
   total_latency_ms: number;
-  system_health_score: number; // Weighted average
+  system_health_score: number;
   timestamp: string;
 }
 
 export interface SemanticMap {
   user_prompt: string;
 
-  requested_asset_count?: number;  // ✅ ADD THIS
-  requested_modality?: MediaType;  // ✅ OPTIONAL BUT CLEAN
+  requested_asset_count?: number;
+  requested_modality?: MediaType;
 
   intent_extraction?: IntentExtraction;
   realism_scoring?: RealismScoring;
@@ -186,5 +292,13 @@ export interface SemanticMap {
   fetched_assets?: FetchedAsset[];
   relevant_assets?: FetchedAsset[];
   evaluation_metrics?: EvaluationMetrics;
+
+  /**
+   * Populated when the user attaches a media file alongside their prompt.
+   * Set by Stage 1 after it has read the MediaContext from Stage 0.
+   * Undefined when no file was provided — pipeline behaves as before.
+   */
+  user_media?: UserMedia;
+
   [key: string]: any;
 }
