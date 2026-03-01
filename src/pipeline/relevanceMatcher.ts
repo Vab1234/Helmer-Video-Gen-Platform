@@ -110,6 +110,39 @@ export async function runRelevanceMatching(): Promise<void> {
   const finalRelevantAssets: FetchedAsset[] = [];
   const scoredAssets: { asset: FetchedAsset; score: number }[] = [];
 
+  // Handle case where only audio assets are present: transcribe + score
+  const audioOnlyAssets = semanticMap.fetched_assets.filter(a => a.type === "audio");
+  if (mediaToScore.length === 0 && audioOnlyAssets.length > 0) {
+    console.log(`Only ${mediaToScore.length} images/videos found. Found ${audioOnlyAssets.length} audio assets.`);
+    console.log("Transcribing and scoring audio assets against intent...");
+
+    for (const a of audioOnlyAssets) {
+      try {
+        const transcription = await transcribeAudioFile(a.filename);
+        if (!transcription) {
+          console.log(`- ${path.basename(a.filename)} — transcription failed or empty. relevance: N/A`);
+          continue;
+        }
+
+        const { score, explanation } = await scoreTextAgainstIntent(transcription, intent);
+        scoredAssets.push({ asset: a, score });
+
+        if (score >= MIN_SCORE) {
+          await ensureDir(REL_AUD);
+          const dest = path.join(REL_AUD, path.basename(a.filename));
+          await fs.promises.copyFile(a.filename, dest);
+          finalRelevantAssets.push({ ...a, filename: dest });
+          console.log(`✅ Selected (${score.toFixed(2)}): ${path.basename(a.filename)} — ${explanation || ''}`);
+        } else {
+          console.log(`❌ Rejected (${score.toFixed(2)}): ${path.basename(a.filename)} — ${explanation || ''}`);
+        }
+      } catch (err: any) {
+        console.warn(`Error processing audio ${path.basename(a.filename)}: ${err?.message || err}`);
+      }
+    }
+    // continue to metrics and writing semantic map below
+  }
+
   for (let i = 0; i < mediaToScore.length; i += BATCH_SIZE) {
     const batch = mediaToScore.slice(i, i + BATCH_SIZE);
 
@@ -313,4 +346,53 @@ Evaluate images and score relevance (0–1).
   };
 
   await writeJson(SEMANTIC_MAP_PATH, semanticMap);
+}
+
+/* ------------------------------------------------ */
+/* Audio transcription + text scoring helpers       */
+/* ------------------------------------------------ */
+
+export async function transcribeAudioFile(filePath: string): Promise<string> {
+  try {
+    // Use OpenAI audio transcription (Whisper). SDK surface may vary.
+    // This attempts the common pattern used in other files.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const resp = await openai.audio.transcriptions.create({
+      file: fs.createReadStream(filePath),
+      model: "whisper-1",
+    });
+
+    // Different SDKs return the transcript in different fields; cast to any
+    // to avoid SDK type mismatches in our TS runtime.
+    return (resp as any)?.text || (resp as any)?.transcript || "";
+  } catch (err: any) {
+    console.warn(`Transcription failed for ${path.basename(filePath)}: ${err?.message || err}`);
+    return "";
+  }
+}
+
+export async function scoreTextAgainstIntent(text: string, intent: any): Promise<{ score: number; explanation?: string }> {
+  try {
+    const resp = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `You are an evaluator that scores how well a transcription matches the user's intent on a scale from 0.0 to 1.0. Return JSON: { "score": 0.0, "explanation": "..." }.`,
+        },
+        {
+          role: "user",
+          content: `Intent: ${JSON.stringify(intent)}\n\nTranscription: ${text}\n\nRespond only with valid JSON {"score": float, "explanation": string}`,
+        },
+      ],
+    });
+
+    const parsed = JSON.parse(resp.choices[0].message.content || "{}");
+    return { score: Number(parsed.score) || 0, explanation: parsed.explanation };
+  } catch (err: any) {
+    console.warn(`Scoring failed: ${err?.message || err}`);
+    return { score: 0, explanation: "scoring error" };
+  }
 }

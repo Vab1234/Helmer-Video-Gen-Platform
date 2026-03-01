@@ -10,8 +10,10 @@ const fsp = fs.promises;
  * - Coverr / preview videos are small
  * - Pixabay / Pexels often larger
  */
-const MIN_BYTES_DEFAULT = 5_000; // ~400 KB
-const MIN_BYTES_COVERR = 5_000;  // ~200 KB
+// byte thresholds per media type
+const MIN_BYTES_DEFAULT = 5_000; // ~5 KB general fallback
+const MIN_BYTES_AUDIO = 1_000; // allow very small audio previews
+const MIN_BYTES_COVERR = 5_000;  // coverr-specific fallback
 
 /**
  * Source-aware browser headers
@@ -98,14 +100,23 @@ export async function downloadToDir(
   const contentType =
     (res.headers["content-type"] as string) || "";
 
-  // 🔹 Source-aware MIN_BYTES
-  const minBytes =
-    source === "coverr" ? MIN_BYTES_COVERR : MIN_BYTES_DEFAULT;
+  // 🔹 Determine minimum bytes threshold based on type
+  let minBytes = MIN_BYTES_DEFAULT;
+  if (contentType.includes("audio") || preferredExt === ".mp3" || preferredExt === ".wav") {
+    minBytes = MIN_BYTES_AUDIO;
+  }
+  if (source === "coverr") {
+    minBytes = Math.max(minBytes, MIN_BYTES_COVERR);
+  }
 
   if (content.length < minBytes) {
-    throw new Error(
-      `Asset from ${source} rejected: ${content.length} bytes (< ${minBytes})`
-    );
+    // instead of throwing, log a warning and still save small audio clips
+    const msg = `Asset from ${source} rejected: ${content.length} bytes (< ${minBytes})`;
+    if (contentType.includes("audio")) {
+      console.warn(`[download warning] ${msg} – saving anyway because it's audio`);
+    } else {
+      throw new Error(msg);
+    }
   }
 
   const hash = sha256Bytes(content);
@@ -113,7 +124,11 @@ export async function downloadToDir(
 
   await fsp.mkdir(toDir, { recursive: true });
 
-  const cleanSource = source.toLowerCase().split(" ")[0];
+  // Sanitize source to remove path separators (/, \) to avoid nested directory creation
+  const cleanSource = source
+    .toLowerCase()
+    .split(" ")[0]
+    .replace(/[\/\\]/g, "-");
   const fileName = `${cleanSource}_${hash.slice(0, 12)}${ext}`;
   const filePath = path.join(toDir, fileName);
 

@@ -15,6 +15,9 @@ import {
   MAX_PER_PROVIDER,
 } from "../config/constants";
 import type { SemanticMap, FetchedAsset, MediaType } from "../types/semanticMap";
+
+// minimum score for pre-filtering audio during fetch (low to catch obvious mismatches)
+const AUDIO_PRE_FILTER_SCORE = 0.1;
 import { downloadToDir } from "./download";
 import {
   scrapeUnsplashImages,
@@ -28,7 +31,7 @@ import {
   scrapePixabayAudio,
   scrapeFreesoundPreviews
 } from "./audioProviders";
-import { scrapeFreesoundAudio } from "./freeSoundProvider";
+import { scrapeFreesoundAudio, scrapeFreesoundBrowserAudio } from "./freeSoundProvider";
 
 const fsp = fs.promises;
 
@@ -36,7 +39,7 @@ type ProviderFn =
   | ((page: any, q: string, limit: number) => Promise<ScrapedItem[]>)
   | ((browser: any, q: string, limit: number) => Promise<ScrapedItem[]>);
 
-async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
+async function fetchAndSave(items: ScrapedItem[], intent: any): Promise<FetchedAsset[]> {
   const metadata: FetchedAsset[] = [];
   const seenHashes = new Set<string>();
 
@@ -46,8 +49,8 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
   await ensureDir(AUD_DIR);
 
   for (const item of items) {
-    const { type, mediaUrl, source } = item; // 1. Destructure source here
-    if (!mediaUrl) continue;
+      const { type, mediaUrl, source } = item;
+      if (!mediaUrl) continue;
 
     try {
       const targetDir =
@@ -63,6 +66,29 @@ async function fetchAndSave(items: ScrapedItem[]): Promise<FetchedAsset[]> {
         preferredExt,
         item.source // <--- Add this argument
       );
+
+      // audio-specific pre-filter: transcribe & score against intent before accepting
+      if (type === "audio" && intent) {
+        try {
+          // lazy-import to avoid circular dependency
+          const { transcribeAudioFile, scoreTextAgainstIntent } =
+            await import("../pipeline/relevanceMatcher");
+          const transcription = await transcribeAudioFile(filePath);
+          const { score } = await scoreTextAgainstIntent(transcription, intent);
+          if (score < AUDIO_PRE_FILTER_SCORE) {
+            console.log(
+              `[filtered] audio ${path.basename(filePath)} score ${score.toFixed(
+                2
+              )}`
+            );
+            await fsp.unlink(filePath).catch(() => {});
+            continue; // skip adding to metadata
+          }
+        } catch (err) {
+          // if something goes wrong, just keep the asset and log error
+          console.warn("audio pre-filter failed", err);
+        }
+      }
 
       if (seenHashes.has(hash)) {
         await fsp.unlink(filePath).catch(() => { });
@@ -157,19 +183,23 @@ export async function runFetchAssets(): Promise<void> {
         console.log(`[scrape] mixkit_sounds -> '${q}'`);
         collected.push(...(await scrapeMixkitAudio(browser, q, MAX_PER_PROVIDER)));
 
-        // 2. Pixabay Audio (New)
         console.log(`[scrape] pixabay_audio -> '${q}'`);
         collected.push(...(await scrapePixabayAudio(browser, q, MAX_PER_PROVIDER)));
 
-        // 3. Freesound Previews (Updated to use the browser-based version)
-        console.log(`[scrape] freesound -> '${q}'`);
+        console.log(`[scrape] freesound_previews -> '${q}'`);
         collected.push(...(await scrapeFreesoundPreviews(browser, q, MAX_PER_PROVIDER)));
+
+        console.log(`[scrape] freesound_api -> '${q}'`);
+        collected.push(...(await scrapeFreesoundAudio(q, MAX_PER_PROVIDER)));
+
+        console.log(`[scrape] freesound_browser -> '${q}'`);
+        collected.push(...(await scrapeFreesoundBrowserAudio(browser, q, MAX_PER_PROVIDER)));
       }
     }
 
     console.log(`[scrape] total collected items: ${collected.length}`);
 
-    const meta = await fetchAndSave(collected);
+    const meta = await fetchAndSave(collected, semanticMap.intent_extraction);
 
     // update semantic_map + metadata.json
     const existingMetadata =

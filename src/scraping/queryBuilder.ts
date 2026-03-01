@@ -29,8 +29,9 @@ Examples: "waves crashing rocky shore", "woman jogging park morning".
   }
 
   return `
-Use common sound effect search phrases.
-Examples: "rain ambience", "keyboard typing", "crowd cheering stadium".
+Use common sound effect search phrases.  Add emotional or human-SFX keywords when appropriate (crying, sobbing, laughter, footsteps, breathing, etc.).
+Mention whether it should be a sound effect or ambient recording.
+Examples: "rain ambience", "keyboard typing", "crowd cheering stadium", "male sobbing sound", "woman crying softly".
 `;
 }
 
@@ -160,6 +161,15 @@ function heuristicFallback(
     seeds = expanded.map((term) => `${term} ambience`.trim());
   }
 
+  // enhance audio heuristics by appending common SFX descriptors
+  if (modality === "audio") {
+    seeds = seeds.flatMap(s => [
+      `${s} sound`,
+      `${s} sound effect`,
+      `${s} ambience`,
+      `${s} recording`
+    ]);
+  }
   return {
     queries: cleanQueries(seeds),
   };
